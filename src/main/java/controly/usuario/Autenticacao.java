@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Autenticacao {
-    private List<Usuario> usuarios;
+    static private List<Usuario> usuarios;
 
     public Autenticacao() {
         this.usuarios = new ArrayList<>();
@@ -46,6 +46,15 @@ public class Autenticacao {
                 .filter(us -> id == us.getId())
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Usuario autenticarLogin(String email, String senha){
+        System.out.println(usuarios);
+        for (Usuario usuario : usuarios) {
+            if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha()))
+                return usuario;
+        }
+        return null;
     }
 
     public List<Usuario> getUsuarios(){

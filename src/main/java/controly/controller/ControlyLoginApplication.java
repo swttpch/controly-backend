@@ -8,6 +8,7 @@ public class ControlyLoginApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ControlyLoginApplication.class, args);
+
 	}
 
 }

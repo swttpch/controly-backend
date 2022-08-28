@@ -61,13 +61,13 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "Usuario{\n" +
                 "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", apelido='" + apelido + '\'' +
-                ", avatar=" + avatar +
-                ", senha='" + senha + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+                ",\nnome='" + nome + '\'' +
+                ",\napelido='" + apelido + '\'' +
+                ",\navatar=" + avatar +
+                ",\nsenha='" + senha + '\'' +
+                ",\nemail='" + email + '\'' +
+                "\n}";
     }
 }

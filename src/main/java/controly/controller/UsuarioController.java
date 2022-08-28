@@ -35,4 +35,5 @@ public class UsuarioController {
     public Usuario putUsuario(@PathVariable int id, @RequestBody Usuario usuario){
         return auth.putUsuario(id, usuario);
     }
+
 }
