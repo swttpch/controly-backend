@@ -12,7 +12,7 @@ public class UsuarioController {
     Autenticacao auth = new Autenticacao();
 
     @GetMapping("/")
-    public List<Usuario> home(){
+    public List<Usuario> getUsuarios(){
         return auth.getUsuarios();
     }
 

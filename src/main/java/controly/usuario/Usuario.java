@@ -1,6 +1,7 @@
 package controly.usuario;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Usuario {
     private int id;
@@ -26,7 +27,7 @@ public class Usuario {
     public String getEmail() {
         return email;
     }
-
+@JsonIgnore
     public String getSenha() {
         return senha;
     }
@@ -50,7 +51,7 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
-
+@JsonProperty
     public void setSenha(String senha) {
         this.senha = senha;
     }
@@ -66,7 +67,6 @@ public class Usuario {
                 ",\nnome='" + nome + '\'' +
                 ",\napelido='" + apelido + '\'' +
                 ",\navatar=" + avatar +
-                ",\nsenha='" + senha + '\'' +
                 ",\nemail='" + email + '\'' +
                 "\n}";
     }
