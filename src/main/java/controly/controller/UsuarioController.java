@@ -1,13 +1,13 @@
 package controly.controller;
 
-import controly.usuario.Autenticacao;
-import controly.usuario.Usuario;
+import controly.model.Autenticacao;
+import controly.model.Usuario;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("usuario")
+@RequestMapping("/usuario")
 public class UsuarioController {
     Autenticacao auth = new Autenticacao();
 

@@ -1,14 +1,14 @@
 package controly.controller;
 
-import controly.usuario.Autenticacao;
-import controly.usuario.Usuario;
+import controly.model.Autenticacao;
+import controly.model.Usuario;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("autenticacao")
+@RequestMapping("/autenticacao")
 public class AutenticacaoController {
 
     Usuario curUsuario;

@@ -1,4 +1,4 @@
-package controly.controller;
+package controly;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

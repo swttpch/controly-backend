@@ -1,12 +1,11 @@
-package controly.usuario;
+package controly.model;
 
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Autenticacao {
+
     static private List<Usuario> usuarios;
 
     public Autenticacao() {
@@ -14,7 +13,7 @@ public class Autenticacao {
     }
 
     public Usuario postUsuario(Usuario usuario) {
-        int id = usuarios.isEmpty() ? 1 : usuarios.get(usuarios.size() - 1).getId() + 1;
+        Long id = usuarios.isEmpty() ? 1 : usuarios.get(usuarios.size() - 1).getId() + 1;
         usuario.setId(id);
         this.usuarios.add(usuario);
         return usuario;
