@@ -1,4 +1,4 @@
-package controly.controller.repository;
+package controly.repository;
 
 import controly.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

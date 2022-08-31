@@ -1,7 +1,8 @@
 package controly.controller.form;
 
-import controly.controller.repository.UsuarioRepository;
+import controly.repository.UsuarioRepository;
 import controly.model.Usuario;
+import controly.repository.UsuarioRepository;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.GeneratedValue;

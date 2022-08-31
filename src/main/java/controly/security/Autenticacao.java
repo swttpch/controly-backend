@@ -3,7 +3,7 @@ package controly.security;
 
 import controly.controller.dto.UsuarioCadastradoDTO;
 import controly.controller.form.CadastrarNovoUsuarioForm;
-import controly.controller.repository.UsuarioRepository;
+import controly.repository.UsuarioRepository;
 import controly.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

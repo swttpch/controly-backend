@@ -4,8 +4,7 @@ package controly.controller;
 import controly.controller.dto.UsuarioCadastradoDTO;
 import controly.controller.form.AtualizarUsuarioForm;
 import controly.controller.form.CadastrarNovoUsuarioForm;
-import controly.controller.repository.UsuarioRepository;
-import controly.model.Topico;
+import controly.repository.UsuarioRepository;
 import controly.model.Usuario;
 import controly.security.Autenticacao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
