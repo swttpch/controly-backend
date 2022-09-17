@@ -13,14 +13,15 @@ import javax.transaction.Transactional;
 
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
     Autenticacao auth = new Autenticacao();
 
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
+
+    @GetMapping("/teste")
     public ResponseEntity<UsuarioCadastradoDTO> getUsuarios(){
 
         // Criar?
@@ -28,9 +29,9 @@ public class UsuarioController {
         return null;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioCadastradoDTO> getUsuario(@PathVariable Long id){
-        return ResponseEntity.notFound().build();
+    @GetMapping
+    public ResponseEntity<?> getUsuario(@RequestBody Long id){
+        return usuarioService.getUsuarioCadastrado(id);
     }
 
     @PostMapping()
@@ -38,17 +39,17 @@ public class UsuarioController {
         return usuarioService.cadastrarUsuario(user);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> deletarUsuario(@RequestBody Long id){
+    public ResponseEntity<?> deletarUsuario(@PathVariable Long id){
         return usuarioService.deletarUsuario(id);
     }
 
+    /*
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<UsuarioCadastradoDTO> putUsuario(@PathVariable Long id, @RequestBody AtualizarUsuarioForm form){
-        Usuario user = form.atualizar(id, usuarioRepository);
+    public ResponseEntity<UsuarioCadastradoDTO> putUsuario(@PathVariable Long id, @RequestBody AtualizarUsuarioForm user){
         return ResponseEntity.ok(new UsuarioCadastradoDTO(user));
     }
-
+    */
 }

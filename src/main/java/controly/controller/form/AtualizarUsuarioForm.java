@@ -1,7 +1,7 @@
 package controly.controller.form;
 
 import controly.repository.UsuarioRepository;
-import controly.model.Usuario;
+import controly.model.entity.Usuario;
 import controly.repository.UsuarioRepository;
 import org.hibernate.validator.constraints.Length;
 

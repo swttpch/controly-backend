@@ -47,7 +47,12 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+    public ResponseEntity<?> getUsuarioCadastrado(Long id){
+        return null;
+    }
 
+
+    @Transactional
     public ResponseEntity<String> deletarUsuario(Long id){
         Optional<Usuario> usuario = this.buscarUsuarioPorId(id);
 

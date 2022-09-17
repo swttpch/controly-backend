@@ -1,7 +1,7 @@
 package controly.controller;
 
 import controly.security.Autenticacao;
-import controly.model.Usuario;
+import controly.model.entity.Usuario;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

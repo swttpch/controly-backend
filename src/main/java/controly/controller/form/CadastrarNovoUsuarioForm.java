@@ -11,9 +11,7 @@ import javax.validation.constraints.NotNull;
 
 public class CadastrarNovoUsuarioForm {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     @NotNull
     private String nome;
     @NotNull
@@ -27,13 +25,6 @@ public class CadastrarNovoUsuarioForm {
     //private EnumUsuarioStatus status = EnumUsuarioStatus.ATIVO;
 
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
