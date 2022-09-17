@@ -1,7 +1,7 @@
 package controly.controller.form;
 
 import controly.model.EnumUsuarioStatus;
-import controly.model.Usuario;
+import controly.model.entity.Usuario;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.GeneratedValue;

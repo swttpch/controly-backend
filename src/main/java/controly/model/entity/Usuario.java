@@ -1,5 +1,6 @@
-package controly.model;
+package controly.model.entity;
 
+import controly.model.EnumUsuarioStatus;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
