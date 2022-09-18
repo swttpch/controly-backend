@@ -64,4 +64,39 @@ public class UsuarioService {
         }
     }
 
+    public ResponseEntity<String> atualizarUsuario(Long id, CadastrarNovoUsuarioForm form) {
+
+        String usuarioInvalido = new ValidacaoUsuario().validar(form);
+
+        if(usuarioInvalido==null) {
+
+            Optional<Usuario> usuario = buscarUsuarioPorId(id);
+
+            if (usuario.isPresent()) {
+
+                Usuario usuarioCadastrado = usuario.get();
+
+                if (!usuarioCadastrado.getNome().equals(form.getNome())) {
+                    usuarioCadastrado.setNome(form.getNome());
+                }
+                if (!usuarioCadastrado.getEmail().equals(form.getEmail())) {
+                    usuarioCadastrado.setEmail(form.getEmail());
+                }
+                if (!usuarioCadastrado.getSenha().equals(form.getSenha())) {
+                    usuarioCadastrado.setSenha(form.getSenha());
+                }
+
+
+                usuarioRepository.save(usuarioCadastrado);
+                return ResponseEntity.status(201).body("Usuario atualizado com sucesso");
+
+            } else {
+                return ResponseEntity.status(404).body("Usuario não encontrado");
+            }
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(usuarioInvalido);
+        }
+    }
+
 }

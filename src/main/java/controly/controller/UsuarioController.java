@@ -45,11 +45,10 @@ public class UsuarioController {
         return usuarioService.deletarUsuario(id);
     }
 
-    /*
+
     @PutMapping("/{id}")
-    @Transactional
-    public ResponseEntity<UsuarioCadastradoDTO> putUsuario(@PathVariable Long id, @RequestBody AtualizarUsuarioForm user){
-        return ResponseEntity.ok(new UsuarioCadastradoDTO(user));
+    public ResponseEntity<String> atualizarUsuario(@PathVariable Long id,
+                                                   @RequestBody CadastrarNovoUsuarioForm form){
+        return usuarioService.atualizarUsuario(id,form);
     }
-    */
 }
