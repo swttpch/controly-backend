@@ -29,11 +29,6 @@ public class Usuario {
     // Validar depois
     //private List<Topico> topicosQueSegue = new ArrayList<>();
 
-    public Usuario(){
-
-    }
-
-
     public Usuario(String nome, String apelido, String senha, String email) {
         this.nome = nome;
         this.apelido = apelido;
