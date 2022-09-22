@@ -1,16 +1,24 @@
 package controly.model.entity;
 
 import controly.model.EnumUsuarioStatus;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name="tb_usuario")
-public class Usuario {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Usuario implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,70 +36,4 @@ public class Usuario {
     private EnumUsuarioStatus status = EnumUsuarioStatus.ATIVO;
     // Validar depois
     //private List<Topico> topicosQueSegue = new ArrayList<>();
-
-    public Usuario(String nome, String apelido, String senha, String email) {
-        this.nome = nome;
-        this.apelido = apelido;
-        this.senha = senha;
-        this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getApelido() {
-        return apelido;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public int getAvatar() {
-        return avatar;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setApelido(String apelido) {
-        this.apelido = apelido;
-    }
-
-    public void setAvatar(int avatar) {
-        this.avatar = avatar;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public void setId(Long id){
-        this.id = id;
-    }
-
-    public EnumUsuarioStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus() {
-        this.status = status;
-    }
-
-
-
 }
