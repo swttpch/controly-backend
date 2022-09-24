@@ -3,12 +3,11 @@ package controly.security;
 
 import controly.controller.dto.UsuarioCadastradoDTO;
 import controly.controller.form.CadastrarNovoUsuarioForm;
+import controly.model.entity.UsuarioEntity;
 import controly.repository.UsuarioRepository;
-import controly.model.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -17,10 +16,10 @@ import java.util.List;
 @Repository
 public class Autenticacao {
 
-    static private List<Usuario> usuarios;
+    static private List<UsuarioEntity> usuarioEntities;
 
     public Autenticacao() {
-        this.usuarios = new ArrayList<>();
+        this.usuarioEntities = new ArrayList<>();
     }
 
     @Autowired
@@ -29,55 +28,55 @@ public class Autenticacao {
 
     @Transactional
     public ResponseEntity<UsuarioCadastradoDTO> postUsuario(CadastrarNovoUsuarioForm user) {
-        //Long id = usuarios.isEmpty() ? 1 : usuarios.get(usuarios.size() - 1).getId() + 1;
-        //usuario.setId(id);
-        //this.usuarios.add(usuario);
+        //Long id = usuarioEntities.isEmpty() ? 1 : usuarioEntities.get(usuarioEntities.size() - 1).getIdUsuario() + 1;
+        //usuarioEntity.setIdUsuario(id);
+        //this.usuarioEntities.add(usuarioEntity);
 
-        Usuario usuario = user.converter();
+        UsuarioEntity usuarioEntity = user.converter();
 
-        usuarioRepository.save(usuario);
+        usuarioRepository.save(usuarioEntity);
 
         return null;
     }
 
-    public Usuario deleteUsuario(Long id){
-        Usuario usuario = usuarios.stream()
-                .filter(us -> id == us.getId())
+    public UsuarioEntity deleteUsuario(Long id){
+        UsuarioEntity usuarioEntity = usuarioEntities.stream()
+                .filter(us -> id == us.getIdUsuario())
                 .findFirst()
                 .orElse(null);
-        usuarios.remove(usuario);
-        return usuario;
+        usuarioEntities.remove(usuarioEntity);
+        return usuarioEntity;
     }
 
-    public Usuario putUsuario(Long id, Usuario usuario){
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getId() == id) {
-                usuario.setId(usuarios.get(i).getId());
-                usuarios.set(i, usuario);
-                return usuario;
+    public UsuarioEntity putUsuario(Long id, UsuarioEntity usuarioEntity){
+        for (int i = 0; i < usuarioEntities.size(); i++) {
+            if (usuarioEntities.get(i).getIdUsuario() == id) {
+                usuarioEntity.setIdUsuario(usuarioEntities.get(i).getIdUsuario());
+                usuarioEntities.set(i, usuarioEntity);
+                return usuarioEntity;
             };
         }
         return null;
 
     }
 
-    public Usuario getUsuario(Long id) {
-        return usuarios.stream()
-                .filter(us -> id == us.getId())
+    public UsuarioEntity getUsuario(Long id) {
+        return usuarioEntities.stream()
+                .filter(us -> id == us.getIdUsuario())
                 .findFirst()
                 .orElse(null);
     }
 
-    public Usuario autenticarLogin(String email, String senha){
-        System.out.println(usuarios);
-        for (Usuario usuario : usuarios) {
-            if (email.equals(usuario.getEmail()) && senha.equals(usuario.getSenha()))
-                return usuario;
+    public UsuarioEntity autenticarLogin(String email, String senha){
+        System.out.println(usuarioEntities);
+        for (UsuarioEntity usuarioEntity : usuarioEntities) {
+            if (email.equals(usuarioEntity.getEmail()) && senha.equals(usuarioEntity.getSenha()))
+                return usuarioEntity;
         }
         return null;
     }
 
-    public List<Usuario> getUsuarios(){
-        return usuarios;
+    public List<UsuarioEntity> getUsuarios(){
+        return usuarioEntities;
     }
 }

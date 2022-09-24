@@ -1,8 +1,8 @@
 package controly.repository;
 
-import controly.model.entity.Discussao;
+import controly.model.entity.DiscussaoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DiscussaoRepository extends JpaRepository<Discussao, Long> {
+public interface DiscussaoRepository extends JpaRepository<DiscussaoEntity, Long> {
 
 }

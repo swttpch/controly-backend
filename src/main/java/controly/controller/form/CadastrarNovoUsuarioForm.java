@@ -1,12 +1,8 @@
 package controly.controller.form;
 
-import controly.model.EnumUsuarioStatus;
-import controly.model.entity.Usuario;
+import controly.model.entity.UsuarioEntity;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 public class CadastrarNovoUsuarioForm {
@@ -58,7 +54,7 @@ public class CadastrarNovoUsuarioForm {
         this.email = email;
     }
 
-    public Usuario converter() {
-        return new Usuario(nome,apelido,senha,email);
+    public UsuarioEntity converter() {
+        return new UsuarioEntity(nome,apelido,senha,email);
     }
 }

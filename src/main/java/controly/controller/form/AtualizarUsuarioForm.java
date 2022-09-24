@@ -1,13 +1,9 @@
 package controly.controller.form;
 
-import controly.repository.UsuarioRepository;
-import controly.model.entity.Usuario;
+import controly.model.entity.UsuarioEntity;
 import controly.repository.UsuarioRepository;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 public class AtualizarUsuarioForm {
@@ -60,9 +56,9 @@ public class AtualizarUsuarioForm {
         this.email = email;
     }
 
-    public Usuario atualizar(Long id, UsuarioRepository usuarioRepository) {
+    public UsuarioEntity atualizar(Long id, UsuarioRepository usuarioRepository) {
 
-        Usuario user = usuarioRepository.getReferenceById(id);
+        UsuarioEntity user = usuarioRepository.getReferenceById(id);
         user.setApelido(this.apelido);
         user.setEmail(this.email);
         user.setSenha(this.senha);

@@ -1,10 +1,6 @@
 package controly.model;
 
 import controly.controller.form.CadastrarNovoUsuarioForm;
-import controly.model.entity.Usuario;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ValidacaoUsuario {
 

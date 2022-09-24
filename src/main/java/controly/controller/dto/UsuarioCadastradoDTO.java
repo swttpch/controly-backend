@@ -1,8 +1,6 @@
 package controly.controller.dto;
 
-import controly.model.EnumUsuarioStatus;
-import controly.model.entity.Usuario;
-import org.hibernate.validator.constraints.Length;
+import controly.model.entity.UsuarioEntity;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,16 +18,15 @@ public class UsuarioCadastradoDTO {
     private String apelido;
     @NotNull
     private String email;
-    private EnumUsuarioStatus status = EnumUsuarioStatus.ATIVO;
 
-    public UsuarioCadastradoDTO(Usuario usuario){
-        this.id = usuario.getId();
-        this.apelido = usuario.getApelido();
-        this.email = usuario.getEmail();
-        this.nome = usuario.getNome();
+    public UsuarioCadastradoDTO(UsuarioEntity usuarioEntity){
+        this.id = usuarioEntity.getIdUsuario();
+        this.apelido = usuarioEntity.getApelido();
+        this.email = usuarioEntity.getEmail();
+        this.nome = usuarioEntity.getNome();
     }
 
-    public Long getId() {
+    public Long getIdUsuario() {
         return id;
     }
 
@@ -61,11 +58,4 @@ public class UsuarioCadastradoDTO {
         this.email = email;
     }
 
-    public EnumUsuarioStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(EnumUsuarioStatus status) {
-        this.status = status;
-    }
 }

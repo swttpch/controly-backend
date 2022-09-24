@@ -2,7 +2,7 @@ package controly.model.service;
 
 import controly.controller.form.CadastrarNovoUsuarioForm;
 import controly.model.ValidacaoUsuario;
-import controly.model.entity.Usuario;
+import controly.model.entity.UsuarioEntity;
 import controly.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +29,9 @@ public class UsuarioService {
 
             if (usuarioRepository.findByEmail(novoUser.getEmail()).isEmpty()) {
 
-                Usuario usuario = novoUser.converter();
-                usuarioRepository.save(usuario);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Usuario cadastrado com sucesso");
+                UsuarioEntity usuarioEntity = novoUser.converter();
+                usuarioRepository.save(usuarioEntity);
+                return ResponseEntity.status(HttpStatus.CREATED).body("UsuarioEntity cadastrado com sucesso");
 
             }else {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já existe na base de dados");
@@ -43,7 +43,7 @@ public class UsuarioService {
 
     }
 
-    public Optional<Usuario> buscarUsuarioPorId(Long id){
+    public Optional<UsuarioEntity> buscarUsuarioPorId(Long id){
         return usuarioRepository.findById(id);
     }
 
@@ -54,11 +54,11 @@ public class UsuarioService {
 
     @Transactional
     public ResponseEntity<String> deletarUsuario(Long id){
-        Optional<Usuario> usuario = this.buscarUsuarioPorId(id);
+        Optional<UsuarioEntity> usuario = this.buscarUsuarioPorId(id);
 
         if(usuario.isPresent()){
             usuarioRepository.deleteById(id);
-            return ResponseEntity.status(200).body("Usuario deletado com sucesso");
+            return ResponseEntity.status(200).body("UsuarioEntity deletado com sucesso");
         } else {
             return ResponseEntity.status(404).body("Usuário não encontrado");
         }
@@ -70,28 +70,28 @@ public class UsuarioService {
 
         if(usuarioInvalido==null) {
 
-            Optional<Usuario> usuario = buscarUsuarioPorId(id);
+            Optional<UsuarioEntity> usuario = buscarUsuarioPorId(id);
 
             if (usuario.isPresent()) {
 
-                Usuario usuarioCadastrado = usuario.get();
+                UsuarioEntity usuarioEntityCadastrado = usuario.get();
 
-                if (!usuarioCadastrado.getNome().equals(form.getNome())) {
-                    usuarioCadastrado.setNome(form.getNome());
+                if (!usuarioEntityCadastrado.getNome().equals(form.getNome())) {
+                    usuarioEntityCadastrado.setNome(form.getNome());
                 }
-                if (!usuarioCadastrado.getEmail().equals(form.getEmail())) {
-                    usuarioCadastrado.setEmail(form.getEmail());
+                if (!usuarioEntityCadastrado.getEmail().equals(form.getEmail())) {
+                    usuarioEntityCadastrado.setEmail(form.getEmail());
                 }
-                if (!usuarioCadastrado.getSenha().equals(form.getSenha())) {
-                    usuarioCadastrado.setSenha(form.getSenha());
+                if (!usuarioEntityCadastrado.getSenha().equals(form.getSenha())) {
+                    usuarioEntityCadastrado.setSenha(form.getSenha());
                 }
 
 
-                usuarioRepository.save(usuarioCadastrado);
-                return ResponseEntity.status(201).body("Usuario atualizado com sucesso");
+                usuarioRepository.save(usuarioEntityCadastrado);
+                return ResponseEntity.status(201).body("UsuarioEntity atualizado com sucesso");
 
             } else {
-                return ResponseEntity.status(404).body("Usuario não encontrado");
+                return ResponseEntity.status(404).body("UsuarioEntity não encontrado");
             }
         }
         else {
