@@ -24,9 +24,8 @@ public class ComentarioEntity implements Serializable {
             {@JoinColumn(name= "idUsuario")})
     private List<UsuarioEntity> curtidas;
 
-    //@ManyToOne
-    //@JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")
-    //private PostagemEntity postagem;
+    @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    private UsuarioEntity dono;
 
     public ComentarioEntity(String conteudo, Date criadoEm) {
         this.conteudo = conteudo;

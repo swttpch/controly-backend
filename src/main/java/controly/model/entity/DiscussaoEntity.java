@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity(name = "tbPostagem")
+@Table(name = "tbPostagem")
+@SecondaryTable(name= "tbRespostaDuvida", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idPostagem"))
 public class DiscussaoEntity extends PostagemEntity{
     @Column(name = "titulo")
     private String titulo;
@@ -19,6 +21,9 @@ public class DiscussaoEntity extends PostagemEntity{
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idPostagem")
     private List<ComentarioEntity> comentarios;
+
+    @Embedded
+    private RespostaDuvidaEntity respostaDuvidaEntity;
 
     public DiscussaoEntity(String conteudo, Date criadoEm, String titulo, TopicoEntity topico) {
         super(conteudo, criadoEm);

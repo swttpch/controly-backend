@@ -19,6 +19,9 @@ public abstract class PostagemEntity implements Serializable {
     @Column(name = "criadoEm") @Temporal(TemporalType.DATE)
     private Date criadoEm;
 
+    @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
+    private UsuarioEntity dono;
+
     public PostagemEntity(String conteudo, Date criadoEm) {
         this.conteudo = conteudo;
         this.criadoEm = criadoEm;
