@@ -15,7 +15,7 @@ public class RespostaDuvidaEntity {
     @Column(name = "resolvidoEm", table = "tbRespostaDuvida")
     private Date resolvidoEm;
 
-    public RespostaDuvidaEntity(boolean resolvido) {
+    public RespostaDuvidaEntity() {
         this.resolvido = false;
     }
 

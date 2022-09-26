@@ -2,10 +2,9 @@ package controly.controller;
 
 import controly.model.entity.TopicoEntity;
 import controly.model.service.TopicoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,15 +14,22 @@ import java.util.List;
 @RequestMapping("/topicos")
 public class TopicoController {
 
-    TopicoService topicoService;
+    @Autowired
+    private TopicoService topicoService;
 
     List<TopicoEntity> topicoEntityList = new ArrayList<>();
 
     TopicoEntity topico = new TopicoEntity("Igor");
 
+    @PostMapping("/{nome}")
+    public ResponseEntity<TopicoEntity> addTopico(@PathVariable String nome){
+        System.out.println(nome);
+        return topicoService.cadastrarTopico(nome);
+    }
+
     @GetMapping
     public ResponseEntity<List<TopicoEntity>> getTopicos(){
         topicoEntityList.add(topico);
-        return ResponseEntity.status(200).body(topicoEntityList);    }
-
+        return ResponseEntity.status(200).body(topicoEntityList);
+    }
 }
