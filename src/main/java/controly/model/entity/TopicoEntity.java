@@ -1,10 +1,12 @@
 package controly.model.entity;
 
+import org.springframework.context.annotation.Conditional;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="tbTopico")
+@Table(name="tb_topico")
 public class TopicoEntity {
 
     @Id
@@ -14,7 +16,22 @@ public class TopicoEntity {
     @NotNull
     private String nome;
 
+    public TopicoEntity() {
+    }
+
     public TopicoEntity(String nome) {
+        this.nome = nome;
+    }
+
+    public Long getId() {
+        return idTopico;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
         this.nome = nome;
     }
 }
