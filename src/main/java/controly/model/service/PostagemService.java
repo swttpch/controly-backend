@@ -8,11 +8,10 @@ import controly.repository.PostagemRepository;
 import controly.repository.TopicoRepository;
 import controly.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class PostagemService {
@@ -27,11 +26,16 @@ public class PostagemService {
     private UsuarioRepository usuarioRepository;
 
     @Transactional
-    public ResponseEntity<PostagemEntity> cadastrarPostagem(CadastrarNovaPostagemForm novaPostagem){
+    public PostagemEntity cadastrarPostagem(CadastrarNovaPostagemForm novaPostagem){
         TopicoEntity topico = topicoRepository.findByIdTopico(novaPostagem.getIdTopico()).get();
         UsuarioEntity usuario = usuarioRepository.findById(novaPostagem.getIdUsuario()).get();
         PostagemEntity postagemEntity = novaPostagem.converterPostagem(topico, usuario);
         postagemRepository.save(postagemEntity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(postagemEntity);
+        return postagemEntity;
+    }
+
+    @Transactional
+    public List<PostagemEntity> buscarTodasPostagens(){
+        return postagemRepository.findAll();
     }
 }

@@ -47,6 +47,10 @@ public class PostagemEntity implements Serializable {
         this.dono = dono;
     }
 
+    public PostagemEntity(){
+
+    }
+
     public String getTitulo() {
         return titulo;
     }

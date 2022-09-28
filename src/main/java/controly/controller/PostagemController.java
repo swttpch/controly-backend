@@ -1,11 +1,8 @@
 package controly.controller;
 
 import controly.controller.form.CadastrarNovaPostagemForm;
-import controly.controller.form.CadastrarNovoUsuarioForm;
 import controly.model.entity.PostagemEntity;
 import controly.model.service.PostagemService;
-import controly.model.service.UsuarioService;
-import controly.repository.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +18,14 @@ public class PostagemController {
 
     @PostMapping()
     public ResponseEntity<PostagemEntity> cadastrarUsuario(@RequestBody CadastrarNovaPostagemForm post){
-        return postagemService.cadastrarPostagem(post);
+        PostagemEntity postagem = postagemService.cadastrarPostagem(post);
+        return ResponseEntity.status(200).body(postagem);
     }
 
     @GetMapping()
     public ResponseEntity<List<PostagemEntity>> buscarTodasPostagens(){
-        // do something
-        return null;
+        List<PostagemEntity> listaDePostagens = postagemService.buscarTodasPostagens();
+        if (listaDePostagens.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(listaDePostagens);
     }
 }
