@@ -2,22 +2,36 @@ package controly.model.service;
 
 import controly.controller.form.CadastrarNovaPostagemForm;
 import controly.model.entity.PostagemEntity;
+import controly.model.entity.TopicoEntity;
+import controly.model.entity.UsuarioEntity;
 import controly.repository.PostagemRepository;
+import controly.repository.TopicoRepository;
+import controly.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class PostagemService {
 
     @Autowired
     private PostagemRepository postagemRepository;
-/*
+
+    @Autowired
+    private TopicoRepository topicoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Transactional
     public ResponseEntity<PostagemEntity> cadastrarPostagem(CadastrarNovaPostagemForm novaPostagem){
-        PostagemEntity postagemEntity = novaPostagem.converterPostagem();
+        TopicoEntity topico = topicoRepository.findByIdTopico(novaPostagem.getIdTopico()).get();
+        UsuarioEntity usuario = usuarioRepository.findById(novaPostagem.getIdUsuario()).get();
+        PostagemEntity postagemEntity = novaPostagem.converterPostagem(topico, usuario);
         postagemRepository.save(postagemEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(postagemEntity);
     }
-    */
 }

@@ -23,8 +23,13 @@ public class TopicoController {
 
     @PostMapping("/{nome}")
     public ResponseEntity<TopicoEntity> addTopico(@PathVariable String nome){
-        System.out.println(nome);
         return topicoService.cadastrarTopico(nome);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TopicoEntity> getTopico(@PathVariable long id){
+        TopicoEntity topico = topicoService.buscarTopicoPeloId(id).get();
+        return ResponseEntity.status(200).body(topico);
     }
 
     @GetMapping

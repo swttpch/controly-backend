@@ -16,6 +16,9 @@ public class TopicoEntity {
     @NotNull
     private String nome;
 
+    public  TopicoEntity() {
+
+    }
     public TopicoEntity(String nome) {
         this.nome = nome;
     }

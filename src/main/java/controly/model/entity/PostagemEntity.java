@@ -3,7 +3,6 @@ package controly.model.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "tbPostagem")

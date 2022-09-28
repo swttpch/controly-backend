@@ -42,6 +42,10 @@ public class UsuarioEntity implements Serializable {
         this.email = email;
     }
 
+    public UsuarioEntity(){
+
+    }
+
     // Validar depois
     //private List<Topico> topicosQueSegue = new ArrayList<>();
 }

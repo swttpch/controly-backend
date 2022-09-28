@@ -18,6 +18,9 @@ public class ComentarioEntity implements Serializable {
     @Column(name = "criadoEm")
     private Date criadoEm;
 
+    @ManyToOne @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")
+    private PostagemEntity postagem;
+
     @ManyToMany
     @JoinTable(name = "comentarioHasCurtidas", joinColumns =
             {@JoinColumn(name = "idComentario")}, inverseJoinColumns =

@@ -3,15 +3,9 @@ package controly.controller.form;
 import controly.model.entity.PostagemEntity;
 import controly.model.entity.TopicoEntity;
 import controly.model.entity.UsuarioEntity;
-import controly.model.service.TopicoService;
-import controly.model.service.UsuarioService;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class CadastrarNovaPostagemForm {
-    private TopicoService topicoService = new TopicoService();
-    private UsuarioService usuarioService = new UsuarioService();
 
     private String titulo;
 
@@ -19,7 +13,7 @@ public class CadastrarNovaPostagemForm {
 
     private Long idTopico;
 
-    private int idUsuario;
+    private Long idUsuario;
 
     public String getTitulo() {
         return titulo;
@@ -37,14 +31,6 @@ public class CadastrarNovaPostagemForm {
         this.conteudo = conteudo;
     }
 
-    public Long getTopico() {
-        return idTopico;
-    }
-
-    public void setTopico(Long topico) {
-        this.idTopico = topico;
-    }
-
     public Long getIdTopico() {
         return idTopico;
     }
@@ -53,21 +39,15 @@ public class CadastrarNovaPostagemForm {
         this.idTopico = idTopico;
     }
 
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
-/*
-    public PostagemEntity converterPostagem(){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        TopicoEntity topico = topicoService.buscarTopicoPeloId(idTopico).get();
-        UsuarioEntity usuario = usuarioService.buscarUsuarioPorId((long) idUsuario).get();
+
+    public PostagemEntity converterPostagem(TopicoEntity topico, UsuarioEntity usuario){
         return new PostagemEntity(conteudo, titulo, topico, usuario);
     }
-
-*/
 }

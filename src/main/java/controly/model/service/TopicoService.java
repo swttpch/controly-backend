@@ -27,15 +27,14 @@ public class TopicoService {
 
     }
 
-    public Optional<TopicoEntity> buscarTopicoPeloNome(String nomeTopico) {
-        return topicoRepository.findByNome(nomeTopico);
+    @Transactional
+    public Optional<TopicoEntity> buscarTopicoPeloId(Long id) {
+        Optional<TopicoEntity> promisseTopico = topicoRepository.findByIdTopico(id);
+        System.out.println(promisseTopico);
+        System.out.println(promisseTopico.isPresent());
+        return promisseTopico;
     }
 
-    public void buscarTopicoPeloId(Long id) {
-        Optional<TopicoEntity> topico = topicoRepository.findById(id);
-        TopicoEntity topico1 = topico.get();
-        System.out.println(topico1.getNome());
-    }
 
     @Transactional
     public ResponseEntity<TopicoEntity> cadastrarTopico(String nome){
