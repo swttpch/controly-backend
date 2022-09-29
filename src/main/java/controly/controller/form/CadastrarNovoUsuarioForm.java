@@ -2,7 +2,6 @@ package controly.controller.form;
 
 import controly.model.entity.UsuarioEntity;
 import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.NotNull;
 
 public class CadastrarNovoUsuarioForm {
@@ -55,6 +54,12 @@ public class CadastrarNovoUsuarioForm {
     }
 
     public UsuarioEntity converter() {
-        return new UsuarioEntity(nome,apelido,senha,email);
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setEmail(email);
+        usuario.setSenha(senha);
+        usuario.setNome(nome);
+        usuario.setAvatar(1);
+        usuario.setApelido(apelido);
+        return usuario;
     }
 }

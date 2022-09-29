@@ -1,11 +1,17 @@
 package controly.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class RespostaDuvidaEntity {
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idResposta", referencedColumnName = "idComentario", table = "tbRespostaDuvida")
     private ComentarioEntity resposta;
@@ -13,17 +19,5 @@ public class RespostaDuvidaEntity {
     private boolean resolvido;
 
     @Column(name = "resolvidoEm", table = "tbRespostaDuvida")
-    private Date resolvidoEm;
-
-    public RespostaDuvidaEntity() {
-        this.resolvido = false;
-    }
-
-    public ComentarioEntity getResposta() {
-        return resposta;
-    }
-
-    public void setResposta(ComentarioEntity resposta) {
-        this.resposta = resposta;
-    }
+    private LocalDateTime resolvidoEm;
 }

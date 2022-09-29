@@ -1,12 +1,17 @@
 package controly.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="tbTopico")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class TopicoEntity {
 
     @Id
@@ -16,27 +21,5 @@ public class TopicoEntity {
     @NotNull
     private String nome;
 
-    public  TopicoEntity() {
-
-    }
-    public TopicoEntity(String nome) {
-        this.nome = nome;
-    }
-
-    public Long getIdTopico() {
-        return idTopico;
-    }
-
-    public void setIdTopico(Long idTopico) {
-        this.idTopico = idTopico;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }
 

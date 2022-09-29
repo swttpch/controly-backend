@@ -4,6 +4,8 @@ import controly.model.entity.PostagemEntity;
 import controly.model.entity.TopicoEntity;
 import controly.model.entity.UsuarioEntity;
 
+import java.time.LocalDateTime;
+
 
 public class CadastrarNovaPostagemForm {
 
@@ -48,6 +50,12 @@ public class CadastrarNovaPostagemForm {
     }
 
     public PostagemEntity converterPostagem(TopicoEntity topico, UsuarioEntity usuario){
-        return new PostagemEntity(conteudo, titulo, topico, usuario);
+        PostagemEntity postagem = new PostagemEntity();
+        postagem.setTitulo(titulo);
+        postagem.setConteudo(conteudo);
+        postagem.setCriadoEm(LocalDateTime.now());
+        postagem.setDono(usuario);
+        postagem.setTopico(topico);
+        return postagem;
     }
 }

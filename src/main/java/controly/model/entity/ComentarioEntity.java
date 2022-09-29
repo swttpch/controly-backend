@@ -1,13 +1,15 @@
 package controly.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity @Table(name = "tbComentario") @Data
+@Entity @Table(name = "tbComentario") @Data @NoArgsConstructor @AllArgsConstructor
 public class ComentarioEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -16,7 +18,7 @@ public class ComentarioEntity implements Serializable {
     @Column(name = "conteudo")
     private String conteudo;
     @Column(name = "criadoEm")
-    private Date criadoEm;
+    private LocalDateTime criadoEm;
 
     @ManyToOne @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")
     private PostagemEntity postagem;
@@ -30,8 +32,4 @@ public class ComentarioEntity implements Serializable {
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioEntity dono;
 
-    public ComentarioEntity(String conteudo, Date criadoEm) {
-        this.conteudo = conteudo;
-        this.criadoEm = criadoEm;
-    }
 }
