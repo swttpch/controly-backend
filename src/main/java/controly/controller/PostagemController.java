@@ -1,8 +1,12 @@
 package controly.controller;
 
-import controly.controller.form.CadastrarNovaPostagemForm;
+import controly.controller.form.*;
 import controly.model.entity.PostagemEntity;
+import controly.model.service.ComentarioService;
+import controly.model.service.DiscussaoService;
 import controly.model.service.PostagemService;
+import controly.repository.ComentarioRepository;
+import controly.strategy.Postar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,18 +18,26 @@ import java.util.List;
 public class PostagemController {
 
     @Autowired
-    private PostagemService postagemService;
+    private DiscussaoService discussaoService;
+    @Autowired
+    private ComentarioService comentarioService;
+    @Autowired
+    private Postar postar;
 
-    @PostMapping()
-    public ResponseEntity<PostagemEntity> cadastrarUsuario(@RequestBody CadastrarNovaPostagemForm post){
-        PostagemEntity postagem = postagemService.cadastrarPostagem(post);
-        return ResponseEntity.status(200).body(postagem);
+    @PostMapping("/discussao")
+    public ResponseEntity cadastrarDiscussao(@RequestBody Discussao post) {
+        postar.setPostagem(discussaoService);
+        return postar.postar(post);
+    }
+    @GetMapping("/discussao")
+    public ResponseEntity<List<PostagemEntity>> pegarTodasDiscussoes(){
+        return discussaoService.todasDiscussoes();
     }
 
-    @GetMapping()
-    public ResponseEntity<List<PostagemEntity>> buscarTodasPostagens(){
-        List<PostagemEntity> listaDePostagens = postagemService.buscarTodasPostagens();
-        if (listaDePostagens.isEmpty()) return ResponseEntity.status(204).build();
-        return ResponseEntity.status(200).body(listaDePostagens);
+    @PostMapping("/comentario")
+    public ResponseEntity cadastrarComentario(@RequestBody Comentario post) {
+        postar.setPostagem(comentarioService);
+        return postar.postar(post);
     }
+
 }

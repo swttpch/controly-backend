@@ -1,5 +1,6 @@
 package controly.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,13 +21,13 @@ public class ComentarioEntity implements Serializable {
     @Column(name = "criadoEm")
     private LocalDateTime criadoEm;
 
-    @ManyToOne @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")
+    @ManyToOne @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
     private PostagemEntity postagem;
 
     @ManyToMany
     @JoinTable(name = "comentarioHasCurtidas", joinColumns =
             {@JoinColumn(name = "idComentario")}, inverseJoinColumns =
-            {@JoinColumn(name= "idUsuario")})
+            {@JoinColumn(name= "idUsuario")}) @JsonIgnore
     private List<UsuarioEntity> curtidas;
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
