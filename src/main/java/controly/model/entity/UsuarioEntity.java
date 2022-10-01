@@ -34,14 +34,4 @@ public class UsuarioEntity implements Serializable {
             {@JoinColumn(name= "idUsuario")})
     private List<TopicoEntity> topicosSeguidos;
 
-
-    public UsuarioEntity(String nome, String apelido, String senha, String email) {
-        this.nome = nome;
-        this.apelido = apelido;
-        this.senha = senha;
-        this.email = email;
-    }
-
-    // Validar depois
-    //private List<Topico> topicosQueSegue = new ArrayList<>();
 }

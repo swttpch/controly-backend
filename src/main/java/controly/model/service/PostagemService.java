@@ -7,8 +7,6 @@ import controly.repository.PostagemRepository;
 import controly.repository.TopicoRepository;
 import controly.repository.UsuarioRepository;
 import controly.controller.form.Discussao;
-import controly.strategy.Ipostagem;
-import controly.controller.form.Postagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class DiscussaoService implements Ipostagem {
+public class PostagemService {
+
     @Autowired
     PostagemRepository postagemRepository;
 
@@ -27,17 +26,19 @@ public class DiscussaoService implements Ipostagem {
     @Autowired
     TopicoRepository topicoRepository;
 
-    @Override
-    public ResponseEntity enviarPostagem(Postagem discussao) {
-        TopicoEntity topico = topicoRepository.findById(discussao.getIdTopico()).get();
-        UsuarioEntity usuario = usuarioRepository.findById(discussao.getIdUsuario()).get();
-        PostagemEntity postagemEntity = discussao.converterPostagem(topico, usuario);
+    @Transactional
+    public ResponseEntity cadastrarDiscussao(Discussao novaPostagem){
+        System.out.println(novaPostagem.getIdTopico());
+        System.out.println(novaPostagem.getIdUsuario());
+        TopicoEntity topico = topicoRepository.findById(novaPostagem.getIdTopico()).get();
+        UsuarioEntity usuario = usuarioRepository.findById(novaPostagem.getIdUsuario()).get();
+        PostagemEntity postagemEntity = novaPostagem.converterPostagem(topico, usuario);
         postagemRepository.save(postagemEntity);
         return ResponseEntity.status(201).body(postagemEntity);
     }
 
-    public ResponseEntity<List<PostagemEntity>> todasDiscussoes() {
-        List<PostagemEntity> postagemEntities = postagemRepository.findAll();
-        return ResponseEntity.status(200).body(postagemEntities);
+    @Transactional
+    public List<PostagemEntity> buscarTodasPostagens(){
+        return postagemRepository.findAll();
     }
 }
