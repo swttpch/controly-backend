@@ -20,4 +20,14 @@ public class RespostaDuvidaEntity {
 
     @Column(name = "resolvidoEm", table = "tbRespostaDuvida")
     private LocalDateTime resolvidoEm;
+
+    public RespostaDuvidaEntity setResolvido(boolean resolvido){
+        this.resolvido = resolvido;
+        return this;
+    }
+
+    public RespostaDuvidaEntity setResposta(ComentarioEntity resposta){
+        this.resposta = resposta;
+        return this;
+    }
 }

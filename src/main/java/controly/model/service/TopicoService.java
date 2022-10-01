@@ -25,9 +25,7 @@ public class TopicoService {
     }
 
     @Transactional
-    public ResponseEntity<TopicoEntity> cadastrarTopico(String nome){
-        TopicoEntity topico = new TopicoEntity();
-        topico.setNome(nome);
+    public ResponseEntity<TopicoEntity> cadastrarTopico(TopicoEntity topico){
         topicoRepository.save(topico);
         return ResponseEntity.status(HttpStatus.CREATED).body(topico);
     }

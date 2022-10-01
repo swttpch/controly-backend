@@ -36,8 +36,4 @@ public class DiscussaoService implements Ipostagem {
         return ResponseEntity.status(201).body(postagemEntity);
     }
 
-    public ResponseEntity<List<PostagemEntity>> todasDiscussoes() {
-        List<PostagemEntity> postagemEntities = postagemRepository.findAll();
-        return ResponseEntity.status(200).body(postagemEntities);
-    }
 }

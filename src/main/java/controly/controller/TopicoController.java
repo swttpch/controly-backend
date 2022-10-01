@@ -1,5 +1,6 @@
 package controly.controller;
 
+import controly.model.entity.ComentarioEntity;
 import controly.model.entity.TopicoEntity;
 import controly.model.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,9 @@ public class TopicoController {
     @Autowired
     private TopicoService topicoService;
 
-    @PostMapping("/{nome}")
-    public ResponseEntity<TopicoEntity> addTopico(@PathVariable String nome){
-        return topicoService.cadastrarTopico(nome);
+    @PostMapping("")
+    public ResponseEntity<TopicoEntity> addTopico(@RequestBody TopicoEntity topico){
+        return topicoService.cadastrarTopico(topico);
     }
 
     @GetMapping("/{id}")

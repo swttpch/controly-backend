@@ -4,6 +4,7 @@ import controly.controller.form.*;
 import controly.model.entity.PostagemEntity;
 import controly.model.service.ComentarioService;
 import controly.model.service.DiscussaoService;
+import controly.model.service.DuvidaService;
 import controly.model.service.PostagemService;
 import controly.repository.ComentarioRepository;
 import controly.strategy.Postar;
@@ -16,11 +17,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/postagens")
 public class PostagemController {
-
     @Autowired
     private DiscussaoService discussaoService;
     @Autowired
     private ComentarioService comentarioService;
+    @Autowired
+    private DuvidaService duvidaService;
+    @Autowired
+    private PostagemService postagemService;
     @Autowired
     private Postar postar;
 
@@ -29,11 +33,26 @@ public class PostagemController {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
-    @GetMapping("/discussao")
+    @GetMapping("")
     public ResponseEntity<List<PostagemEntity>> pegarTodasDiscussoes(){
-        return discussaoService.todasDiscussoes();
+        return postagemService.todasPostagens();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@PathVariable Long id){
+        return postagemService.pegarPostagemPeloId(id);
+    }
+
+    @PostMapping("/duvida")
+    public ResponseEntity cadastrarDuvida(@RequestBody Duvida post){
+        postar.setPostagem(duvidaService);
+        return postar.postar(post);
+    }
+
+    @PutMapping("/duvida/{idDuvida}/{idComentario}")
+    public ResponseEntity atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario){
+        return duvidaService.definirRespostaDaPostagem(idDuvida, idComentario);
+    }
     @PostMapping("/comentario")
     public ResponseEntity cadastrarComentario(@RequestBody Comentario post) {
         postar.setPostagem(comentarioService);

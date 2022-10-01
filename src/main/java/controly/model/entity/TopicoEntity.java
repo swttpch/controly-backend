@@ -21,5 +21,8 @@ public class TopicoEntity {
     @NotNull
     private String nome;
 
+    @NotNull
+    private String descricao;
+
 }
 
