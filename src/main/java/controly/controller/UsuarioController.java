@@ -1,39 +1,54 @@
 package controly.controller;
 
-import controly.usuario.Autenticacao;
-import controly.usuario.Usuario;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import controly.controller.dto.UsuarioCadastradoDTO;
+import controly.controller.form.AtualizarUsuarioForm;
+import controly.controller.form.CadastrarNovoUsuarioForm;
+import controly.model.service.UsuarioService;
+import controly.security.Autenticacao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import javax.transaction.Transactional;
+
 
 @RestController
-@RequestMapping("usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
     Autenticacao auth = new Autenticacao();
 
-    @GetMapping("/")
-    public List<Usuario> getUsuarios(){
-        return auth.getUsuarios();
+    @Autowired
+    private UsuarioService usuarioService;
+
+
+    @GetMapping("/teste")
+    public ResponseEntity<UsuarioCadastradoDTO> getUsuarios(){
+
+        // Criar?
+
+        return null;
     }
 
-    @GetMapping("/{id}")
-    public Usuario getUsuario(@PathVariable int id){
-        return auth.getUsuario(id);
+    @GetMapping
+    public ResponseEntity<?> getUsuario(@RequestBody Long id){
+        return usuarioService.getUsuarioCadastrado(id);
     }
 
     @PostMapping()
-    public Usuario cadastrarUsuario(@RequestBody Usuario usuario){
-        return auth.postUsuario(usuario);
+    public ResponseEntity<String> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user){
+        return usuarioService.cadastrarUsuario(user);
     }
 
     @DeleteMapping("/{id}")
-    public Usuario deletarUsuario(@PathVariable int id){
-        return auth.deleteUsuario(id);
+    @Transactional
+    public ResponseEntity<?> deletarUsuario(@PathVariable Long id){
+        return usuarioService.deletarUsuario(id);
     }
+
 
     @PutMapping("/{id}")
-    public Usuario putUsuario(@PathVariable int id, @RequestBody Usuario usuario){
-        return auth.putUsuario(id, usuario);
+    public ResponseEntity<String> atualizarUsuario(@PathVariable Long id,
+                                                   @RequestBody CadastrarNovoUsuarioForm form){
+        return usuarioService.atualizarUsuario(id,form);
     }
-
 }
