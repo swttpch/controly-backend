@@ -8,9 +8,6 @@ import javax.validation.constraints.NotNull;
 
 public class AtualizarUsuarioForm {
 
-    //@Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long id;
     @NotNull
     private String nome;
     @NotNull
@@ -21,8 +18,6 @@ public class AtualizarUsuarioForm {
     private String senha;
     @NotNull
     private String email;
-    //private EnumUsuarioStatus status = EnumUsuarioStatus.ATIVO;
-
 
     public String getNome() {
         return nome;
@@ -57,14 +52,11 @@ public class AtualizarUsuarioForm {
     }
 
     public UsuarioEntity atualizar(Long id, UsuarioRepository usuarioRepository) {
-
         UsuarioEntity user = usuarioRepository.getReferenceById(id);
         user.setApelido(this.apelido);
         user.setEmail(this.email);
         user.setSenha(this.senha);
         user.setNome(this.nome);
-
         return user;
-
     }
 }

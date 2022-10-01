@@ -19,14 +19,7 @@ public class ValidacaoUsuario {
         */
         return null;
     }
-/*
-    public Boolean validarGenero(CadastrarNovoUsuarioForm form){
 
-        String genero = String.valueOf(Character.toLowerCase(form.getGenero()));
-        List<String> listaGenero = List.of(Arrays.toString(GeneroEnum.values()));
-        return listaGenero.get(0).contains(genero);
-    }
-*/
     public Boolean validaEmail(CadastrarNovoUsuarioForm form){
 
         String email = form.getEmail();

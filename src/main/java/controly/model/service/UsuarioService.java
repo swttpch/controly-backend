@@ -42,7 +42,7 @@ public class UsuarioService {
         }
 
     }
-
+    @Transactional
     public Optional<UsuarioEntity> buscarUsuarioPorId(Long id){
         return usuarioRepository.findById(id);
     }
