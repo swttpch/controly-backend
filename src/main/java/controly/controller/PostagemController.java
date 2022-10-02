@@ -60,6 +60,11 @@ public class PostagemController {
         return postar.postar(post);
     }
 
+    @PutMapping("/comentario/curtir/{idComentario}/{idUsuario}")
+    public ResponseEntity curtirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario) {
+        return comentarioService.curtirComentario(idComentario, idUsuario);
+    }
+
 //    @GetMapping("/pontuacao/{p}/{u}")
 //    public ResponseEntity teste(@PathVariable Long p, @PathVariable Long u){
 //        return postagemService.pegarPontuacaoPelaPostagemEUsuario(p, u);

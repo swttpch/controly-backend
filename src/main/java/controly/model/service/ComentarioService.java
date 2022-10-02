@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
@@ -29,5 +31,19 @@ public class ComentarioService implements Ipostagem {
         ComentarioEntity comentarioEntity = post.converterPostagem(postagem, usuario);
         comentarioRepository.save(comentarioEntity);
         return ResponseEntity.status(201).body(comentarioEntity);
+    }
+
+    @Transactional
+    public ResponseEntity curtirComentario(Long idComentario, Long idUsuario){
+        ComentarioEntity comentario = comentarioRepository.findById(idComentario).get();
+        UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
+        if (comentario.getCurtidas().contains(usuario)){
+            comentarioRepository.delete(comentario);
+            return  ResponseEntity.status(200).build();
+        } else {
+            comentario.getCurtidas().add(usuario);
+            comentarioRepository.save(comentario);
+            return  ResponseEntity.status(200).build();
+        }
     }
 }
