@@ -19,6 +19,8 @@ import java.util.List;
 @Service
 public class PostagemService {
     @Autowired
+    ValidationService validation;
+    @Autowired
     PostagemRepository postagemRepository;
     @Autowired
     PontuacaoPostagemRepository pontuacaoPostagemRepository;
@@ -35,22 +37,29 @@ public class PostagemService {
 
     @Transactional
     public ResponseEntity<PostagemEntity> pegarPostagemPeloId(Long id){
-        PostagemEntity postagem = postagemRepository.findById(id).get();
+        if (!validation.existsPostagem(id)) return ResponseEntity.status(404).build();
+        PostagemEntity postagem = postagemRepository.findByIdPostagem(id);
         return ResponseEntity.status(200).body(postagem);
     }
 
     @Transactional
     public ResponseEntity setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
-        if (pontuacaoPostagemRepository.findByPostagemAndUsuario(postagem, usuario) == null){
-            PontuacaoPostagem pontuacao = new PontuacaoPostagem();
-            pontuacao.setPostagem(postagemRepository.findById(postagem).get());
-            pontuacao.setUsuario(usuarioRepository.findById(usuario).get());
-            pontuacao.setPontuacao(ponto);
-            pontuacaoPostagemRepository.save(pontuacao);
-            return ResponseEntity.status(200).build();
+        if (
+            !validation.existsPostagem(postagem) ||
+            !validation.existsUsuario(usuario)
+        ) return ResponseEntity.status(404).build();
+
+        if (!validation.existsPontuacaoWithPostagemAndUsuario(postagem, usuario)){
+            pontuacaoPostagemRepository.save(
+                    new PontuacaoPostagem()
+                            .setPostagem(postagemRepository.findByIdPostagem(postagem))
+                            .setUsuario(usuarioRepository.findByIdUsuario(usuario))
+                            .setPontuacao(ponto)
+            );
         } else {
             pontuacaoPostagemRepository.setPontuacaoFor(postagem, usuario, ponto);
-            return ResponseEntity.status(200).build();
         }
+        return ResponseEntity.status(200).build();
     }
+
 }

@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ComentarioRepository extends JpaRepository<ComentarioEntity, Long> {
 
+    ComentarioEntity findByIdComentario(Long id);
 }

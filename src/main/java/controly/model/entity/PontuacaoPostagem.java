@@ -32,15 +32,18 @@ public class PontuacaoPostagem {
         return pontuacao;
     }
 
-    public void setPostagem(PostagemEntity postagem) {
+    public PontuacaoPostagem setPostagem(PostagemEntity postagem) {
         this.postagem = postagem;
+        return this;
     }
 
-    public void setUsuario(UsuarioEntity usuario) {
+    public PontuacaoPostagem setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
+        return this;
     }
 
-    public void setPontuacao(int pontuacao) {
+    public PontuacaoPostagem setPontuacao(int pontuacao) {
         this.pontuacao = pontuacao;
+        return this;
     }
 }

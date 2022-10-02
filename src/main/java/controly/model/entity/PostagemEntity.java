@@ -52,10 +52,22 @@ public class PostagemEntity implements Serializable {
     public int getPontuacao(){
         int count = 0;
         for (PontuacaoPostagem pontuacao : pontuacaoPostagem){
-            System.out.println(pontuacao.getPontuacao());
             count += pontuacao.getPontuacao();
             if (count < 0) count = 0;
         }
         return count;
+    }
+
+    public PostagemEntity setResposta(ComentarioEntity resposta){
+        respostaDuvidaEntity
+                .setResposta(resposta)
+                .setResolvido(true)
+                .setResolvidoEm(LocalDateTime.now());
+        return this;
+    }
+
+    public PostagemEntity initResposta(){
+        respostaDuvidaEntity = new RespostaDuvidaEntity().setResolvido(false);
+        return this;
     }
 }

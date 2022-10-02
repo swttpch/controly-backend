@@ -32,7 +32,7 @@ public class UsuarioEntity implements Serializable {
     private String email;
 
     @ManyToMany
-    @JoinTable(name = "TopicoHasSeguidores", joinColumns =
+    @JoinTable(name = "tbTopicoHasSeguidores", joinColumns =
             {@JoinColumn(name = "idTopico")}, inverseJoinColumns =
             {@JoinColumn(name= "idUsuario")})
     private List<TopicoEntity> topicosSeguidos;

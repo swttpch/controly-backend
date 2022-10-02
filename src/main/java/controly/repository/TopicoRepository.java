@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface TopicoRepository extends JpaRepository<TopicoEntity, Long> {
 
-    Optional<TopicoEntity> findByIdTopico(Long id);
+    TopicoEntity findByIdTopico(Long id);
 
 }

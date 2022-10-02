@@ -24,26 +24,33 @@ public class ComentarioService implements Ipostagem {
 
     @Autowired
     ComentarioRepository comentarioRepository;
+    @Autowired
+    ValidationService validation;
     @Override
     public ResponseEntity enviarPostagem(Postagem post) {
-        PostagemEntity postagem = postagemRepository.findById(post.getIdPostagem()).get();
-        UsuarioEntity usuario = usuarioRepository.findById(post.getIdUsuario()).get();
-        ComentarioEntity comentarioEntity = post.converterPostagem(postagem, usuario);
-        comentarioRepository.save(comentarioEntity);
-        return ResponseEntity.status(201).body(comentarioEntity);
+        if (!validation.existsUsuario(post.getIdUsuario()) || !validation.existsPostagem(post.getIdPostagem()))
+            return ResponseEntity.status(404).build();
+        comentarioRepository.save(
+                post.converterPostagem(
+                        postagemRepository.findByIdPostagem(post.getIdPostagem()),
+                        usuarioRepository.findByIdUsuario(post.getIdUsuario())
+                )
+        );
+        return ResponseEntity.status(201).build();
     }
 
     @Transactional
     public ResponseEntity curtirComentario(Long idComentario, Long idUsuario){
-        ComentarioEntity comentario = comentarioRepository.findById(idComentario).get();
-        UsuarioEntity usuario = usuarioRepository.findById(idUsuario).get();
-        if (comentario.getCurtidas().contains(usuario)){
+        if (!validation.existsComentario(idComentario) || !validation.existsUsuario(idUsuario))
+            return ResponseEntity.status(404).build();
+        ComentarioEntity comentario = comentarioRepository.findByIdComentario(idComentario);
+        UsuarioEntity usuario = usuarioRepository.findByIdUsuario(idUsuario);
+        if (comentario.usuarioCurtiu(usuario)){
             comentarioRepository.delete(comentario);
-            return  ResponseEntity.status(200).build();
         } else {
-            comentario.getCurtidas().add(usuario);
+            comentario.adicionarCurtida(usuario);
             comentarioRepository.save(comentario);
-            return  ResponseEntity.status(200).build();
         }
+        return  ResponseEntity.status(200).build();
     }
 }
