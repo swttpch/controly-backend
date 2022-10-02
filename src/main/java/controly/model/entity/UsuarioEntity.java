@@ -1,12 +1,15 @@
 package controly.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="tb_usuario")
@@ -34,4 +37,6 @@ public class UsuarioEntity implements Serializable {
             {@JoinColumn(name= "idUsuario")})
     private List<TopicoEntity> topicosSeguidos;
 
+    @OneToMany(mappedBy = "usuario") @JsonIgnore
+    private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
 }

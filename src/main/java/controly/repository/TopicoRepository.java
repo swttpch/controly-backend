@@ -10,7 +10,4 @@ public interface TopicoRepository extends JpaRepository<TopicoEntity, Long> {
 
     Optional<TopicoEntity> findByIdTopico(Long id);
 
-    @Query("SELECT count(*) FROM Playlist")
-    long countPlaylist();
-
 }
