@@ -1,15 +1,15 @@
 package controly.controller;
 
 import controly.model.entity.TopicoEntity;
+import controly.model.entity.UsuarioEntity;
 import controly.model.service.TopicoService;
 import controly.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/topicos")
@@ -18,21 +18,22 @@ public class TopicoController {
     @Autowired
     TopicoRepository topicoRepository;
 
-    TopicoEntity topico = new TopicoEntity("Igor");
+    @Autowired
+    TopicoService topicoService;
 
     @GetMapping
     public ResponseEntity<List<TopicoEntity>> getTopicos(){
-        List<TopicoEntity> lista = topicoRepository.findAll();
-        return lista.isEmpty()
-                ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(lista);
-           }
+        return topicoService.getTopicos();
+    }
 
     @PostMapping
-    public ResponseEntity<TopicoEntity> post(@RequestBody TopicoEntity topicoEntity) {
-        topicoRepository.save(topicoEntity);
-        List<TopicoEntity> lista = topicoRepository.findAll();
-        return ResponseEntity.status(201).body(topicoEntity);
+    public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
+        return topicoService.postTopicos(topicoEntity);
+    }
+
+    @GetMapping("/most/followed")
+    public ResponseEntity<Map<Object, Object>> getTopicosMostFollowed() {
+        return topicoService.getTopicosMostFollowed();
     }
 
 }
