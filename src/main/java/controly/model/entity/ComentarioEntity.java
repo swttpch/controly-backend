@@ -25,12 +25,21 @@ public class ComentarioEntity implements Serializable {
     private PostagemEntity postagem;
 
     @ManyToMany
-    @JoinTable(name = "comentarioHasCurtidas", joinColumns =
+    @JoinTable(name = "tbComentarioHasCurtidas", joinColumns =
             {@JoinColumn(name = "idComentario")}, inverseJoinColumns =
             {@JoinColumn(name= "idUsuario")}) @JsonIgnore
     private List<UsuarioEntity> curtidas;
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioEntity dono;
+
+    public boolean usuarioCurtiu(UsuarioEntity usuario) {
+        return curtidas.contains(usuario);
+    }
+
+    public ComentarioEntity adicionarCurtida(UsuarioEntity usuario){
+        curtidas.add(usuario);
+        return this;
+    }
 
 }

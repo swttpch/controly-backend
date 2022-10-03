@@ -1,6 +1,7 @@
 package controly.controller;
 
 import controly.controller.form.*;
+import controly.model.entity.PontuacaoPostagem;
 import controly.model.entity.PostagemEntity;
 import controly.model.service.ComentarioService;
 import controly.model.service.DiscussaoService;
@@ -59,4 +60,23 @@ public class PostagemController {
         return postar.postar(post);
     }
 
+    @PutMapping("/comentario/curtir/{idComentario}/{idUsuario}")
+    public ResponseEntity curtirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario) {
+        return comentarioService.curtirComentario(idComentario, idUsuario);
+    }
+
+//    @GetMapping("/pontuacao/{p}/{u}")
+//    public ResponseEntity teste(@PathVariable Long p, @PathVariable Long u){
+//        return postagemService.pegarPontuacaoPelaPostagemEUsuario(p, u);
+//    }
+
+    @PutMapping("/subir/{postagem}/{usuario}")
+    public ResponseEntity subirPostagem(@PathVariable Long postagem, @PathVariable Long usuario){
+        return postagemService.setPontuacaoPostagem(postagem, usuario, 1);
+    }
+
+    @PutMapping("/descer/{postagem}/{usuario}")
+    public ResponseEntity descerPostagem(@PathVariable Long postagem, @PathVariable Long usuario){
+        return postagemService.setPontuacaoPostagem(postagem, usuario, -1);
+    }
 }

@@ -1,5 +1,7 @@
 package controly.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "tbPostagem")
 @NoArgsConstructor
@@ -30,11 +34,7 @@ public class PostagemEntity implements Serializable {
     private UsuarioEntity dono;
     @Column(name = "titulo")
     private String titulo;
-    @ManyToMany
-    @JoinTable(name = "postagemHasSubidas", joinColumns =
-            {@JoinColumn(name = "idPostagem")}, inverseJoinColumns =
-            {@JoinColumn(name= "idUsuario")})
-    private List<UsuarioEntity> subidas;
+
     @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name="idTopico", referencedColumnName = "idTopico", nullable = false)
     private TopicoEntity topico;
 
@@ -45,4 +45,29 @@ public class PostagemEntity implements Serializable {
     @Embedded
     private RespostaDuvidaEntity respostaDuvidaEntity;
 
+    @OneToMany(mappedBy = "postagem") @JsonIgnore
+    private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
+
+    @JsonProperty
+    public int getPontuacao(){
+        int count = 0;
+        for (PontuacaoPostagem pontuacao : pontuacaoPostagem){
+            count += pontuacao.getPontuacao();
+            if (count < 0) count = 0;
+        }
+        return count;
+    }
+
+    public PostagemEntity setResposta(ComentarioEntity resposta){
+        respostaDuvidaEntity
+                .setResposta(resposta)
+                .setResolvido(true)
+                .setResolvidoEm(LocalDateTime.now());
+        return this;
+    }
+
+    public PostagemEntity initResposta(){
+        respostaDuvidaEntity = new RespostaDuvidaEntity().setResolvido(false);
+        return this;
+    }
 }

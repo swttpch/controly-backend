@@ -21,6 +21,8 @@ import java.util.Optional;
 public class TopicoService {
     @Autowired
     private TopicoRepository topicoRepository;
+    @Autowired
+    private ValidationService validation;
 
     public ResponseEntity<List<TopicoEntity>> getTopicos() {
         List<TopicoEntity> lista = topicoRepository.findAll();
@@ -32,11 +34,8 @@ public class TopicoService {
 
     @Transactional
     public ResponseEntity<TopicoEntity> getTopicoById(Long id) {
-        Optional<TopicoEntity> promisseTopico = topicoRepository.findByIdTopico(id);
-        if (promisseTopico.isPresent()) {
-            return ResponseEntity.status(200).body(promisseTopico.get());
-        }
-        return ResponseEntity.status(404).build();
+        if (!validation.existsTopico(id)) return ResponseEntity.status(404).build();
+        return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
     }
 
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
