@@ -15,7 +15,6 @@ import java.util.List;
 @Table(name = "tbPostagem")
 @Data
 @SecondaryTable(name= "tbRespostaDuvida", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idPostagem"))
-
 public class PostagemEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 

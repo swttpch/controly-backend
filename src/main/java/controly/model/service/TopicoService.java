@@ -22,12 +22,6 @@ public class TopicoService {
     @Autowired
     private TopicoRepository topicoRepository;
 
-    @Autowired
-    private TopicoRepository topicoRepository;
-
-    UsuarioService usuarioService;
-
-
     public ResponseEntity<List<TopicoEntity>> getTopicos() {
         List<TopicoEntity> lista = topicoRepository.findAll();
 
@@ -44,6 +38,7 @@ public class TopicoService {
         }
         return ResponseEntity.status(404).build();
     }
+
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
         topicoRepository.save(topicoEntity);
         List<TopicoEntity> lista = topicoRepository.findAll();
@@ -51,13 +46,8 @@ public class TopicoService {
     }
 
     @Transactional
-    public ResponseEntity<TopicoEntity> cadastrarTopico(TopicoEntity topico){
+    public ResponseEntity<TopicoEntity> cadastrarTopico(TopicoEntity topico) {
         topicoRepository.save(topico);
         return ResponseEntity.status(HttpStatus.CREATED).body(topico);
-    public ResponseEntity<Map<Object, Object>> getTopicosMostFollowed() {
-
-        Map<Object, Object> mapTopicos = new HashMap<>();
-
-        return ResponseEntity.status(201).body(mapTopicos);
     }
 }

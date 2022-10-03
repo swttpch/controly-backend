@@ -23,7 +23,7 @@ public class ComentarioService implements Ipostagem {
     @Autowired
     ComentarioRepository comentarioRepository;
     @Override
-    public ResponseEntity enviarPostagem(Postagem post) {
+    public ResponseEntity<ComentarioEntity> enviarPostagem(Postagem post) {
         PostagemEntity postagem = postagemRepository.findById(post.getIdPostagem()).get();
         UsuarioEntity usuario = usuarioRepository.findById(post.getIdUsuario()).get();
         ComentarioEntity comentarioEntity = post.converterPostagem(postagem, usuario);

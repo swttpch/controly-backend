@@ -1,16 +1,14 @@
 package controly.model.entity;
 import javax.persistence.*;
-import org.springframework.context.annotation.Conditional;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @Table(name="tbTopico")
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class TopicoEntity {
@@ -25,15 +23,26 @@ public class TopicoEntity {
     @NotNull
     private String descricao;
 
+    @ManyToMany
+    @JoinTable(name = "TopicoHasSeguidores", joinColumns =
+            {@JoinColumn(name = "idTopico")}, inverseJoinColumns =
+            {@JoinColumn(name= "idUsuario")})
+    private Set<UsuarioEntity> seguidores;
+
+    public Integer getSeguidores() {
+        Integer count = 0;
+
+        for (UsuarioEntity usuario : seguidores){
+            count ++;
+        }
+        return count;
+    }
+
+    public void addSeguidores(UsuarioEntity usuario) {
+        seguidores.add(usuario);
+    }
+
     public TopicoEntity() {
-    }
-
-    public TopicoEntity(String nome) {
-        this.nome = nome;
-    }
-
-    public Long getId() {
-        return idTopico;
     }
 
     public String getNome() {
@@ -43,6 +52,4 @@ public class TopicoEntity {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 }
-
