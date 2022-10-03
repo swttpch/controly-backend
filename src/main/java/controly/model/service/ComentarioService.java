@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
@@ -22,12 +24,33 @@ public class ComentarioService implements Ipostagem {
 
     @Autowired
     ComentarioRepository comentarioRepository;
+    @Autowired
+    ValidationService validation;
     @Override
     public ResponseEntity enviarPostagem(Postagem post) {
-        PostagemEntity postagem = postagemRepository.findById(post.getIdPostagem()).get();
-        UsuarioEntity usuario = usuarioRepository.findById(post.getIdUsuario()).get();
-        ComentarioEntity comentarioEntity = post.converterPostagem(postagem, usuario);
-        comentarioRepository.save(comentarioEntity);
-        return ResponseEntity.status(201).body(comentarioEntity);
+        if (!validation.existsUsuario(post.getIdUsuario()) || !validation.existsPostagem(post.getIdPostagem()))
+            return ResponseEntity.status(404).build();
+        comentarioRepository.save(
+                post.converterPostagem(
+                        postagemRepository.findByIdPostagem(post.getIdPostagem()),
+                        usuarioRepository.findByIdUsuario(post.getIdUsuario())
+                )
+        );
+        return ResponseEntity.status(201).build();
+    }
+
+    @Transactional
+    public ResponseEntity curtirComentario(Long idComentario, Long idUsuario){
+        if (!validation.existsComentario(idComentario) || !validation.existsUsuario(idUsuario))
+            return ResponseEntity.status(404).build();
+        ComentarioEntity comentario = comentarioRepository.findByIdComentario(idComentario);
+        UsuarioEntity usuario = usuarioRepository.findByIdUsuario(idUsuario);
+        if (comentario.usuarioCurtiu(usuario)){
+            comentarioRepository.delete(comentario);
+        } else {
+            comentario.adicionarCurtida(usuario);
+            comentarioRepository.save(comentario);
+        }
+        return  ResponseEntity.status(200).build();
     }
 }
