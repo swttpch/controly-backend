@@ -5,7 +5,6 @@ import controly.controller.dto.UsuarioCadastradoDTO;
 import controly.controller.form.CadastrarNovoUsuarioForm;
 import controly.model.entity.UsuarioEntity;
 import controly.model.service.UsuarioService;
-import controly.security.Autenticacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    Autenticacao auth = new Autenticacao();
-
     @Autowired
     private UsuarioService usuarioService;
 

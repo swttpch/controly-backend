@@ -21,4 +21,13 @@ public interface TopicoRepository extends JpaRepository<TopicoEntity,Long> {
             "join tb_topico t" +
             "on t.id_topico = tp.id_topico ORDER BY TP.quantidades DESC;")
     public Map<String, Integer> getTopicosMostFollowed();
+import java.util.Optional;
+
+public interface TopicoRepository extends JpaRepository<TopicoEntity, Long> {
+
+    Optional<TopicoEntity> findByIdTopico(Long id);
+
+    @Query("SELECT count(*) FROM Playlist")
+    long countPlaylist();
+
 }

@@ -1,11 +1,14 @@
 package controly.controller;
 
+import controly.model.entity.ComentarioEntity;
 import controly.model.entity.TopicoEntity;
 import controly.model.entity.UsuarioEntity;
 import controly.model.service.TopicoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import controly.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +19,17 @@ import java.util.Map;
 public class TopicoController {
 
     @Autowired
-    TopicoRepository topicoRepository;
+    private TopicoService topicoService;
 
-    @Autowired
-    TopicoService topicoService;
+    @PostMapping("")
+    public ResponseEntity<TopicoEntity> addTopico(@RequestBody TopicoEntity topico){
+        return topicoService.cadastrarTopico(topico);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TopicoEntity> getTopico(@PathVariable long id){
+        return topicoService.getTopicoById(id);
+    }
     @GetMapping
     public ResponseEntity<List<TopicoEntity>> getTopicos(){
         return topicoService.getTopicos();
