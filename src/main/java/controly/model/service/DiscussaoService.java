@@ -26,18 +26,20 @@ public class DiscussaoService implements Ipostagem {
 
     @Autowired
     TopicoRepository topicoRepository;
+    @Autowired
+    ValidationService validation;
 
     @Override
     public ResponseEntity enviarPostagem(Postagem discussao) {
-        TopicoEntity topico = topicoRepository.findById(discussao.getIdTopico()).get();
-        UsuarioEntity usuario = usuarioRepository.findById(discussao.getIdUsuario()).get();
-        PostagemEntity postagemEntity = discussao.converterPostagem(topico, usuario);
-        postagemRepository.save(postagemEntity);
-        return ResponseEntity.status(201).body(postagemEntity);
+        if (!validation.existsUsuario(discussao.getIdUsuario()) || !validation.existsTopico(discussao.getIdTopico()))
+            return ResponseEntity.status(404).build();
+        postagemRepository.save(
+                discussao.converterPostagem(
+                        topicoRepository.findByIdTopico(discussao.getIdTopico()),
+                        usuarioRepository.findByIdUsuario(discussao.getIdUsuario())
+                )
+        );
+        return ResponseEntity.status(201).build();
     }
 
-    public ResponseEntity<List<PostagemEntity>> todasDiscussoes() {
-        List<PostagemEntity> postagemEntities = postagemRepository.findAll();
-        return ResponseEntity.status(200).body(postagemEntities);
-    }
 }

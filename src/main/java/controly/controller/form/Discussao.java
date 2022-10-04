@@ -24,12 +24,6 @@ public class Discussao extends Postagem{
         return postagem;
     }
 
-    @Override
-    public ComentarioEntity converterPostagem(PostagemEntity postagem, UsuarioEntity usuario) {
-        return null;
-    }
-
-
     public String getTitulo() {
         return titulo;
     }
@@ -60,12 +54,19 @@ public class Discussao extends Postagem{
         return idTopico;
     }
 
+    public void setIdTopico(Long idTopico) {
+        this.idTopico = idTopico;
+    }
+
+    // ----- TRASH CODE BELOW -----
+
     @Override
     public Long getIdPostagem() {
         return null;
     }
 
-    public void setIdTopico(Long idTopico) {
-        this.idTopico = idTopico;
+    @Override
+    public ComentarioEntity converterPostagem(PostagemEntity postagem, UsuarioEntity usuario) {
+        return null;
     }
 }

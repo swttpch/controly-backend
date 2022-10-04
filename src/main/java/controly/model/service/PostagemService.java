@@ -1,8 +1,10 @@
 package controly.model.service;
 
+import controly.model.entity.PontuacaoPostagem;
 import controly.model.entity.PostagemEntity;
 import controly.model.entity.TopicoEntity;
 import controly.model.entity.UsuarioEntity;
+import controly.repository.PontuacaoPostagemRepository;
 import controly.repository.PostagemRepository;
 import controly.repository.TopicoRepository;
 import controly.repository.UsuarioRepository;
@@ -16,29 +18,48 @@ import java.util.List;
 
 @Service
 public class PostagemService {
-
+    @Autowired
+    ValidationService validation;
     @Autowired
     PostagemRepository postagemRepository;
+    @Autowired
+    PontuacaoPostagemRepository pontuacaoPostagemRepository;
 
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    @Autowired
-    TopicoRepository topicoRepository;
-
     @Transactional
-    public ResponseEntity cadastrarDiscussao(Discussao novaPostagem){
-        System.out.println(novaPostagem.getIdTopico());
-        System.out.println(novaPostagem.getIdUsuario());
-        TopicoEntity topico = topicoRepository.findById(novaPostagem.getIdTopico()).get();
-        UsuarioEntity usuario = usuarioRepository.findById(novaPostagem.getIdUsuario()).get();
-        PostagemEntity postagemEntity = novaPostagem.converterPostagem(topico, usuario);
-        postagemRepository.save(postagemEntity);
-        return ResponseEntity.status(201).body(postagemEntity);
+    public ResponseEntity<List<PostagemEntity>> todasPostagens() {
+        List<PostagemEntity> postagemEntities = postagemRepository.findAll();
+        if (postagemEntities.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(postagemEntities);
     }
 
     @Transactional
-    public List<PostagemEntity> buscarTodasPostagens(){
-        return postagemRepository.findAll();
+    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(Long id){
+        if (!validation.existsPostagem(id)) return ResponseEntity.status(404).build();
+        PostagemEntity postagem = postagemRepository.findByIdPostagem(id);
+        return ResponseEntity.status(200).body(postagem);
     }
+
+    @Transactional
+    public ResponseEntity setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
+        if (
+            !validation.existsPostagem(postagem) ||
+            !validation.existsUsuario(usuario)
+        ) return ResponseEntity.status(404).build();
+
+        if (!validation.existsPontuacaoWithPostagemAndUsuario(postagem, usuario)){
+            pontuacaoPostagemRepository.save(
+                    new PontuacaoPostagem()
+                            .setPostagem(postagemRepository.findByIdPostagem(postagem))
+                            .setUsuario(usuarioRepository.findByIdUsuario(usuario))
+                            .setPontuacao(ponto)
+            );
+        } else {
+            pontuacaoPostagemRepository.setPontuacaoFor(postagem, usuario, ponto);
+        }
+        return ResponseEntity.status(200).build();
+    }
+
 }
