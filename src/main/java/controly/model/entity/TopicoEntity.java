@@ -3,6 +3,9 @@ import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import net.bytebuddy.utility.nullability.MaybeNull;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -29,17 +32,13 @@ public class TopicoEntity {
             {@JoinColumn(name= "idUsuario")})
     private Set<UsuarioEntity> seguidores;
 
-    public Integer getSeguidores() {
-        Integer count = 0;
-
-        for (UsuarioEntity usuario : seguidores){
-            count ++;
-        }
-        return count;
+    public int getSeguidores() {
+        return seguidores != null ? seguidores.size() : 0;
     }
 
     public void addSeguidores(UsuarioEntity usuario) {
-        seguidores.add(usuario);
+            seguidores.add(usuario);
+
     }
 
     public TopicoEntity() {

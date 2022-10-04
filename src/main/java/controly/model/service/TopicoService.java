@@ -32,15 +32,9 @@ public class TopicoService {
         return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
     }
 
+    @Transactional
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
         topicoRepository.save(topicoEntity);
-        List<TopicoEntity> lista = topicoRepository.findAll();
         return ResponseEntity.status(201).body(topicoEntity);
-    }
-
-    @Transactional
-    public ResponseEntity<TopicoEntity> cadastrarTopico(TopicoEntity topico) {
-        topicoRepository.save(topico);
-        return ResponseEntity.status(HttpStatus.CREATED).body(topico);
     }
 }
