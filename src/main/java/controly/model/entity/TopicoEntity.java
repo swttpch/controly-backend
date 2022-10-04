@@ -27,7 +27,7 @@ public class TopicoEntity {
     private String descricao;
 
     @ManyToMany
-    @JoinTable(name = "TopicoHasSeguidores", joinColumns =
+    @JoinTable(name = "tbTopicoHasSeguidores", joinColumns =
             {@JoinColumn(name = "idTopico")}, inverseJoinColumns =
             {@JoinColumn(name= "idUsuario")})
     private Set<UsuarioEntity> seguidores;
