@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.*;
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class TopicoService {
@@ -17,6 +18,14 @@ public class TopicoService {
     @Autowired
     private ValidationService validation;
 
+    public ResponseEntity<List<TopicoEntity>> getTopicos() {
+        List<TopicoEntity> lista = topicoRepository.findAll();
+
+        return lista.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(lista);
+    }
+
     @Transactional
     public ResponseEntity<TopicoEntity> getTopicoById(Long id) {
         if (!validation.existsTopico(id)) return ResponseEntity.status(404).build();
@@ -24,8 +33,8 @@ public class TopicoService {
     }
 
     @Transactional
-    public ResponseEntity<TopicoEntity> cadastrarTopico(TopicoEntity topico){
-        topicoRepository.save(topico);
-        return ResponseEntity.status(HttpStatus.CREATED).body(topico);
+    public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
+        topicoRepository.save(topicoEntity);
+        return ResponseEntity.status(201).body(topicoEntity);
     }
 }

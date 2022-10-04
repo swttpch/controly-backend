@@ -31,11 +31,11 @@ public class UsuarioEntity implements Serializable {
     @NotNull
     private String email;
 
-    @ManyToMany
-    @JoinTable(name = "tbTopicoHasSeguidores", joinColumns =
-            {@JoinColumn(name = "idTopico")}, inverseJoinColumns =
-            {@JoinColumn(name= "idUsuario")})
-    private List<TopicoEntity> topicosSeguidos;
+//    @ManyToMany
+//    @JoinTable(name = "TopicoHasSeguidores", joinColumns =
+//            {@JoinColumn(name = "idTopico")}, inverseJoinColumns =
+//            {@JoinColumn(name= "idUsuario")})
+//    private List<TopicoEntity> topicosSeguidos;
 
     @OneToMany(mappedBy = "usuario") @JsonIgnore
     private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
