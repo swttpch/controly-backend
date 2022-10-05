@@ -2,6 +2,7 @@ package controly.model.service;
 
 import controly.controller.form.CadastrarNovoUsuarioForm;
 import controly.model.ValidacaoUsuario;
+import controly.model.entity.TopicoEntity;
 import controly.model.entity.UsuarioEntity;
 import controly.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
-
 
 @Service
 public class UsuarioService {
@@ -42,7 +43,7 @@ public class UsuarioService {
         }
 
     }
-
+    @Transactional
     public Optional<UsuarioEntity> buscarUsuarioPorId(Long id){
         return usuarioRepository.findById(id);
     }
@@ -51,6 +52,13 @@ public class UsuarioService {
         return null;
     }
 
+    public ResponseEntity<List<UsuarioEntity>> getListUsuarios(){
+        List<UsuarioEntity> lista = usuarioRepository.findAll();
+
+        return lista.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(lista);
+    }
 
     @Transactional
     public ResponseEntity<String> deletarUsuario(Long id){

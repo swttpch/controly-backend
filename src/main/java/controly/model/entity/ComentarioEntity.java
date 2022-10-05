@@ -1,13 +1,16 @@
 package controly.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity @Table(name = "tbComentario") @Data
+@Entity @Table(name = "tbComentario") @Data @NoArgsConstructor @AllArgsConstructor
 public class ComentarioEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -16,19 +19,27 @@ public class ComentarioEntity implements Serializable {
     @Column(name = "conteudo")
     private String conteudo;
     @Column(name = "criadoEm")
-    private Date criadoEm;
+    private LocalDateTime criadoEm;
+
+    @ManyToOne @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
+    private PostagemEntity postagem;
 
     @ManyToMany
-    @JoinTable(name = "comentarioHasCurtidas", joinColumns =
+    @JoinTable(name = "tbComentarioHasCurtidas", joinColumns =
             {@JoinColumn(name = "idComentario")}, inverseJoinColumns =
-            {@JoinColumn(name= "idUsuario")})
+            {@JoinColumn(name= "idUsuario")}) @JsonIgnore
     private List<UsuarioEntity> curtidas;
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioEntity dono;
 
-    public ComentarioEntity(String conteudo, Date criadoEm) {
-        this.conteudo = conteudo;
-        this.criadoEm = criadoEm;
+    public boolean usuarioCurtiu(UsuarioEntity usuario) {
+        return curtidas.contains(usuario);
     }
+
+    public ComentarioEntity adicionarCurtida(UsuarioEntity usuario){
+        curtidas.add(usuario);
+        return this;
+    }
+
 }

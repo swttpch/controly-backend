@@ -1,13 +1,23 @@
 package controly.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "tbPostagem")
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tbPostagem")
+@Data
 @SecondaryTable(name= "tbRespostaDuvida", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idPostagem"))
 public class PostagemEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -18,17 +28,13 @@ public class PostagemEntity implements Serializable {
     @Column(name = "conteudo")
     private String conteudo;
     @Column(name = "criadoEm")
-    private java.sql.Date criadoEm;
+    private LocalDateTime criadoEm;
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioEntity dono;
     @Column(name = "titulo")
     private String titulo;
-    @ManyToMany
-    @JoinTable(name = "postagemHasSubidas", joinColumns =
-            {@JoinColumn(name = "idPostagem")}, inverseJoinColumns =
-            {@JoinColumn(name= "idUsuario")})
-    private List<UsuarioEntity> subidas;
+
     @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name="idTopico", referencedColumnName = "idTopico", nullable = false)
     private TopicoEntity topico;
 
@@ -39,84 +45,29 @@ public class PostagemEntity implements Serializable {
     @Embedded
     private RespostaDuvidaEntity respostaDuvidaEntity;
 
-    public PostagemEntity(String conteudo, String titulo, TopicoEntity topico, UsuarioEntity dono) {
-        long millis=System.currentTimeMillis();
-        this.conteudo = conteudo;
-        this.criadoEm = new java.sql.Date(millis);
-        this.titulo = titulo;
-        this.topico= topico;
-        this.dono = dono;
+    @OneToMany(mappedBy = "postagem") @JsonIgnore
+    private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
+
+    @JsonProperty
+    public int getPontuacao(){
+        int count = 0;
+        for (PontuacaoPostagem pontuacao : pontuacaoPostagem){
+            count += pontuacao.getPontuacao();
+            if (count < 0) count = 0;
+        }
+        return count;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public PostagemEntity setResposta(ComentarioEntity resposta){
+        respostaDuvidaEntity
+                .setResposta(resposta)
+                .setResolvido(true)
+                .setResolvidoEm(LocalDateTime.now());
+        return this;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public List<UsuarioEntity> getSubidas() {
-        return subidas;
-    }
-
-    public void setSubidas(List<UsuarioEntity> subidas) {
-        this.subidas = subidas;
-    }
-
-    public TopicoEntity getTopico() {
-        return topico;
-    }
-
-    public void setTopico(TopicoEntity topico) {
-        this.topico = topico;
-    }
-
-    public List<ComentarioEntity> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(List<ComentarioEntity> comentarios) {
-        this.comentarios = comentarios;
-    }
-
-    public Long getIdPostagem() {
-        return idPostagem;
-    }
-
-    public void setIdPostagem(Long idPostagem) {
-        this.idPostagem = idPostagem;
-    }
-
-    public String getConteudo() {
-        return conteudo;
-    }
-
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
-    }
-
-    public Date getCriadoEm() {
-        return criadoEm;
-    }
-
-    public void setCriadoEm(Date criadoEm) {
-        this.criadoEm = criadoEm;
-    }
-
-    public UsuarioEntity getDono() {
-        return dono;
-    }
-
-    public void setDono(UsuarioEntity dono) {
-        this.dono = dono;
-    }
-
-    public RespostaDuvidaEntity getRespostaDuvidaEntity() {
-        return respostaDuvidaEntity;
-    }
-
-    public void setRespostaDuvidaEntity(RespostaDuvidaEntity respostaDuvidaEntity) {
-        this.respostaDuvidaEntity = respostaDuvidaEntity;
+    public PostagemEntity initResposta(){
+        respostaDuvidaEntity = new RespostaDuvidaEntity().setResolvido(false);
+        return this;
     }
 }

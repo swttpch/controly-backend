@@ -2,23 +2,21 @@ package controly.controller;
 
 
 import controly.controller.dto.UsuarioCadastradoDTO;
-import controly.controller.form.AtualizarUsuarioForm;
 import controly.controller.form.CadastrarNovoUsuarioForm;
 import controly.controller.form.RecuperarSenhaForm;
 import controly.model.service.RecuperarSenhaService;
+import controly.model.entity.UsuarioEntity;
 import controly.model.service.UsuarioService;
-import controly.security.Autenticacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    Autenticacao auth = new Autenticacao();
-
     @Autowired
     private UsuarioService usuarioService;
 
@@ -37,6 +35,11 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<?> getUsuario(@RequestBody Long id){
         return usuarioService.getUsuarioCadastrado(id);
+    }
+
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<UsuarioEntity>> getListUsuarios(){
+        return usuarioService.getListUsuarios();
     }
 
     @PostMapping()

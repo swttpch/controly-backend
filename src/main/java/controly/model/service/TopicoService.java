@@ -6,43 +6,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.*;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TopicoService {
-    List<TopicoEntity> topicoEntityList = new ArrayList<>();
     @Autowired
     private TopicoRepository topicoRepository;
-    public ResponseEntity<List<TopicoEntity>> getTopicos(){
+    @Autowired
+    private ValidationService validation;
 
-        if(true){
-            return ResponseEntity.status(200).body(topicoEntityList);
-        } else {
-            return ResponseEntity.status(404).body(null);
-        }
+    public ResponseEntity<List<TopicoEntity>> getTopicos() {
+        List<TopicoEntity> lista = topicoRepository.findAll();
 
-    }
-
-    public Optional<TopicoEntity> buscarTopicoPeloNome(String nomeTopico) {
-        return topicoRepository.findByNome(nomeTopico);
-    }
-
-    public void buscarTopicoPeloId(Long id) {
-        Optional<TopicoEntity> topico = topicoRepository.findById(id);
-        TopicoEntity topico1 = topico.get();
-        System.out.println(topico1.getNome());
+        return lista.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(lista);
     }
 
     @Transactional
-    public ResponseEntity<TopicoEntity> cadastrarTopico(String nome){
-        TopicoEntity topico = new TopicoEntity(nome);
-        System.out.println(topico.getNome());
-        topicoRepository.save(topico);
-        System.out.println("cadastrado");
-        return ResponseEntity.status(HttpStatus.CREATED).body(topico);
+    public ResponseEntity<TopicoEntity> getTopicoById(Long id) {
+        if (!validation.existsTopico(id)) return ResponseEntity.status(404).build();
+        return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
+    }
+
+    @Transactional
+    public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
+        topicoRepository.save(topicoEntity);
+        return ResponseEntity.status(201).body(topicoEntity);
     }
 }
