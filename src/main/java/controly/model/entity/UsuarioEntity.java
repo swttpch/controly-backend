@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ public class UsuarioEntity implements Serializable {
     @Length(min=8)
     private String senha;
     @NotNull
+    @Email
     private String email;
 
 //    @ManyToMany
@@ -39,4 +41,17 @@ public class UsuarioEntity implements Serializable {
 
     @OneToMany(mappedBy = "usuario") @JsonIgnore
     private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
+
+
+    public UsuarioEntity(String nome, String apelido, String senha, String email) {
+        this.nome = nome;
+        this.apelido = apelido;
+        this.senha = senha;
+        this.email = email;
+    }
+
+    public UsuarioEntity(){}
+
+    // Validar depois
+    //private List<Topico> topicosQueSegue = new ArrayList<>();
 }

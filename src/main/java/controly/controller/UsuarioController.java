@@ -3,6 +3,8 @@ package controly.controller;
 
 import controly.controller.dto.UsuarioCadastradoDTO;
 import controly.controller.form.CadastrarNovoUsuarioForm;
+import controly.controller.form.RecuperarSenhaForm;
+import controly.model.service.RecuperarSenhaService;
 import controly.model.entity.UsuarioEntity;
 import controly.model.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import java.util.List;
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private RecuperarSenhaService recuperarSenhaService;
 
 
     @GetMapping("/teste")
@@ -53,5 +58,10 @@ public class UsuarioController {
     public ResponseEntity<String> atualizarUsuario(@PathVariable Long id,
                                                    @RequestBody CadastrarNovoUsuarioForm form){
         return usuarioService.atualizarUsuario(id,form);
+    }
+
+    @PostMapping("/recuperar-senha")
+    public ResponseEntity<?> recuperarSenha(@RequestBody RecuperarSenhaForm form){
+        return recuperarSenhaService.recuperarSenha(form);
     }
 }
