@@ -1,5 +1,6 @@
 package controly.model.service;
 
+import controly.model.entity.PostagemEntity;
 import controly.model.entity.TopicoEntity;
 import controly.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,20 @@ public class TopicoService {
         if (!validation.existsTopico(id)) return ResponseEntity.status(404).build();
         return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
     }
+
+//    @Transactional
+//    public ResponseEntity<List<TopicoEntity>> getTopicosByIdUser(Long idUser) {
+//        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
+//
+//        List<TopicoEntity> topicoEntityList = topicoRepository.findAll();
+//
+//        for (TopicoEntity topico : postagemEntityList) {
+//            if (!topico.get().getIdUsuario().equals(idUser)) {
+//                topicoEntityList.remove(postagem);
+//            }
+//        }
+//        return ResponseEntity.status(200).body(postagemEntityList);
+//    }
 
     @Transactional
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
