@@ -2,14 +2,14 @@ package controly.model.service;
 
 import controly.controller.dto.PerfilDTO;
 import controly.model.entity.PostagemEntity;
-import controly.model.entity.TopicoEntity;
 import controly.model.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class PerfilService {
     @Autowired
     UsuarioService usuarioService;
