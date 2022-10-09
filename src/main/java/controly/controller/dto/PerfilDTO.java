@@ -11,8 +11,8 @@ import java.util.List;
 public class PerfilDTO {
 
     private UsuarioEntity usuario;
-    private List<PostagemEntity> postagemEntityList;
-    private List<TopicoEntity> topicoEntityList;
+    private List<PostagemEntity> postagens;
+    private List<TopicoEntity> topicos_seguidos;
 
 
 }

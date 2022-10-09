@@ -31,8 +31,8 @@ public class PerfilService {
         PerfilDTO perfilDTO = new PerfilDTO();
 
         perfilDTO.setUsuario(usuario);
-        perfilDTO.setPostagemEntityList(postagemEntityList);
-        perfilDTO.setTopicoEntityList(topicoEntityList);
+        perfilDTO.setPostagens(postagemEntityList);
+        perfilDTO.setTopicos_seguidos(topicoEntityList);
 
         return ResponseEntity.status(200).body(perfilDTO);
     }
