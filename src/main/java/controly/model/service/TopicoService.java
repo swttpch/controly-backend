@@ -1,10 +1,8 @@
 package controly.model.service;
 
-import controly.model.entity.PostagemEntity;
 import controly.model.entity.TopicoEntity;
 import controly.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,19 +31,14 @@ public class TopicoService {
         return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
     }
 
-//    @Transactional
-//    public ResponseEntity<List<TopicoEntity>> getTopicosByIdUser(Long idUser) {
-//        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
-//
-//        List<TopicoEntity> topicoEntityList = topicoRepository.findAll();
-//
-//        for (TopicoEntity topico : postagemEntityList) {
-//            if (!topico.get().getIdUsuario().equals(idUser)) {
-//                topicoEntityList.remove(postagem);
-//            }
-//        }
-//        return ResponseEntity.status(200).body(postagemEntityList);
-//    }
+    @Transactional
+    public ResponseEntity<List<TopicoEntity>> getTopicosByIdUser(Long idUser) {
+        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
+
+        List<TopicoEntity> topicoEntityList = topicoRepository.findTopicoByIdUsuario(idUser);
+
+        return ResponseEntity.status(200).body(topicoEntityList);
+    }
 
     @Transactional
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {

@@ -13,4 +13,6 @@ public class PerfilDTO {
     private UsuarioEntity usuario;
     private List<PostagemEntity> postagemEntityList;
     private List<TopicoEntity> topicoEntityList;
+
+
 }
