@@ -37,7 +37,9 @@ public class TopicoService {
 
         List<TopicoEntity> topicoEntityList = topicoRepository.findTopicoByIdUsuario(idUser);
 
-        return ResponseEntity.status(200).body(topicoEntityList);
+        return topicoEntityList.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(topicoEntityList);
     }
 
     @Transactional

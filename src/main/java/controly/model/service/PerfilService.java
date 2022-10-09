@@ -19,9 +19,13 @@ public class PerfilService {
     TopicoService topicoService;
 
     @Autowired
+    private ValidationService validation;
+
+    @Autowired
     PostagemService postagemService;
 
     public ResponseEntity<PerfilDTO> getPerfilById(Long id){
+        if (!validation.existsUsuario(id)) return ResponseEntity.status(404).build();
         UsuarioEntity usuario = usuarioService.buscarUsuarioPorId(id).get();
 
         List<PostagemEntity> postagemEntityList = postagemService.getPostagemByIdUser(id).getBody();

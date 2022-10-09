@@ -69,12 +69,11 @@ public class PostagemService {
 
         List<PostagemEntity> postagemEntityList = postagemRepository.findAll();
 
-        for (PostagemEntity postagem : postagemEntityList) {
-            if (!postagem.getDono().getIdUsuario().equals(idUser)) {
-                postagemEntityList.remove(postagem);
-            }
-        }
-        return ResponseEntity.status(200).body(postagemEntityList);
+        postagemEntityList.removeIf(postagem -> !postagem.getDono().getIdUsuario().equals(idUser));
+
+        return postagemEntityList.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(postagemEntityList);
     }
 
 }
