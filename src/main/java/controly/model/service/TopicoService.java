@@ -3,7 +3,6 @@ package controly.model.service;
 import controly.model.entity.TopicoEntity;
 import controly.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +29,17 @@ public class TopicoService {
     public ResponseEntity<TopicoEntity> getTopicoById(Long id) {
         if (!validation.existsTopico(id)) return ResponseEntity.status(404).build();
         return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
+    }
+
+    @Transactional
+    public ResponseEntity<List<TopicoEntity>> getTopicosByIdUser(Long idUser) {
+        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
+
+        List<TopicoEntity> topicoEntityList = topicoRepository.findTopicoByIdUsuario(idUser);
+
+        return topicoEntityList.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(topicoEntityList);
     }
 
     @Transactional

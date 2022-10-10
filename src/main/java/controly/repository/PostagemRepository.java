@@ -9,5 +9,6 @@ public interface PostagemRepository extends JpaRepository<PostagemEntity, Long> 
 
     PostagemEntity findByIdPostagem(Long id);
 
+//    PostagemEntity findByIdUsuario(Long idUser);
 
 }

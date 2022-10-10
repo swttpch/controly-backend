@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,6 +61,19 @@ public class PostagemService {
             pontuacaoPostagemRepository.setPontuacaoFor(postagem, usuario, ponto);
         }
         return ResponseEntity.status(200).build();
+    }
+
+    @Transactional
+    public ResponseEntity<List<PostagemEntity>> getPostagemByIdUser(Long idUser){
+        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
+
+        List<PostagemEntity> postagemEntityList = postagemRepository.findAll();
+
+        postagemEntityList.removeIf(postagem -> !postagem.getDono().getIdUsuario().equals(idUser));
+
+        return postagemEntityList.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(postagemEntityList);
     }
 
 }
