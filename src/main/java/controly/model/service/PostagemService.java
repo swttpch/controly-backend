@@ -2,32 +2,34 @@ package controly.model.service;
 
 import controly.model.entity.PontuacaoPostagem;
 import controly.model.entity.PostagemEntity;
-import controly.model.entity.TopicoEntity;
-import controly.model.entity.UsuarioEntity;
 import controly.repository.PontuacaoPostagemRepository;
 import controly.repository.PostagemRepository;
-import controly.repository.TopicoRepository;
 import controly.repository.UsuarioRepository;
-import controly.controller.form.Discussao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PostagemService {
     @Autowired
-    ValidationService validation;
+    final private ValidationService validation;
     @Autowired
-    PostagemRepository postagemRepository;
+    final private PostagemRepository postagemRepository;
     @Autowired
-    PontuacaoPostagemRepository pontuacaoPostagemRepository;
+    final private PontuacaoPostagemRepository pontuacaoPostagemRepository;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
+
+    public PostagemService(ValidationService validation, PostagemRepository postagemRepository, PontuacaoPostagemRepository pontuacaoPostagemRepository, UsuarioRepository usuarioRepository) {
+        this.validation = validation;
+        this.postagemRepository = postagemRepository;
+        this.pontuacaoPostagemRepository = pontuacaoPostagemRepository;
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @Transactional
     public ResponseEntity<List<PostagemEntity>> todasPostagens() {

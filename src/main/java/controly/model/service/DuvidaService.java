@@ -1,8 +1,6 @@
 package controly.model.service;
 
-import controly.controller.form.Comentario;
 import controly.controller.form.Postagem;
-import controly.model.entity.*;
 import controly.repository.ComentarioRepository;
 import controly.repository.PostagemRepository;
 import controly.repository.TopicoRepository;
@@ -13,24 +11,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @Service
 public class DuvidaService implements Ipostagem {
     @Autowired
-    PostagemRepository postagemRepository;
+    final private PostagemRepository postagemRepository;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
 
     @Autowired
-    TopicoRepository topicoRepository;
+    final private TopicoRepository topicoRepository;
 
     @Autowired
-    ComentarioRepository comentarioRepository;
+    final private ComentarioRepository comentarioRepository;
 
     @Autowired
-    ValidationService validation;
+    final private ValidationService validation;
+
+    public DuvidaService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, ComentarioRepository comentarioRepository, ValidationService validation) {
+        this.postagemRepository = postagemRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.topicoRepository = topicoRepository;
+        this.comentarioRepository = comentarioRepository;
+        this.validation = validation;
+    }
 
 
     @Override

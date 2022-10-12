@@ -14,13 +14,19 @@ import java.util.Optional;
 public class RecuperarSenhaService {
 
     @Autowired
-    private GeradorSenha geradorSenha;
+    final private GeradorSenha geradorSenha;
 
     @Autowired
-    private EmailService enviarEmail;
+    final private EmailService enviarEmail;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
+
+    public RecuperarSenhaService(GeradorSenha geradorSenha, EmailService enviarEmail, UsuarioRepository usuarioRepository) {
+        this.geradorSenha = geradorSenha;
+        this.enviarEmail = enviarEmail;
+        this.usuarioRepository = usuarioRepository;
+    }
 
 
     public ResponseEntity<?> recuperarSenha(RecuperarSenhaForm usuario){

@@ -13,9 +13,14 @@ import javax.transaction.Transactional;
 @Service
 public class TopicoService {
     @Autowired
-    private TopicoRepository topicoRepository;
+    final private TopicoRepository topicoRepository;
     @Autowired
-    private ValidationService validation;
+    final private ValidationService validation;
+
+    public TopicoService(TopicoRepository topicoRepository, ValidationService validation) {
+        this.topicoRepository = topicoRepository;
+        this.validation = validation;
+    }
 
     public ResponseEntity<List<TopicoEntity>> getTopicos() {
         List<TopicoEntity> lista = topicoRepository.findAll();
