@@ -1,13 +1,11 @@
 package controly.controller;
 
 import controly.controller.form.*;
-import controly.model.entity.PontuacaoPostagem;
 import controly.model.entity.PostagemEntity;
 import controly.model.service.ComentarioService;
 import controly.model.service.DiscussaoService;
 import controly.model.service.DuvidaService;
 import controly.model.service.PostagemService;
-import controly.repository.ComentarioRepository;
 import controly.strategy.Postar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +17,26 @@ import java.util.List;
 @RequestMapping("/postagens")
 public class PostagemController {
     @Autowired
-    private DiscussaoService discussaoService;
+    final private DiscussaoService discussaoService;
     @Autowired
-    private ComentarioService comentarioService;
+    final private ComentarioService comentarioService;
     @Autowired
-    private DuvidaService duvidaService;
+    final private DuvidaService duvidaService;
     @Autowired
-    private PostagemService postagemService;
+    final private PostagemService postagemService;
     @Autowired
-    private Postar postar;
+    final private Postar postar;
+
+    public PostagemController(DiscussaoService discussaoService, ComentarioService comentarioService, DuvidaService duvidaService, PostagemService postagemService, Postar postar) {
+        this.discussaoService = discussaoService;
+        this.comentarioService = comentarioService;
+        this.duvidaService = duvidaService;
+        this.postagemService = postagemService;
+        this.postar = postar;
+    }
 
     @PostMapping("/discussao")
-    public ResponseEntity cadastrarDiscussao(@RequestBody Discussao post) {
+    public ResponseEntity<String> cadastrarDiscussao(@RequestBody Discussao post) {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
@@ -39,44 +45,37 @@ public class PostagemController {
         return postagemService.todasPostagens();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@PathVariable Long id){
-        return postagemService.pegarPostagemPeloId(id);
+    @GetMapping("/")
+    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@RequestParam Long idPostagem){
+        return postagemService.pegarPostagemPeloId(idPostagem);
     }
 
     @PostMapping("/duvida")
-    public ResponseEntity cadastrarDuvida(@RequestBody Duvida post){
+    public ResponseEntity<String> cadastrarDuvida(@RequestBody Duvida post){
         postar.setPostagem(duvidaService);
         return postar.postar(post);
     }
 
-    @PutMapping("/duvida/{idDuvida}/{idComentario}")
-    public ResponseEntity atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario){
+    @PutMapping("/duvida")
+    public ResponseEntity<String> atribuirRespostaADuvida(@RequestParam Long idDuvida, @RequestParam Long idComentario){
         return duvidaService.definirRespostaDaPostagem(idDuvida, idComentario);
     }
     @PostMapping("/comentario")
-    public ResponseEntity cadastrarComentario(@RequestBody Comentario post) {
+    public ResponseEntity<String> cadastrarComentario(@RequestBody Comentario post) {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
     }
 
-    @PutMapping("/comentario/curtir/{idComentario}/{idUsuario}")
-    public ResponseEntity curtirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario) {
+    @PutMapping("/comentario/curtir")
+    public ResponseEntity<String> curtirComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario) {
         return comentarioService.curtirComentario(idComentario, idUsuario);
     }
-
-//    @GetMapping("/pontuacao/{p}/{u}")
-//    public ResponseEntity teste(@PathVariable Long p, @PathVariable Long u){
-//        return postagemService.pegarPontuacaoPelaPostagemEUsuario(p, u);
-//    }
-
-    @PutMapping("/subir/{postagem}/{usuario}")
-    public ResponseEntity subirPostagem(@PathVariable Long postagem, @PathVariable Long usuario){
-        return postagemService.setPontuacaoPostagem(postagem, usuario, 1);
+    @PutMapping("/subir")
+    public ResponseEntity<String> subirPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
+        return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, 1);
     }
-
-    @PutMapping("/descer/{postagem}/{usuario}")
-    public ResponseEntity descerPostagem(@PathVariable Long postagem, @PathVariable Long usuario){
-        return postagemService.setPontuacaoPostagem(postagem, usuario, -1);
+    @PutMapping("/descer")
+    public ResponseEntity<String> descerPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
+        return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
     }
 }
