@@ -1,45 +1,45 @@
 package controly.model.service;
 
-import controly.model.entity.PostagemEntity;
-import controly.model.entity.TopicoEntity;
-import controly.model.entity.UsuarioEntity;
 import controly.repository.PostagemRepository;
 import controly.repository.TopicoRepository;
 import controly.repository.UsuarioRepository;
-import controly.controller.form.Discussao;
 import controly.strategy.Ipostagem;
 import controly.controller.form.Postagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.List;
-
 @Service
 public class DiscussaoService implements Ipostagem {
     @Autowired
-    PostagemRepository postagemRepository;
+    final private PostagemRepository postagemRepository;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
 
     @Autowired
-    TopicoRepository topicoRepository;
+    final private TopicoRepository topicoRepository;
     @Autowired
-    ValidationService validation;
+    final private ValidationService validation;
+
+    public DiscussaoService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, ValidationService validation) {
+        this.postagemRepository = postagemRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.topicoRepository = topicoRepository;
+        this.validation = validation;
+    }
 
     @Override
-    public ResponseEntity enviarPostagem(Postagem discussao) {
+    public ResponseEntity<String> enviarPostagem(Postagem discussao) {
         if (!validation.existsUsuario(discussao.getIdUsuario()) || !validation.existsTopico(discussao.getIdTopico()))
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).body("ID informado não existe.");
         postagemRepository.save(
                 discussao.converterPostagem(
                         topicoRepository.findByIdTopico(discussao.getIdTopico()),
                         usuarioRepository.findByIdUsuario(discussao.getIdUsuario())
                 )
         );
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body("Discussão postada.");
     }
 
 }

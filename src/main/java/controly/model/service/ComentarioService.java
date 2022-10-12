@@ -2,7 +2,6 @@ package controly.model.service;
 
 import controly.controller.form.Postagem;
 import controly.model.entity.ComentarioEntity;
-import controly.model.entity.PostagemEntity;
 import controly.model.entity.UsuarioEntity;
 import controly.repository.ComentarioRepository;
 import controly.repository.PostagemRepository;
@@ -12,20 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
-    PostagemRepository postagemRepository;
+    final private PostagemRepository postagemRepository;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
 
     @Autowired
-    ComentarioRepository comentarioRepository;
+    final private ComentarioRepository comentarioRepository;
     @Autowired
-    ValidationService validation;
+    final private ValidationService validation;
+
+    public ComentarioService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, ComentarioRepository comentarioRepository, ValidationService validation) {
+        this.postagemRepository = postagemRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.comentarioRepository = comentarioRepository;
+        this.validation = validation;
+    }
+
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem post) {
         if (!validation.existsUsuario(post.getIdUsuario()) || !validation.existsPostagem(post.getIdPostagem()))
@@ -36,7 +41,7 @@ public class ComentarioService implements Ipostagem {
                         usuarioRepository.findByIdUsuario(post.getIdUsuario())
                 )
         );
-        return ResponseEntity.status(201).body("Postagem realizada.");
+        return ResponseEntity.status(201).body("Comentario postado.");
     }
 
     public ResponseEntity<String> curtirComentario(Long idComentario, Long idUsuario){
