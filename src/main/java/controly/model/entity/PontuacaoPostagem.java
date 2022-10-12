@@ -5,7 +5,6 @@ import lombok.Getter;
 import javax.persistence.*;
 @Entity
 @Table(name = "tbPontuacaoPostagem")
-@Getter
 public class PontuacaoPostagem {
     @EmbeddedId
     final private PontuacaoPostagemId id = new PontuacaoPostagemId();
@@ -19,6 +18,18 @@ public class PontuacaoPostagem {
     private UsuarioEntity usuario;
 
     private int pontuacao;
+
+    public PostagemEntity getPostagem() {
+        return postagem;
+    }
+
+    public UsuarioEntity getUsuario() {
+        return usuario;
+    }
+
+    public int getPontuacao() {
+        return pontuacao;
+    }
 
     public PontuacaoPostagem setPostagem(PostagemEntity postagem) {
         this.postagem = postagem;

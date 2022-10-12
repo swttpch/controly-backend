@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -27,8 +28,10 @@ public class PostagemEntity implements Serializable {
 
     @Column(name = "conteudo")
     private String conteudo;
-    @Column(name = "criadoEm")
+    @Column(name = "criadoEm")@Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime criadoEm;
+    @Column(name = "atualizadoEm")@Temporal(TemporalType.TIMESTAMP) @Nullable
+    private LocalDateTime atualizadoEm;
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioEntity dono;
@@ -45,17 +48,17 @@ public class PostagemEntity implements Serializable {
     @Embedded
     private RespostaDuvidaEntity respostaDuvidaEntity;
 
-    @OneToMany(mappedBy = "postagem") @JsonIgnore
+    @OneToMany(mappedBy = "postagem",cascade=CascadeType.ALL) @JsonIgnore
     private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
 
     @JsonProperty
     public int getPontuacao(){
-        int count = 0;
-        for (PontuacaoPostagem pontuacao : pontuacaoPostagem){
-            count += pontuacao.getPontuacao();
-            if (count < 0) count = 0;
-        }
-        return count;
+        return pontuacaoPostagem.stream().mapToInt(PontuacaoPostagem::getPontuacao).sum();
+        //        int count = 0;
+//        for (PontuacaoPostagem pontuacao : pontuacaoPostagem){
+//            count += pontuacao.getPontuacao();
+//        }
+//        return count;
     }
 
     public PostagemEntity setResposta(ComentarioEntity resposta){
