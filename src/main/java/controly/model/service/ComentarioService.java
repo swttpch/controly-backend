@@ -27,30 +27,30 @@ public class ComentarioService implements Ipostagem {
     @Autowired
     ValidationService validation;
     @Override
-    public ResponseEntity enviarPostagem(Postagem post) {
+    public ResponseEntity<String> enviarPostagem(Postagem post) {
         if (!validation.existsUsuario(post.getIdUsuario()) || !validation.existsPostagem(post.getIdPostagem()))
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).body("ID informado não existe.");
         comentarioRepository.save(
                 post.converterPostagem(
                         postagemRepository.findByIdPostagem(post.getIdPostagem()),
                         usuarioRepository.findByIdUsuario(post.getIdUsuario())
                 )
         );
-        return ResponseEntity.status(201).build();
+        return ResponseEntity.status(201).body("Postagem realizada.");
     }
 
-    @Transactional
-    public ResponseEntity curtirComentario(Long idComentario, Long idUsuario){
+    public ResponseEntity<String> curtirComentario(Long idComentario, Long idUsuario){
         if (!validation.existsComentario(idComentario) || !validation.existsUsuario(idUsuario))
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).body("ID informado não existe.");
         ComentarioEntity comentario = comentarioRepository.findByIdComentario(idComentario);
         UsuarioEntity usuario = usuarioRepository.findByIdUsuario(idUsuario);
         if (comentario.usuarioCurtiu(usuario)){
             comentarioRepository.delete(comentario);
+            return  ResponseEntity.status(200).body("Curtida excluida.");
         } else {
             comentario.adicionarCurtida(usuario);
             comentarioRepository.save(comentario);
+            return  ResponseEntity.status(200).body("Curtida atribuida.");
         }
-        return  ResponseEntity.status(200).build();
     }
 }
