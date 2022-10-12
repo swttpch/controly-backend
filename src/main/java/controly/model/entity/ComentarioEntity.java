@@ -18,13 +18,13 @@ public class ComentarioEntity implements Serializable {
     private Long idComentario;
     @Column(name = "conteudo")
     private String conteudo;
-    @Column(name = "criadoEm")
+    @Column(name = "criadoEm") @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime criadoEm;
 
-    @ManyToOne @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
+    @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
     private PostagemEntity postagem;
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name = "tbComentarioHasCurtidas", joinColumns =
             {@JoinColumn(name = "idComentario")}, inverseJoinColumns =
             {@JoinColumn(name= "idUsuario")}) @JsonIgnore
