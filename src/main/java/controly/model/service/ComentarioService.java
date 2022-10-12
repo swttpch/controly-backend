@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.rmi.NotBoundException;
+
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
@@ -42,6 +44,16 @@ public class ComentarioService implements Ipostagem {
                 )
         );
         return ResponseEntity.status(201).body("Comentario postado.");
+    }
+
+    public ResponseEntity<String> excluirPostagem(Long idComentario) {
+        if (!validation.existsComentario(idComentario))
+            return ResponseEntity.status(404).body("ID informado não existe.");
+
+        comentarioRepository.delete(
+                comentarioRepository.findByIdComentario(idComentario)
+        );
+        return ResponseEntity.status(200).body("Comentário excluido.");
     }
 
     public ResponseEntity<String> curtirComentario(Long idComentario, Long idUsuario){

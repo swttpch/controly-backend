@@ -77,4 +77,14 @@ public class PostagemService {
                 : ResponseEntity.status(200).body(postagemEntityList);
     }
 
+    public ResponseEntity<String> excluirPostagem(Long idPostagem) {
+        if (!validation.existsPostagem(idPostagem))
+            return ResponseEntity.status(404).body("ID informado não existe.");
+
+        postagemRepository.delete(
+                postagemRepository.findByIdPostagem(idPostagem)
+        );
+        return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida.");
+    }
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,9 +19,10 @@ public class ComentarioEntity implements Serializable {
     private Long idComentario;
     @Column(name = "conteudo")
     private String conteudo;
-    @Column(name = "criadoEm") @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "criadoEm")
     private LocalDateTime criadoEm;
-
+    @Column(name = "atualizadoEm") @Nullable
+    private LocalDateTime atualizadoEm;
     @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
     private PostagemEntity postagem;
 

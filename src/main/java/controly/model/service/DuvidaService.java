@@ -50,6 +50,7 @@ public class DuvidaService implements Ipostagem {
         );
         return ResponseEntity.status(201).body("Duvida postada.");
     }
+
     @Transactional
     public ResponseEntity<String> definirRespostaDaPostagem(Long idPostagem, Long idComentario){
         if (!validation.existsPostagem(idPostagem) || !validation.existsComentario(idComentario))

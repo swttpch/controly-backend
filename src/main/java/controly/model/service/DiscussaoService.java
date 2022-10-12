@@ -42,4 +42,5 @@ public class DiscussaoService implements Ipostagem {
         return ResponseEntity.status(201).body("Discussão postada.");
     }
 
+
 }

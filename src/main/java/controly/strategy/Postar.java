@@ -17,4 +17,6 @@ public class Postar {
     public ResponseEntity<String> postar(Postagem post){
         return postagem.enviarPostagem(post);
     }
+
+
 }

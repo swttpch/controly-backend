@@ -28,9 +28,9 @@ public class PostagemEntity implements Serializable {
 
     @Column(name = "conteudo")
     private String conteudo;
-    @Column(name = "criadoEm")@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "criadoEm")
     private LocalDateTime criadoEm;
-    @Column(name = "atualizadoEm")@Temporal(TemporalType.TIMESTAMP) @Nullable
+    @Column(name = "atualizadoEm") @Nullable
     private LocalDateTime atualizadoEm;
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
