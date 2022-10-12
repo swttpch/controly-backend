@@ -45,12 +45,11 @@ public class PostagemService {
         return ResponseEntity.status(200).body(postagem);
     }
 
-    @Transactional
-    public ResponseEntity setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
+    public ResponseEntity<String> setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
         if (
             !validation.existsPostagem(postagem) ||
             !validation.existsUsuario(usuario)
-        ) return ResponseEntity.status(404).build();
+        ) return ResponseEntity.status(404).body("ID informado não existe.");
 
         if (!validation.existsPontuacaoWithPostagemAndUsuario(postagem, usuario)){
             pontuacaoPostagemRepository.save(
@@ -62,7 +61,7 @@ public class PostagemService {
         } else {
             pontuacaoPostagemRepository.setPontuacaoFor(postagem, usuario, ponto);
         }
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a postagem de ID %d.", ponto, postagem));
     }
 
     @Transactional
