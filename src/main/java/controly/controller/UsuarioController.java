@@ -1,7 +1,6 @@
 package controly.controller;
 
 
-import controly.controller.dto.UsuarioCadastradoDTO;
 import controly.controller.form.CadastrarNovoUsuarioForm;
 import controly.controller.form.RecuperarSenhaForm;
 import controly.model.service.RecuperarSenhaService;
@@ -18,19 +17,16 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
     @Autowired
-    private UsuarioService usuarioService;
+    final private UsuarioService usuarioService;
 
     @Autowired
-    private RecuperarSenhaService recuperarSenhaService;
+    final private RecuperarSenhaService recuperarSenhaService;
 
-
-    @GetMapping("/teste")
-    public ResponseEntity<UsuarioCadastradoDTO> getUsuarios(){
-
-        // Criar?
-
-        return null;
+    public UsuarioController(UsuarioService usuarioService, RecuperarSenhaService recuperarSenhaService) {
+        this.usuarioService = usuarioService;
+        this.recuperarSenhaService = recuperarSenhaService;
     }
+
 
     @GetMapping
     public ResponseEntity<?> getUsuario(@RequestBody Long id){
@@ -64,4 +60,5 @@ public class UsuarioController {
     public ResponseEntity<?> recuperarSenha(@RequestBody RecuperarSenhaForm form){
         return recuperarSenhaService.recuperarSenha(form);
     }
+
 }
