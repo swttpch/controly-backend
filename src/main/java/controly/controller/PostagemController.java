@@ -65,6 +65,10 @@ public class PostagemController {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
     }
+    @DeleteMapping("/comentario")
+    public ResponseEntity<String> deleteComentário(@RequestParam Long idComentario){
+        return comentarioService.excluirPostagem(idComentario);
+    }
 
     @PutMapping("/comentario/curtir")
     public ResponseEntity<String> curtirComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario) {
@@ -77,10 +81,6 @@ public class PostagemController {
     @PutMapping("/descer")
     public ResponseEntity<String> descerPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
-    }
-    @DeleteMapping("/comentário")
-    public ResponseEntity<String> deleteComentário(@RequestParam Long idComentario){
-        return comentarioService.excluirPostagem(idComentario);
     }
     @DeleteMapping("")
     public ResponseEntity<String> deletePostagem(@RequestParam Long idComentario){
