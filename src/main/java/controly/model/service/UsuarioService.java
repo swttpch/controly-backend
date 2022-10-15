@@ -110,4 +110,9 @@ public class UsuarioService {
         }
     }
 
+    public UsuarioEntity login(String email, String senha){
+        Optional<UsuarioEntity> usuarioPromisse = usuarioRepository.findByEmailAndSenha(email,senha);
+        return usuarioPromisse.orElse(null);
+    }
+
 }

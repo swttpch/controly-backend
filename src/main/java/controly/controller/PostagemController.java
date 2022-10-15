@@ -40,7 +40,7 @@ public class PostagemController {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<PostagemEntity>> pegarTodasDiscussoes(){
         return postagemService.todasPostagens();
     }

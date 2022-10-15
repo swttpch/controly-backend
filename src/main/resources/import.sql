@@ -1,6 +1,6 @@
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ("1", "te", "teste@teste.com", "12345678", 1);
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ("2", "te", "teste@teste.com", "12345678", 1);
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ("3", "te", "teste@teste.com", "12345678", 1);
+insert into tb_usuario (nome, apelido, email, senha, avatar) values ("1", "te1", "teste1@teste.com", "12345678", 1);
+insert into tb_usuario (nome, apelido, email, senha, avatar) values ("2", "te2", "teste2@teste.com", "12345678", 1);
+insert into tb_usuario (nome, apelido, email, senha, avatar) values ("3", "te3", "teste3@teste.com", "12345678", 1);
 insert into tb_topico (nome, descricao) values ("testeee1", "testesssasasaas");
 insert into tb_topico (nome, descricao) values ("testeee2", "testesssasasaas");
 insert into tb_topico (nome, descricao) values ("testeee3", "testesssasasaas");
