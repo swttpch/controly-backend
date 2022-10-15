@@ -40,12 +40,12 @@ public class PostagemController {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<PostagemEntity>> pegarTodasDiscussoes(){
         return postagemService.todasPostagens();
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@RequestParam Long idPostagem){
         return postagemService.pegarPostagemPeloId(idPostagem);
     }
@@ -66,7 +66,7 @@ public class PostagemController {
         return postar.postar(post);
     }
     @DeleteMapping("/comentario")
-    public ResponseEntity<String> deleteComentário(@RequestParam Long idComentario){
+    public ResponseEntity<String> deleteComentario(@RequestParam Long idComentario){
         return comentarioService.excluirPostagem(idComentario);
     }
 
@@ -82,7 +82,7 @@ public class PostagemController {
     public ResponseEntity<String> descerPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
     }
-    @DeleteMapping("")
+    @DeleteMapping
     public ResponseEntity<String> deletePostagem(@RequestParam Long idComentario){
         return postagemService.excluirPostagem(idComentario);
     }

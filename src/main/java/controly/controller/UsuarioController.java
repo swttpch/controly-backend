@@ -38,7 +38,7 @@ public class UsuarioController {
         return usuarioService.getListUsuarios();
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<String> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user){
         return usuarioService.cadastrarUsuario(user);
     }
