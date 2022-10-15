@@ -18,7 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbPostagem")
-@Data
 @SecondaryTable(name= "tbRespostaDuvida", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idPostagem"))
 public class PostagemEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -54,23 +53,82 @@ public class PostagemEntity implements Serializable {
     @JsonProperty
     public int getPontuacao(){
         return pontuacaoPostagem.stream().mapToInt(PontuacaoPostagem::getPontuacao).sum();
-        //        int count = 0;
-//        for (PontuacaoPostagem pontuacao : pontuacaoPostagem){
-//            count += pontuacao.getPontuacao();
-//        }
-//        return count;
     }
 
-    public PostagemEntity setResposta(ComentarioEntity resposta){
+    public void setResposta(ComentarioEntity resposta){
         respostaDuvidaEntity
                 .setResposta(resposta)
                 .setResolvido(true)
                 .setResolvidoEm(LocalDateTime.now());
-        return this;
     }
 
     public PostagemEntity initResposta(){
         respostaDuvidaEntity = new RespostaDuvidaEntity().setResolvido(false);
         return this;
+    }
+
+    public String getConteudo() {
+        return conteudo;
+    }
+
+    public void setConteudo(String conteudo) {
+        this.conteudo = conteudo;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
+    }
+
+    public void setCriadoEm(LocalDateTime criadoEm) {
+        this.criadoEm = criadoEm;
+    }
+
+    @Nullable
+    public LocalDateTime getAtualizadoEm() {
+        return atualizadoEm;
+    }
+
+    public void setAtualizadoEm(@Nullable LocalDateTime atualizadoEm) {
+        this.atualizadoEm = atualizadoEm;
+    }
+
+    public UsuarioEntity getDono() {
+        return dono;
+    }
+
+    public void setDono(UsuarioEntity dono) {
+        this.dono = dono;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public TopicoEntity getTopico() {
+        return topico;
+    }
+
+    public void setTopico(TopicoEntity topico) {
+        this.topico = topico;
+    }
+
+    public List<ComentarioEntity> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<ComentarioEntity> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public RespostaDuvidaEntity getRespostaDuvidaEntity() {
+        return respostaDuvidaEntity;
+    }
+
+    public void setRespostaDuvidaEntity(RespostaDuvidaEntity respostaDuvidaEntity) {
+        this.respostaDuvidaEntity = respostaDuvidaEntity;
     }
 }
