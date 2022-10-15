@@ -8,6 +8,7 @@ import controly.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import static controly.config.Constant.IDNOTFOUND;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -49,7 +50,7 @@ public class PostagemService {
         if (
             !validation.existsPostagem(postagem) ||
             !validation.existsUsuario(usuario)
-        ) return ResponseEntity.status(404).body("ID informado não existe.");
+        ) return ResponseEntity.status(404).body(IDNOTFOUND);
 
         if (!validation.existsPontuacaoWithPostagemAndUsuario(postagem, usuario)){
             pontuacaoPostagemRepository.save(
@@ -79,7 +80,7 @@ public class PostagemService {
 
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {
         if (!validation.existsPostagem(idPostagem))
-            return ResponseEntity.status(404).body("ID informado não existe.");
+            return ResponseEntity.status(404).body(IDNOTFOUND);
 
         postagemRepository.delete(
                 postagemRepository.findByIdPostagem(idPostagem)

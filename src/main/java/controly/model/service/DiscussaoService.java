@@ -8,6 +8,7 @@ import controly.controller.form.Postagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import static controly.config.Constant.IDNOTFOUND;
 
 @Service
 public class DiscussaoService implements Ipostagem {
@@ -32,7 +33,7 @@ public class DiscussaoService implements Ipostagem {
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem discussao) {
         if (!validation.existsUsuario(discussao.getIdUsuario()) || !validation.existsTopico(discussao.getIdTopico()))
-            return ResponseEntity.status(404).body("ID informado não existe.");
+            return ResponseEntity.status(404).body(IDNOTFOUND);
         postagemRepository.save(
                 discussao.converterPostagem(
                         topicoRepository.findByIdTopico(discussao.getIdTopico()),

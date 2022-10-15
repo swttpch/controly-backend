@@ -10,9 +10,7 @@ import controly.strategy.Ipostagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.rmi.NotBoundException;
-
+import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
@@ -36,7 +34,7 @@ public class ComentarioService implements Ipostagem {
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem post) {
         if (!validation.existsUsuario(post.getIdUsuario()) || !validation.existsPostagem(post.getIdPostagem()))
-            return ResponseEntity.status(404).body("ID informado não existe.");
+            return ResponseEntity.status(404).body(IDNOTFOUND);
         comentarioRepository.save(
                 post.converterPostagem(
                         postagemRepository.findByIdPostagem(post.getIdPostagem()),
@@ -48,7 +46,7 @@ public class ComentarioService implements Ipostagem {
 
     public ResponseEntity<String> excluirPostagem(Long idComentario) {
         if (!validation.existsComentario(idComentario))
-            return ResponseEntity.status(404).body("ID informado não existe.");
+            return ResponseEntity.status(404).body(IDNOTFOUND);
 
         comentarioRepository.delete(
                 comentarioRepository.findByIdComentario(idComentario)
@@ -58,7 +56,7 @@ public class ComentarioService implements Ipostagem {
 
     public ResponseEntity<String> curtirComentario(Long idComentario, Long idUsuario){
         if (!validation.existsComentario(idComentario) || !validation.existsUsuario(idUsuario))
-            return ResponseEntity.status(404).body("ID informado não existe.");
+            return ResponseEntity.status(404).body(IDNOTFOUND);
         ComentarioEntity comentario = comentarioRepository.findByIdComentario(idComentario);
         UsuarioEntity usuario = usuarioRepository.findByIdUsuario(idUsuario);
         if (comentario.usuarioCurtiu(usuario)){

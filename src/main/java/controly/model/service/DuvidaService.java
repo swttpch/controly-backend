@@ -9,6 +9,7 @@ import controly.strategy.Ipostagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import static controly.config.Constant.IDNOTFOUND;
 
 import javax.transaction.Transactional;
 
@@ -41,7 +42,7 @@ public class DuvidaService implements Ipostagem {
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem duvida) {
         if (!validation.existsTopico(duvida.getIdTopico()) || !validation.existsUsuario(duvida.getIdUsuario()))
-            return ResponseEntity.status(404).body("ID informado não existe.");
+            return ResponseEntity.status(404).body(IDNOTFOUND);
         postagemRepository.save(
                 duvida.converterPostagem(
                         topicoRepository.findByIdTopico(duvida.getIdTopico()),
@@ -54,7 +55,7 @@ public class DuvidaService implements Ipostagem {
     @Transactional
     public ResponseEntity<String> definirRespostaDaPostagem(Long idPostagem, Long idComentario){
         if (!validation.existsPostagem(idPostagem) || !validation.existsComentario(idComentario))
-            return ResponseEntity.status(404).body("ID informado não existe.");
+            return ResponseEntity.status(404).body(IDNOTFOUND);
         postagemRepository.findByIdPostagem(idPostagem)
             .setResposta(comentarioRepository.findByIdComentario(idComentario));
         return ResponseEntity.status(201).body("Resposta atribuida.");
