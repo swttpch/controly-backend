@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 
 @Component
 public interface Ipostagem {
-    @Transactional
+
     ResponseEntity enviarPostagem(Postagem post);
+
+
 }

@@ -13,8 +13,10 @@ import java.util.List;
 public class TopicoController {
 
     @Autowired
-    private TopicoService topicoService;
-
+    final private TopicoService topicoService;
+    public TopicoController(TopicoService topicoService) {
+        this.topicoService = topicoService;
+    }
     @GetMapping("/{id}")
     public ResponseEntity<TopicoEntity> getTopico(@PathVariable long id){
         return topicoService.getTopicoById(id);

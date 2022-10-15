@@ -1,34 +1,33 @@
 package controly.model.entity;
 
-import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
-
 @Entity
 @Table(name = "tbPontuacaoPostagem")
 public class PontuacaoPostagem {
     @EmbeddedId
-    private PontuacaoPostagemId id = new PontuacaoPostagemId();
+    final private PontuacaoPostagemId id = new PontuacaoPostagemId();
 
-    @ManyToOne
-    @MapsId("idPostagem")
+    @ManyToOne(cascade=CascadeType.ALL)
+    @MapsId("idPostagem") @JoinColumn(name = "idPostagem")
     private PostagemEntity postagem;
 
-    @ManyToOne
-    @MapsId("idUsuario")
+    @ManyToOne(cascade=CascadeType.ALL)
+    @MapsId("idUsuario") @JoinColumn(name = "idUsuario")
     private UsuarioEntity usuario;
 
     private int pontuacao;
 
-    public Long getIdPostagem(){
-        return postagem.getIdPostagem();
+    public PostagemEntity getPostagem() {
+        return postagem;
     }
 
-    public Long getIdUsuario(){
-        return usuario.getIdUsuario();
+    public UsuarioEntity getUsuario() {
+        return usuario;
     }
 
-    public int getPontuacao(){
+    public int getPontuacao() {
         return pontuacao;
     }
 

@@ -12,7 +12,11 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     @Autowired
-    private JavaMailSender emailSender;
+    final private JavaMailSender emailSender;
+
+    public EmailService(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
 
     public ResponseEntity<?> sendEmail(String nome, String email, String senha) {
 

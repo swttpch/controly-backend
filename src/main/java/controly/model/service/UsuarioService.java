@@ -2,7 +2,6 @@ package controly.model.service;
 
 import controly.controller.form.CadastrarNovoUsuarioForm;
 import controly.model.ValidacaoUsuario;
-import controly.model.entity.TopicoEntity;
 import controly.model.entity.UsuarioEntity;
 import controly.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,11 @@ import java.util.Optional;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
+
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @Transactional
     public ResponseEntity<String> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser){

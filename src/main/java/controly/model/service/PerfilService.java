@@ -13,16 +13,23 @@ import java.util.List;
 @Service
 public class PerfilService {
     @Autowired
-    UsuarioService usuarioService;
+    final private UsuarioService usuarioService;
 
     @Autowired
-    TopicoService topicoService;
+    final private TopicoService topicoService;
 
     @Autowired
-    private ValidationService validation;
+    final private ValidationService validation;
 
     @Autowired
-    PostagemService postagemService;
+    final private PostagemService postagemService;
+
+    public PerfilService(UsuarioService usuarioService, TopicoService topicoService, ValidationService validation, PostagemService postagemService) {
+        this.usuarioService = usuarioService;
+        this.topicoService = topicoService;
+        this.validation = validation;
+        this.postagemService = postagemService;
+    }
 
     public ResponseEntity<PerfilDTO> getPerfilById(Long id){
         if (!validation.existsUsuario(id)) return ResponseEntity.status(404).build();

@@ -2,32 +2,35 @@ package controly.model.service;
 
 import controly.model.entity.PontuacaoPostagem;
 import controly.model.entity.PostagemEntity;
-import controly.model.entity.TopicoEntity;
-import controly.model.entity.UsuarioEntity;
 import controly.repository.PontuacaoPostagemRepository;
 import controly.repository.PostagemRepository;
-import controly.repository.TopicoRepository;
 import controly.repository.UsuarioRepository;
-import controly.controller.form.Discussao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import static controly.config.Constant.IDNOTFOUND;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PostagemService {
     @Autowired
-    ValidationService validation;
+    final private ValidationService validation;
     @Autowired
-    PostagemRepository postagemRepository;
+    final private PostagemRepository postagemRepository;
     @Autowired
-    PontuacaoPostagemRepository pontuacaoPostagemRepository;
+    final private PontuacaoPostagemRepository pontuacaoPostagemRepository;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
+
+    public PostagemService(ValidationService validation, PostagemRepository postagemRepository, PontuacaoPostagemRepository pontuacaoPostagemRepository, UsuarioRepository usuarioRepository) {
+        this.validation = validation;
+        this.postagemRepository = postagemRepository;
+        this.pontuacaoPostagemRepository = pontuacaoPostagemRepository;
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @Transactional
     public ResponseEntity<List<PostagemEntity>> todasPostagens() {
@@ -43,12 +46,11 @@ public class PostagemService {
         return ResponseEntity.status(200).body(postagem);
     }
 
-    @Transactional
-    public ResponseEntity setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
+    public ResponseEntity<String> setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
         if (
             !validation.existsPostagem(postagem) ||
             !validation.existsUsuario(usuario)
-        ) return ResponseEntity.status(404).build();
+        ) return ResponseEntity.status(404).body(IDNOTFOUND);
 
         if (!validation.existsPontuacaoWithPostagemAndUsuario(postagem, usuario)){
             pontuacaoPostagemRepository.save(
@@ -60,7 +62,7 @@ public class PostagemService {
         } else {
             pontuacaoPostagemRepository.setPontuacaoFor(postagem, usuario, ponto);
         }
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a postagem de ID %d.", ponto, postagem));
     }
 
     @Transactional
@@ -74,6 +76,16 @@ public class PostagemService {
         return postagemEntityList.isEmpty()
                 ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(postagemEntityList);
+    }
+
+    public ResponseEntity<String> excluirPostagem(Long idPostagem) {
+        if (!validation.existsPostagem(idPostagem))
+            return ResponseEntity.status(404).body(IDNOTFOUND);
+
+        postagemRepository.delete(
+                postagemRepository.findByIdPostagem(idPostagem)
+        );
+        return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida.");
     }
 
 }

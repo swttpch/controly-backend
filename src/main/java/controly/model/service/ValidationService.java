@@ -1,25 +1,32 @@
 package controly.model.service;
 
-import controly.model.entity.PostagemEntity;
 import controly.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class ValidationService {
     @Autowired
-    PostagemRepository postagemRepository;
+    final private PostagemRepository postagemRepository;
     @Autowired
-    ComentarioRepository comentarioRepository;
+    final private ComentarioRepository comentarioRepository;
     @Autowired
-    UsuarioRepository usuarioRepository;
+    final private UsuarioRepository usuarioRepository;
     @Autowired
-    TopicoRepository topicoRepository;
+    final private TopicoRepository topicoRepository;
     @Autowired
-    PontuacaoPostagemRepository pontuacaoRepository;
+    final private PontuacaoPostagemRepository pontuacaoRepository;
+
+    public ValidationService(PostagemRepository postagemRepository, ComentarioRepository comentarioRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, PontuacaoPostagemRepository pontuacaoRepository) {
+        this.postagemRepository = postagemRepository;
+        this.comentarioRepository = comentarioRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.topicoRepository = topicoRepository;
+        this.pontuacaoRepository = pontuacaoRepository;
+    }
+
     @Transactional
     public boolean existsUsuario(Long idUsuario){
         return usuarioRepository.findById(idUsuario).isPresent();
