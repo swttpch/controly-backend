@@ -44,4 +44,13 @@ public class ComentarioEntity implements Serializable {
         return this;
     }
 
+    public int getQtdCurtidas(){
+        int count  = 0;
+        for (UsuarioEntity usuario:
+             curtidas) {
+            count++;
+        }
+        return count;
+    }
+
 }
