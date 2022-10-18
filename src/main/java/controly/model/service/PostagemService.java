@@ -65,19 +65,6 @@ public class PostagemService {
         return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a postagem de ID %d.", ponto, postagem));
     }
 
-    @Transactional
-    public ResponseEntity<List<PostagemEntity>> getPostagemByIdUser(Long idUser){
-        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
-
-        List<PostagemEntity> postagemEntityList = postagemRepository.findAll();
-
-        postagemEntityList.removeIf(postagem -> !postagem.getDono().getIdUsuario().equals(idUser));
-
-        return postagemEntityList.isEmpty()
-                ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(postagemEntityList);
-    }
-
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {
         if (!validation.existsPostagem(idPostagem))
             return ResponseEntity.status(404).body(IDNOTFOUND);
@@ -86,6 +73,17 @@ public class PostagemService {
                 postagemRepository.findByIdPostagem(idPostagem)
         );
         return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida.");
+    }
+
+    @Transactional
+    public ResponseEntity<List<PostagemEntity>> getPostagemByIdUser(Long idUser){
+        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
+
+        List<PostagemEntity> postagemEntityList = postagemRepository.findByDonoIdUsuario(idUser);
+
+        return postagemEntityList.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(postagemEntityList);
     }
 
 }
