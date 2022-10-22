@@ -1,6 +1,7 @@
 package controly.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,9 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity @Table(name = "tbComentario") @Data @NoArgsConstructor @AllArgsConstructor
 public class ComentarioEntity implements Serializable {
@@ -26,31 +29,14 @@ public class ComentarioEntity implements Serializable {
     @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
     private PostagemEntity postagem;
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name = "tbComentarioHasCurtidas", joinColumns =
-            {@JoinColumn(name = "idComentario")}, inverseJoinColumns =
-            {@JoinColumn(name= "idUsuario")}) @JsonIgnore
-    private List<UsuarioEntity> curtidas;
+    @OneToMany(mappedBy = "comentario",cascade=CascadeType.ALL) @JsonIgnore
+    private Set<PontuacaoComentario> pontuacaoComentarios = new HashSet<>();
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")
     private UsuarioEntity dono;
 
-    public boolean usuarioCurtiu(UsuarioEntity usuario) {
-        return curtidas.contains(usuario);
+    @JsonProperty
+    public int getPontuacao(){
+        return pontuacaoComentarios.stream().mapToInt(PontuacaoComentario::getPontuacao).sum();
     }
-
-    public ComentarioEntity adicionarCurtida(UsuarioEntity usuario){
-        curtidas.add(usuario);
-        return this;
-    }
-
-    public int getQtdCurtidas(){
-        int count  = 0;
-        for (UsuarioEntity usuario:
-             curtidas) {
-            count++;
-        }
-        return count;
-    }
-
 }

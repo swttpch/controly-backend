@@ -14,10 +14,10 @@ public interface PontuacaoPostagemRepository extends JpaRepository<PontuacaoPost
 
     Optional<List<PontuacaoPostagem>> findByPostagem(PostagemEntity postagem);
 
-    @Query(value = "select * from tb_pontuacao_postagem where postagem_id_postagem = ?1 AND usuario_id_usuario = ?2", nativeQuery = true)
+    @Query(value = "select * from tb_pontuacao_postagem where id_postagem = ?1 AND id_usuario = ?2", nativeQuery = true)
     Optional<PontuacaoPostagem> existByPostagemAndUsuario(Long idpostagem, Long idusuario);
 
     @Modifying
-    @Query(value="update tb_pontuacao_postagem set pontuacao = ?3 where postagem_id_postagem = ?1 AND usuario_id_usuario = ?2", nativeQuery = true)
+    @Query(value="update tb_pontuacao_postagem set pontuacao = ?3 where id_postagem = ?1 AND id_usuario = ?2", nativeQuery = true)
     int setPontuacaoFor(Long idpostagem, Long idusuario, int pontuacao);
 }
