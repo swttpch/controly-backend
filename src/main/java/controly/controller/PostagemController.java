@@ -1,6 +1,7 @@
 package controly.controller;
 
 import controly.controller.form.*;
+import controly.model.entity.ComentarioEntity;
 import controly.model.entity.PostagemEntity;
 import controly.model.service.ComentarioService;
 import controly.model.service.DiscussaoService;
@@ -64,6 +65,10 @@ public class PostagemController {
     public ResponseEntity<String> cadastrarComentario(@RequestBody Comentario post) {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
+    }
+    @GetMapping("/comentario")
+    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@RequestParam Long idPostagem){
+        return comentarioService.getAllCommentsFromPost(idPostagem);
     }
     @DeleteMapping("/comentario")
     public ResponseEntity<String> deleteComentario(@RequestParam Long idComentario){
