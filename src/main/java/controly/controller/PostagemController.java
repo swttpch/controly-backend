@@ -69,18 +69,21 @@ public class PostagemController {
     public ResponseEntity<String> deleteComentario(@RequestParam Long idComentario){
         return comentarioService.excluirPostagem(idComentario);
     }
-
-    @PutMapping("/comentario/curtir")
-    public ResponseEntity<String> curtirComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario) {
-        return comentarioService.curtirComentario(idComentario, idUsuario);
-    }
-    @PutMapping("/subir")
+    @PutMapping("/postagem/subir")
     public ResponseEntity<String> subirPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, 1);
     }
-    @PutMapping("/descer")
+    @PutMapping("/postagem/descer")
     public ResponseEntity<String> descerPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
+    }
+    @PutMapping("/comentario/subir")
+    public ResponseEntity<String> subirComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
+        return comentarioService.setPontuacaoComentario(idComentario, idUsuario, 1);
+    }
+    @PutMapping("/comentario/descer")
+    public ResponseEntity<String> descerComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
+        return comentarioService.setPontuacaoComentario(idComentario, idUsuario, -1);
     }
     @DeleteMapping
     public ResponseEntity<String> deletePostagem(@RequestParam Long idComentario){

@@ -36,4 +36,28 @@ insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentár
 insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário3 na postagem3", 3, 3);
 insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário4 na postagem3", 3, 3);
 
-insert into tb_resposta_duvida (resolvido, resolvido_em, id_resposta, id_postagem) values (1, "2022-10-22", 8, 3)
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (1, 1, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (1, 2, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (1, 3, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (2, 1, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (2, 2, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (2, 3, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (3, 1, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (3, 2, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (3, 3, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (4, 1, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (4, 2, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (4, 3, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (5, 1, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (5, 2, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (5, 3, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (6, 1, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (6, 2, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (6, 3, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (7, 1, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (7, 2, -1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (7, 3, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (8, 1, 1);
+insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (8, 2, 1);
+
+insert into tb_resposta_duvida (resolvido, resolvido_em, id_resposta, id_postagem) values (1, "2022-10-22", 8, 3);

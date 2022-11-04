@@ -17,14 +17,18 @@ public class ValidationService {
     @Autowired
     final private TopicoRepository topicoRepository;
     @Autowired
-    final private PontuacaoPostagemRepository pontuacaoRepository;
+    final private PontuacaoPostagemRepository pontuacaoPostagemRepository;
 
-    public ValidationService(PostagemRepository postagemRepository, ComentarioRepository comentarioRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, PontuacaoPostagemRepository pontuacaoRepository) {
+    @Autowired
+    final private PontuacaoComentarioRepository pontuacaoComentarioRepository;
+
+    public ValidationService(PostagemRepository postagemRepository, ComentarioRepository comentarioRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, PontuacaoPostagemRepository pontuacaoPostagemRepository, PontuacaoComentarioRepository pontuacaoComentarioRepository) {
         this.postagemRepository = postagemRepository;
         this.comentarioRepository = comentarioRepository;
         this.usuarioRepository = usuarioRepository;
         this.topicoRepository = topicoRepository;
-        this.pontuacaoRepository = pontuacaoRepository;
+        this.pontuacaoPostagemRepository = pontuacaoPostagemRepository;
+        this.pontuacaoComentarioRepository = pontuacaoComentarioRepository;
     }
 
     @Transactional
@@ -47,6 +51,11 @@ public class ValidationService {
 
     @Transactional
     public boolean existsPontuacaoWithPostagemAndUsuario(Long idPostagem, Long idUsuario){
-        return pontuacaoRepository.existByPostagemAndUsuario(idPostagem, idUsuario).isPresent();
+        return pontuacaoPostagemRepository.existByPostagemAndUsuario(idPostagem, idUsuario).isPresent();
     }
+    @Transactional
+    public boolean existsPontuacaoWithComentarioAndUsuario(Long idComentario, Long idUsuario){
+        return pontuacaoComentarioRepository.existByComentarioAndUsuario(idComentario, idUsuario).isPresent();
+    }
+
 }
