@@ -9,8 +9,8 @@ import java.util.List;
 public interface TopicoRepository extends JpaRepository<TopicoEntity,Long> {
     TopicoEntity findByIdTopico(Long id);
 
-    @Query(nativeQuery = true, value = "select t.* from tb_topico_has_seguidores tp " +
-            "join tb_topico t " +
-            "on t.id_topico = tp.id_topico where id_usuario = :idUsuario")
+//    @Query(nativeQuery = true, value = "select t.* from tb_topico_has_seguidores tp " +
+//            "join tb_topico t " +
+//            "on t.id_topico = tp.id_topico where id_usuario = :idUsuario")
     List<TopicoEntity> findTopicoByIdUsuario(Long idUsuario);
 }

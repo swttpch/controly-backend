@@ -1,6 +1,8 @@
 package controly.model.service;
 
 import controly.model.entity.TopicoEntity;
+import controly.model.entity.TopicoHasSeguidoresEntity;
+import controly.repository.TopicoHasSeguidoresRepositoy;
 import controly.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,10 @@ import javax.transaction.Transactional;
 public class TopicoService {
     @Autowired
     final private TopicoRepository topicoRepository;
+
+    @Autowired
+    private TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
+
     @Autowired
     final private ValidationService validation;
 
@@ -36,11 +42,10 @@ public class TopicoService {
         return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
     }
 
-    @Transactional
-    public ResponseEntity<List<TopicoEntity>> getTopicosByIdUser(Long idUser) {
+    public ResponseEntity<List<TopicoHasSeguidoresEntity>> getTopicosByIdUser(Long idUser) {
         if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
 
-        List<TopicoEntity> topicoEntityList = topicoRepository.findTopicoByIdUsuario(idUser);
+        List<TopicoHasSeguidoresEntity> topicoEntityList = topicoHasSeguidoresRepositoy.findTopicosHasSeguidoresByIdUsuario(idUser);
 
         return topicoEntityList.isEmpty()
                 ? ResponseEntity.status(204).build()
