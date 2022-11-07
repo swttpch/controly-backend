@@ -17,6 +17,4 @@ public class PerfilController {
         public ResponseEntity<PerfilDTO> getPerfilById(@PathVariable long id){
             return perfilService.getPerfilById(id);
         }
-
-
 }

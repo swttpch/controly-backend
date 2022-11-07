@@ -1,6 +1,8 @@
 package controly.controller;
 
 import controly.controller.form.*;
+import controly.model.entity.ComentarioEntity;
+import controly.model.entity.PontuacaoPostagem;
 import controly.model.entity.PostagemEntity;
 import controly.model.service.ComentarioService;
 import controly.model.service.DiscussaoService;
@@ -65,6 +67,10 @@ public class PostagemController {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
     }
+    @GetMapping("/comentario")
+    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@RequestParam Long idPostagem){
+        return comentarioService.getAllCommentsFromPost(idPostagem);
+    }
     @DeleteMapping("/comentario")
     public ResponseEntity<String> deleteComentario(@RequestParam Long idComentario){
         return comentarioService.excluirPostagem(idComentario);
@@ -88,5 +94,10 @@ public class PostagemController {
     @DeleteMapping
     public ResponseEntity<String> deletePostagem(@RequestParam Long idComentario){
         return postagemService.excluirPostagem(idComentario);
+    }
+
+    @PutMapping("teste/{postagem}/{usuario}/{ponto}")
+    public ResponseEntity<PontuacaoPostagem> teste(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
+        return postagemService.findPontuacaoPostagem(postagem, usuario,ponto);
     }
 }

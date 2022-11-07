@@ -86,4 +86,10 @@ public class PostagemService {
                 : ResponseEntity.status(200).body(postagemEntityList);
     }
 
+    @Transactional
+    public ResponseEntity<PontuacaoPostagem> findPontuacaoPostagem(Long postagem, Long usuario, int pontuacao){
+        PontuacaoPostagem pontuacaoPostagem = pontuacaoPostagemRepository.findByPostagemIdPostagemAndUsuarioIdUsuario(postagem, usuario).get();
+        pontuacaoPostagem.setPontuacao(pontuacao);
+        return  ResponseEntity.status(200).body(pontuacaoPostagem);
+    }
 }

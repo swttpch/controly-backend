@@ -37,17 +37,6 @@ public class TopicoService {
     }
 
     @Transactional
-    public ResponseEntity<List<TopicoEntity>> getTopicosByIdUser(Long idUser) {
-        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
-
-        List<TopicoEntity> topicoEntityList = topicoRepository.findTopicoByIdUsuario(idUser);
-
-        return topicoEntityList.isEmpty()
-                ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(topicoEntityList);
-    }
-
-    @Transactional
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
         topicoRepository.save(topicoEntity);
         return ResponseEntity.status(201).body(topicoEntity);
