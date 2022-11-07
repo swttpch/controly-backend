@@ -1,6 +1,6 @@
 package controly.strategy;
 
-import controly.controller.form.Postagem;
+import controly.postagem.entities.Postagem;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ public class Postar {
         this.postagem = postagem;
     }
 
-    public ResponseEntity<String> postar(Postagem post){
+    public ResponseEntity postar(Postagem post){
         return postagem.enviarPostagem(post);
     }
 
