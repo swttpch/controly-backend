@@ -13,10 +13,10 @@ public class PerfilController {
         @Autowired
         private PerfilService perfilService;
 
-        @GetMapping("/{id}")
-        public ResponseEntity<PerfilDTO> getPerfilById(@PathVariable long id){
-            return perfilService.getPerfilById(id);
-        }
+//        @GetMapping("/{id}")
+//        public ResponseEntity<PerfilDTO> getPerfilById(@PathVariable long id){
+//            return perfilService.getPerfilById(id);
+//        }
 
 
 }
