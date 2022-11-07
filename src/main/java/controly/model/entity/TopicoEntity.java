@@ -26,20 +26,6 @@ public class TopicoEntity {
     @NotNull
     private String descricao;
 
-    @ManyToMany
-    @JoinTable(name = "tbTopicoHasSeguidores", joinColumns =
-            {@JoinColumn(name = "idTopico")}, inverseJoinColumns =
-            {@JoinColumn(name= "idUsuario")})
-    private Set<UsuarioEntity> seguidores;
-
-    public int getSeguidores() {
-        return seguidores != null ? seguidores.size() : 0;
-    }
-
-    public void addSeguidores(UsuarioEntity usuario) {
-            seguidores.add(usuario);
-
-    }
 
     public TopicoEntity() {
     }
