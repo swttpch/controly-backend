@@ -1,5 +1,8 @@
 package controly.model.entity;
 
+import controly.perfilAndUsuario.entities.UsuarioEntity;
+import controly.topico.entities.TopicoEntity;
+
 import javax.persistence.*;
 import static javax.persistence.GenerationType.IDENTITY;
 

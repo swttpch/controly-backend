@@ -1,7 +1,7 @@
 package controly.perfilAndUsuario.dto;
 
+import controly.model.entity.TopicoHasSeguidoresEntity;
 import controly.postagem.entities.PostagemEntity;
-import controly.topico.entities.TopicoEntity;
 import controly.perfilAndUsuario.entities.UsuarioEntity;
 import lombok.Data;
 
@@ -12,7 +12,7 @@ public class PerfilDTO {
 
     private UsuarioEntity usuario;
     private List<PostagemEntity> postagens;
-    private List<TopicoEntity> topicos_seguidos;
+    private List<TopicoHasSeguidoresEntity> topicos_seguidos;
 
 
 }

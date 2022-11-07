@@ -2,7 +2,7 @@ package controly.topico.service;
 
 import controly.topico.entities.TopicoEntity;
 import controly.model.entity.TopicoHasSeguidoresEntity;
-import controly.repository.TopicoHasSeguidoresRepositoy;
+import controly.topico.repository.TopicoHasSeguidoresRepositoy;
 import controly.service.ValidationService;
 import controly.topico.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
