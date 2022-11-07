@@ -20,4 +20,7 @@ public interface PontuacaoPostagemRepository extends JpaRepository<PontuacaoPost
     @Modifying
     @Query(value="update PontuacaoPostagem p set p.pontuacao = ?3 where p.postagem.idPostagem = ?1 AND p.usuario.idUsuario = ?2")
     int setPontuacaoFor(Long idpostagem, Long idusuario, int pontuacao);
+
+    @Query
+    Optional<PontuacaoPostagem> findByPostagemIdPostagemAndUsuarioIdUsuario(Long idpostagem, Long idusuario);
 }

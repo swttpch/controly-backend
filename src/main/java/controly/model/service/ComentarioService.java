@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.util.List;
+
 import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class ComentarioService implements Ipostagem {
@@ -79,5 +81,16 @@ public class ComentarioService implements Ipostagem {
             pontuacaoComentarioRepository.setPontuacaoFor(comentario, usuario, ponto);
         }
         return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a comentário de ID %d.", ponto, comentario));
+    }
+
+    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(Long idPostagem) {
+        if (
+                !validation.existsPostagem(idPostagem)
+        ) return ResponseEntity.status(404).build();
+        List<ComentarioEntity> comentarios = comentarioRepository.findByPostagemIdPostagem(idPostagem);
+        if (comentarios.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+        return ResponseEntity.status(200).body(comentarios);
     }
 }
