@@ -1,11 +1,11 @@
 package controly.service;
 
-import controly.comentario.repository.ComentarioRepository;
-import controly.perfilAndUsuario.repository.UsuarioRepository;
-import controly.pontuacao.repository.PontuacaoComentarioRepository;
-import controly.pontuacao.repository.PontuacaoPostagemRepository;
-import controly.postagem.repository.PostagemRepository;
-import controly.topico.repository.TopicoRepository;
+import controly.modules.comentario.repository.ComentarioRepository;
+import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
+import controly.modules.postagem.repository.PontuacaoComentarioRepository;
+import controly.modules.postagem.repository.PontuacaoPostagemRepository;
+import controly.modules.postagem.repository.PostagemRepository;
+import controly.modules.topico.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

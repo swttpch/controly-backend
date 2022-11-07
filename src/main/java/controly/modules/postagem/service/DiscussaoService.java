@@ -1,0 +1,48 @@
+package controly.modules.postagem.service;
+
+import controly.service.ValidationService;
+import controly.modules.postagem.repository.PostagemRepository;
+import controly.modules.topico.repository.TopicoRepository;
+import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
+import controly.strategy.Ipostagem;
+import controly.modules.postagem.entities.Postagem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import static controly.config.Constant.IDNOTFOUND;
+
+@Service
+public class DiscussaoService implements Ipostagem {
+    @Autowired
+    final private PostagemRepository postagemRepository;
+
+    @Autowired
+    final private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    final private TopicoRepository topicoRepository;
+    @Autowired
+    final private ValidationService validation;
+
+    public DiscussaoService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, ValidationService validation) {
+        this.postagemRepository = postagemRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.topicoRepository = topicoRepository;
+        this.validation = validation;
+    }
+
+    @Override
+    public ResponseEntity<String> enviarPostagem(Postagem discussao) {
+        if (validation.existsUsuario(discussao.getIdUsuario()) || validation.existsTopico(discussao.getIdTopico()))
+            return ResponseEntity.status(404).body(IDNOTFOUND);
+        postagemRepository.save(
+                discussao.converterPostagem(
+                        topicoRepository.findByIdTopico(discussao.getIdTopico()),
+                        usuarioRepository.findByIdUsuario(discussao.getIdUsuario())
+                )
+        );
+        return ResponseEntity.status(201).body("Discussão postada.");
+    }
+
+
+}

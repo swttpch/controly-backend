@@ -1,6 +1,6 @@
 package controly.strategy;
 
-import controly.postagem.entities.Postagem;
+import controly.modules.postagem.entities.Postagem;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
