@@ -1,13 +1,13 @@
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ("nome1", "apelido1", "teste1@teste.com", "12345678", 1);
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ("nome2", "apelido2", "teste2@teste.com", "12345678", 1);
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ("nome3", "apelido3", "teste3@teste.com", "12345678", 1);
-insert into tb_topico (nome, descricao) values ("topico1", "Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds");
-insert into tb_topico (nome, descricao) values ("topico2", "Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds");
-insert into tb_topico (nome, descricao) values ("topico3", "Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds");
+insert into tb_usuario (nome, apelido, email, senha, avatar) values ('nome1', 'apelido1', 'teste1@teste.com', '12345678', 1);
+insert into tb_usuario (nome, apelido, email, senha, avatar) values ('nome2', 'apelido2', 'teste2@teste.com', '12345678', 1);
+insert into tb_usuario (nome, apelido, email, senha, avatar) values ('nome3', 'apelido3', 'teste3@teste.com', '12345678', 1);
+insert into tb_topico (nome, descricao) values ('topico1', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
+insert into tb_topico (nome, descricao) values ('topico2', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
+insert into tb_topico (nome, descricao) values ('topico3', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
 
-insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (1, "Discussao1", "conteudo da postagem1", 1 , 3);
-insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (2, "Discussao2", "conteudo da postagem1", 2 , 2);
-insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (3, "Duvida1", "conteudo da postagem1", 3 , 1);
+insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (1, 'Discussao1', 'conteudo da postagem1', 1 , 3);
+insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (2, 'Discussao2', 'conteudo da postagem1', 2 , 2);
+insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (3, 'Duvida1', 'conteudo da postagem1', 3 , 1);
 insert into tb_pontuacao_postagem (id_postagem, id_usuario, pontuacao) values (1, 1, -1);
 insert into tb_pontuacao_postagem (id_postagem, id_usuario, pontuacao) values (1, 2, 1);
 insert into tb_pontuacao_postagem (id_postagem, id_usuario, pontuacao) values (1, 3, -1);
@@ -19,22 +19,15 @@ insert into tb_pontuacao_postagem (id_postagem, id_usuario, pontuacao) values (3
 insert into tb_pontuacao_postagem (id_postagem, id_usuario, pontuacao) values (3, 3, 1);
 
 
-insert into tb_topico_has_seguidores (id_usuario, id_topico) values (1, 1);
-insert into tb_topico_has_seguidores (id_usuario, id_topico) values (1, 2);
-insert into tb_topico_has_seguidores (id_usuario, id_topico) values (1, 3);
-insert into tb_topico_has_seguidores (id_usuario, id_topico) values (2, 1);
-insert into tb_topico_has_seguidores (id_usuario, id_topico) values (2, 2);
-insert into tb_topico_has_seguidores (id_usuario, id_topico) values (3, 1);
-
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário1 na postagem1", 1, 1);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário2 na postagem1", 2, 1);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário3 na postagem1", 3, 1);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário1 na postagem2", 1, 2);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário2 na postagem2", 2, 2);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário1 na postagem3", 1, 3);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário2 na postagem3", 2, 3);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário3 na postagem3", 3, 3);
-insert into tb_comentario (conteudo, id_usuario, id_postagem) values ("Comentário4 na postagem3", 3, 3);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário1 na postagem1', 1, 1);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário2 na postagem1', 2, 1);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário3 na postagem1', 3, 1);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário1 na postagem2', 1, 2);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário2 na postagem2', 2, 2);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário1 na postagem3', 1, 3);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário2 na postagem3', 2, 3);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário3 na postagem3', 3, 3);
+insert into tb_comentario (conteudo, id_usuario, id_postagem) values ('Comentário4 na postagem3', 3, 3);
 
 insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (1, 1, 1);
 insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (1, 2, -1);
@@ -60,4 +53,4 @@ insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values
 insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (8, 1, 1);
 insert into tb_pontuacao_comentario(id_comentario, id_usuario, pontuacao) values (8, 2, 1);
 
-insert into tb_resposta_duvida (resolvido, resolvido_em, id_resposta, id_postagem) values (1, "2022-10-22", 8, 3);
+insert into tb_resposta_duvida (resolvido, resolvido_em, id_resposta, id_postagem) values (1, '2022-10-22', 8, 3);
