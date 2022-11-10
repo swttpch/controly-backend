@@ -1,9 +1,19 @@
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ('nome1', 'apelido1', 'teste1@teste.com', '12345678', 1);
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ('nome2', 'apelido2', 'teste2@teste.com', '12345678', 1);
-insert into tb_usuario (nome, apelido, email, senha, avatar) values ('nome3', 'apelido3', 'teste3@teste.com', '12345678', 1);
+insert into tb_usuario (id_usuario,nome, apelido, email, senha, avatar) values (1,'ADMINISTRADOR', 'adm', 'adm@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1);
+insert into tb_usuario (id_usuario,nome, apelido, email, senha, avatar) values (2,'MODERADOR', 'mod', 'mod@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1);
+insert into tb_usuario (id_usuario,nome, apelido, email, senha, avatar) values (3,'USUARIO', 'usr', 'usr@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1);
 insert into tb_topico (nome, descricao) values ('topico1', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
 insert into tb_topico (nome, descricao) values ('topico2', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
 insert into tb_topico (nome, descricao) values ('topico3', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
+
+insert into tb_role values
+(1,'ROLE_ADM'),
+(2,'ROLE_MOD'),
+(3,'ROLE_USR');
+
+INSERT INTO tb_usuario_roles values
+(1,1),
+(2,2),
+(3,3);
 
 insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (1, 'Discussao1', 'conteudo da postagem1', 1 , 3);
 insert into tb_postagem (id_postagem, titulo, conteudo, id_usuario, id_topico) values (2, 'Discussao2', 'conteudo da postagem1', 2 , 2);

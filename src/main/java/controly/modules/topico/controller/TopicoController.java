@@ -4,6 +4,7 @@ import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.topico.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,16 +18,20 @@ public class TopicoController {
     public TopicoController(TopicoService topicoService) {
         this.topicoService = topicoService;
     }
+
+    @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping("/{id}")
     public ResponseEntity<TopicoEntity> getTopico(@PathVariable long id){
         return topicoService.getTopicoById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping
     public ResponseEntity<List<TopicoEntity>> getTopicos(){
         return topicoService.getTopicos();
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
         return topicoService.postTopicos(topicoEntity);

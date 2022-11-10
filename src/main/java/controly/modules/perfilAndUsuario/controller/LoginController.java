@@ -4,6 +4,7 @@ import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,8 @@ public class LoginController {
     public LoginController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
+
+    @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping
     public ResponseEntity getCurrentLogin(){
         if (usuario == null) {
@@ -24,6 +27,7 @@ public class LoginController {
         return ResponseEntity.status(200).body(usuario);
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping
     public ResponseEntity login(@RequestParam String email, @RequestParam String senha){
         UsuarioEntity usuarioPromisse = usuarioService.login(email, senha);
@@ -34,6 +38,7 @@ public class LoginController {
         return ResponseEntity.status(200).body(usuario);
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @DeleteMapping
     public ResponseEntity logoff(){
         if (usuario == null) {
