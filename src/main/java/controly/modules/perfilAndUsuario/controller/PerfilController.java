@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class PerfilController {
 
         @Autowired
-        private PerfilService perfilService;
+        private final PerfilService perfilService;
+
+        public PerfilController(PerfilService perfilService) {
+                this.perfilService = perfilService;
+        }
 
         @GetMapping("/{id}")
         public ResponseEntity<PerfilDTO> getPerfilById(@PathVariable long id){

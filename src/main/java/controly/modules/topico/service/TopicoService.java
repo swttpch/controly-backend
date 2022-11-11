@@ -19,13 +19,14 @@ public class TopicoService {
     final private TopicoRepository topicoRepository;
 
     @Autowired
-    private TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
+    private final TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
 
     @Autowired
     final private ValidationService validation;
 
-    public TopicoService(TopicoRepository topicoRepository, ValidationService validation) {
+    public TopicoService(TopicoRepository topicoRepository, TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy, ValidationService validation) {
         this.topicoRepository = topicoRepository;
+        this.topicoHasSeguidoresRepositoy = topicoHasSeguidoresRepositoy;
         this.validation = validation;
     }
 
@@ -44,9 +45,9 @@ public class TopicoService {
     }
 
     public ResponseEntity<List<TopicoHasSeguidoresEntity>> getTopicosByIdUser(Long idUser) {
-        if (!validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
+        if (validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
 
-        List<TopicoHasSeguidoresEntity> topicoEntityList = topicoHasSeguidoresRepositoy.findTopicosHasSeguidoresByIdUsuario(idUser);
+        List<TopicoHasSeguidoresEntity> topicoEntityList = topicoHasSeguidoresRepositoy.findTopicosHasSeguidoresTopicoEntityByUsuario_IdUsuario(idUser);
 
         return topicoEntityList.isEmpty()
                 ? ResponseEntity.status(204).build()

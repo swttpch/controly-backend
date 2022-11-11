@@ -1,21 +1,24 @@
 package controly.model.entity;
 
-import controly.perfilAndUsuario.entities.UsuarioEntity;
-import controly.topico.entities.TopicoEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
+import controly.modules.topico.entities.TopicoEntity;
 
 import javax.persistence.*;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
+@Table(name = "tb_topico_has_seguidores")
 public class TopicoHasSeguidoresEntity {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = IDENTITY) @JsonIgnore
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "id_usuario", referencedColumnName = "idUsuario")
+    @JsonIgnore
     private UsuarioEntity usuario;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "id_topico", referencedColumnName = "idTopico")
     private TopicoEntity topico;
 
     public Long getId() {

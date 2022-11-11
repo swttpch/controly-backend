@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TopicoHasSeguidoresRepositoy extends JpaRepository<TopicoHasSeguidoresEntity, Long > {
-    List<TopicoHasSeguidoresEntity> findTopicosHasSeguidoresByIdUsuario(Long idUsuario);
+    List<TopicoHasSeguidoresEntity> findTopicosHasSeguidoresTopicoEntityByUsuario_IdUsuario(Long idUsuario);
 }

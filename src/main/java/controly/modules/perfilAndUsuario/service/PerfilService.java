@@ -2,12 +2,9 @@ package controly.modules.perfilAndUsuario.service;
 
 import controly.modules.perfilAndUsuario.dto.PerfilDTO;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
+import controly.modules.topico.service.TopicoService;
 import controly.service.ValidationService;
-import controly.postagem.entities.PostagemEntity;
-import controly.postagem.service.PostagemService;
 import controly.model.entity.TopicoHasSeguidoresEntity;
-import controly.perfilAndUsuario.entities.UsuarioEntity;
-import controly.topico.service.TopicoService;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.modules.postagem.service.PostagemService;
 import org.springframework.beans.factory.annotation.Autowired;
