@@ -1,6 +1,8 @@
 package controly.modules.topico.service;
 
 import controly.modules.topico.entities.TopicoEntity;
+import controly.model.entity.TopicoHasSeguidoresEntity;
+import controly.topico.repository.TopicoHasSeguidoresRepositoy;
 import controly.service.ValidationService;
 import controly.modules.topico.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,16 @@ import javax.transaction.Transactional;
 public class TopicoService {
     @Autowired
     final private TopicoRepository topicoRepository;
+
+    @Autowired
+    private final TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
+
     @Autowired
     final private ValidationService validation;
 
-    public TopicoService(TopicoRepository topicoRepository, ValidationService validation) {
+    public TopicoService(TopicoRepository topicoRepository, TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy, ValidationService validation) {
         this.topicoRepository = topicoRepository;
+        this.topicoHasSeguidoresRepositoy = topicoHasSeguidoresRepositoy;
         this.validation = validation;
     }
 
@@ -35,6 +42,16 @@ public class TopicoService {
     public ResponseEntity<TopicoEntity> getTopicoById(Long id) {
         if (validation.existsTopico(id)) return ResponseEntity.status(404).build();
         return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
+    }
+
+    public ResponseEntity<List<TopicoHasSeguidoresEntity>> getTopicosByIdUser(Long idUser) {
+        if (validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
+
+        List<TopicoHasSeguidoresEntity> topicoEntityList = topicoHasSeguidoresRepositoy.findTopicosHasSeguidoresTopicoEntityByUsuario_IdUsuario(idUser);
+
+        return topicoEntityList.isEmpty()
+                ? ResponseEntity.status(204).build()
+                : ResponseEntity.status(200).body(topicoEntityList);
     }
 
     @Transactional

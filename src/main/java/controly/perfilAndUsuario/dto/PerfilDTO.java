@@ -1,4 +1,4 @@
-package controly.modules.perfilAndUsuario.dto;
+package controly.perfilAndUsuario.dto;
 
 import controly.model.entity.TopicoHasSeguidoresEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
