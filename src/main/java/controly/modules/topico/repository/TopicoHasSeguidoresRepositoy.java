@@ -1,7 +1,6 @@
-package controly.topico.repository;
+package controly.modules.topico.repository;
 
 import controly.model.entity.TopicoHasSeguidoresEntity;
-import controly.modules.topico.entities.TopicoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
