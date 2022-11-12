@@ -1,6 +1,7 @@
 package controly.modules.topico.entities;
 import javax.persistence.*;
 
+import controly.model.entity.TopicoHasSeguidoresEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.bytebuddy.utility.nullability.MaybeNull;

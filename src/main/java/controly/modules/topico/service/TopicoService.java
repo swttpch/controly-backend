@@ -1,5 +1,6 @@
 package controly.modules.topico.service;
 
+import controly.modules.topico.TopicoDTO;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.model.entity.TopicoHasSeguidoresEntity;
 import controly.topico.repository.TopicoHasSeguidoresRepositoy;
@@ -30,12 +31,28 @@ public class TopicoService {
         this.validation = validation;
     }
 
-    public ResponseEntity<List<TopicoEntity>> getTopicos() {
-        List<TopicoEntity> lista = topicoRepository.findAll();
+    public ResponseEntity<List<TopicoDTO>> getTopicos() {
+        List<TopicoEntity> topicos = topicoRepository.findAll();
 
-        return lista.isEmpty()
+        List<TopicoDTO> topicoDTOList = new ArrayList<>();
+
+
+        for (TopicoEntity topico : topicos) {
+
+            TopicoDTO topicoDT = new TopicoDTO();
+
+            topicoDT.setIdTopico(topico.getIdTopico());
+            topicoDT.setNome(topico.getNome());
+            topicoDT.setDescricao(topico.getDescricao());
+            topicoDT.setSeguidores(topicoHasSeguidoresRepositoy.countTopicoHasSeguidoresByIdUsuario(topico.getIdTopico()));
+
+            topicoDTOList.add(topicoDT);
+
+        }
+
+        return topicoDTOList.isEmpty()
                 ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(lista);
+                : ResponseEntity.status(200).body(topicoDTOList);
     }
 
     @Transactional
