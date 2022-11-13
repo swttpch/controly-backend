@@ -4,7 +4,7 @@ import controly.modules.perfilAndUsuario.dto.PerfilDTO;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.topico.service.TopicoService;
 import controly.service.ValidationService;
-import controly.model.entity.TopicoHasSeguidoresEntity;
+import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.modules.postagem.service.PostagemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 @Service
 public class PerfilService {
     @Autowired

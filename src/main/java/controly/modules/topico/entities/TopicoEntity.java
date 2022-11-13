@@ -1,19 +1,12 @@
 package controly.modules.topico.entities;
 import javax.persistence.*;
 
-import controly.model.entity.TopicoHasSeguidoresEntity;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.bytebuddy.utility.nullability.MaybeNull;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity
 @Table(name="tbTopico")
-@AllArgsConstructor
 @Data
 public class TopicoEntity {
 
@@ -27,15 +20,4 @@ public class TopicoEntity {
     @NotNull
     private String descricao;
 
-
-    public TopicoEntity() {
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }

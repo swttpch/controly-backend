@@ -1,6 +1,6 @@
 package controly.modules.perfilAndUsuario.dto;
 
-import controly.model.entity.TopicoHasSeguidoresEntity;
+import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.postagem.entities.PostagemEntity;
 import lombok.Data;
