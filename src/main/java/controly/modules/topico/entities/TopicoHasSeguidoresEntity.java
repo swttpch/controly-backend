@@ -1,8 +1,7 @@
-package controly.model.entity;
+package controly.modules.topico.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
-import controly.modules.topico.entities.TopicoEntity;
 import lombok.Data;
 
 import javax.persistence.*;

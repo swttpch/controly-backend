@@ -4,7 +4,7 @@ import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.service.UsuarioService;
 import controly.modules.topico.TopicoDTO;
 import controly.modules.topico.entities.TopicoEntity;
-import controly.model.entity.TopicoHasSeguidoresEntity;
+import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import controly.modules.topico.repository.TopicoHasSeguidoresRepositoy;
 import controly.service.ValidationService;
 import controly.modules.topico.repository.TopicoRepository;
