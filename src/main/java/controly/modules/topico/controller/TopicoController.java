@@ -28,6 +28,16 @@ public class TopicoController {
         return topicoService.getTopicos();
     }
 
+    @PostMapping("/{idTopico}/{idUsuario}")
+    public ResponseEntity<?> followTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
+        return topicoService.followTopico(idTopico, idUsuario);
+    }
+
+    @DeleteMapping("/{idTopico}/{idUsuario}")
+    public ResponseEntity<?> unfollowTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
+        return topicoService.unfollowTopico(idTopico, idUsuario);
+    }
+
     @PostMapping
     public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
         return topicoService.postTopicos(topicoEntity);
