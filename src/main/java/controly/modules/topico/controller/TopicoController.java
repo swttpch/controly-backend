@@ -32,11 +32,13 @@ public class TopicoController {
         return topicoService.getTopicos();
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/{idTopico}/{idUsuario}")
     public ResponseEntity<?> followTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
         return topicoService.followTopico(idTopico, idUsuario);
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @DeleteMapping("/{idTopico}/{idUsuario}")
     public ResponseEntity<?> unfollowTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
         return topicoService.unfollowTopico(idTopico, idUsuario);
