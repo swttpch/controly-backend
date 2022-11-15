@@ -1,6 +1,6 @@
-insert into tb_usuario (id_usuario,nome, apelido, email, senha, avatar) values (1,'ADMINISTRADOR', 'adm', 'adm@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1);
-insert into tb_usuario (id_usuario,nome, apelido, email, senha, avatar) values (2,'MODERADOR', 'mod', 'mod@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1);
-insert into tb_usuario (id_usuario,nome, apelido, email, senha, avatar) values (3,'USUARIO', 'usr', 'usr@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1);
+insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('ADMINISTRADOR', 'adm', 'adm@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1, true);
+insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('MODERADOR', 'mod', 'mod@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1, true);
+insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('USUARIO', 'usr', 'usr@teste.com', '$2a$10$RhokDLDonlQ2kgW4gHI7nOIR3o8sbzB1mHl8k3TZw9MghUh81MSva', 1, true);
 insert into tb_topico (nome, descricao) values ('topico1', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
 insert into tb_topico (nome, descricao) values ('topico2', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
 insert into tb_topico (nome, descricao) values ('topico3', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');

@@ -55,8 +55,8 @@ public class PostagemController {
 
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @GetMapping
-    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@RequestParam Long idPostagem){
+    @GetMapping("{idPostagem}")
+    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@PathVariable Long idPostagem){
         return postagemService.pegarPostagemPeloId(idPostagem);
     }
 
@@ -81,26 +81,26 @@ public class PostagemController {
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @GetMapping("/comentario")
-    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@RequestParam Long idPostagem){
+    @GetMapping("/comentario/{idPostagem}")
+    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@PathVariable Long idPostagem){
         return comentarioService.getAllCommentsFromPost(idPostagem);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @DeleteMapping("/comentario")
-    public ResponseEntity<String> deleteComentario(@RequestParam Long idComentario){
+    @DeleteMapping("/comentario/{idComentario}")
+    public ResponseEntity<String> deleteComentario(@PathVariable Long idComentario){
         return comentarioService.excluirPostagem(idComentario);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/postagem/subir")
-    public ResponseEntity<String> subirPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
+    @PutMapping("/postagem/subir/{idPostagem}/{idUsuario}")
+    public ResponseEntity<String> subirPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, 1);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/postagem/descer")
-    public ResponseEntity<String> descerPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
+    @PutMapping("/postagem/descer/{idPostagem}/{idUsuario}")
+    public ResponseEntity<String> descerPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
     }
 

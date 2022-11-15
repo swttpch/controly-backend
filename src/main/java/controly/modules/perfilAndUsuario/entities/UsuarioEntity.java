@@ -1,6 +1,7 @@
 package controly.modules.perfilAndUsuario.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import controly.modules.perfilAndUsuario.EnumRole;
 import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -12,10 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="tb_usuario")
@@ -37,9 +35,9 @@ public class UsuarioEntity implements Serializable, UserDetails {
     @NotNull
     @Email
     private String email;
-    @ManyToMany(fetch = FetchType.EAGER)
+    private Boolean isAtivo=true;
+    @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.PERSIST)
     private List<RoleEntity> roles;
-
     @OneToMany(mappedBy = "usuario") @JsonIgnore
     private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
 
@@ -49,12 +47,29 @@ public class UsuarioEntity implements Serializable, UserDetails {
         this.apelido = apelido;
         this.senha = new BCryptPasswordEncoder().encode(senha);
         this.email = email;
+        this.isAtivo = true;
     }
 
     public UsuarioEntity(){}
 
     public void setSenha(String senha) {
         this.senha = new BCryptPasswordEncoder().encode(senha);
+    }
+
+    public List<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
+    }
+
+    public Boolean getAtivo() {
+        return isAtivo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        isAtivo = ativo;
     }
 
     @Override
@@ -89,6 +104,6 @@ public class UsuarioEntity implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isAtivo;
     }
 }

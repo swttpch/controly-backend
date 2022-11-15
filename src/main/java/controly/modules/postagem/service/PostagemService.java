@@ -8,8 +8,11 @@ import controly.modules.postagem.repository.PostagemRepository;
 import controly.modules.postagem.repository.PontuacaoPostagemRepository;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import static controly.config.Constant.IDNOTFOUND;
 
 import javax.transaction.Transactional;
@@ -44,7 +47,9 @@ public class PostagemService {
 
     @Transactional
     public ResponseEntity<PostagemEntity> pegarPostagemPeloId(Long id){
-        if (validation.existsPostagem(id)) return ResponseEntity.status(404).build();
+        if (validation.existsPostagem(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
+        }
         PostagemEntity postagem = postagemRepository.findByIdPostagem(id);
         return ResponseEntity.status(200).body(postagem);
     }
@@ -71,7 +76,7 @@ public class PostagemService {
 
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {
         if (validation.existsPostagem(idPostagem))
-            return ResponseEntity.status(404).body(IDNOTFOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
 
         postagemRepository.delete(
                 postagemRepository.findByIdPostagem(idPostagem)

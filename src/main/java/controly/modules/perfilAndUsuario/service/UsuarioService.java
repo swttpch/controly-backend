@@ -1,16 +1,20 @@
 package controly.modules.perfilAndUsuario.service;
 
 import controly.modules.perfilAndUsuario.ValidacaoUsuario;
+import controly.modules.perfilAndUsuario.entities.RoleEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
+import controly.modules.perfilAndUsuario.repository.RoleRepository;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,9 @@ public class UsuarioService {
 
     @Autowired
     final private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -34,15 +41,20 @@ public class UsuarioService {
             if (usuarioRepository.findByEmail(novoUser.getEmail()).isEmpty()) {
 
                 UsuarioEntity usuarioEntity = novoUser.converter();
+                RoleEntity role = roleRepository.findByEnumRole(novoUser.getRole());
+                List<RoleEntity> listaEnum = new ArrayList<>();
+                listaEnum.add(role);
+                usuarioEntity.setRoles(listaEnum);
+
                 usuarioRepository.save(usuarioEntity);
                 return ResponseEntity.status(HttpStatus.CREATED).body("UsuarioEntity cadastrado com sucesso");
 
             }else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já existe na base de dados");
+                throw new ResponseStatusException(HttpStatus.CONFLICT,"Email já existe na base de dados");
             }
 
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(usuarioInvalido);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,usuarioInvalido);
         }
 
     }
@@ -52,7 +64,13 @@ public class UsuarioService {
     }
 
     public ResponseEntity<?> getUsuarioCadastrado(Long id){
-        return null;
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findById(id);
+        if(usuarioEntity.isPresent()){
+            return ResponseEntity.status(200).body(usuarioEntity);
+        }
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND,"O id não corresponde a nenhum usuário encontrado na base de dados"
+        );
     }
 
     public ResponseEntity<List<UsuarioEntity>> getListUsuarios(){
@@ -68,10 +86,11 @@ public class UsuarioService {
         Optional<UsuarioEntity> usuario = this.buscarUsuarioPorId(id);
 
         if(usuario.isPresent()){
-            usuarioRepository.deleteById(id);
-            return ResponseEntity.status(200).body("UsuarioEntity deletado com sucesso");
+            usuario.get().setAtivo(false);
+            usuarioRepository.save(usuario.get());
+            return ResponseEntity.status(200).body("Usuario desativado com sucesso");
         } else {
-            return ResponseEntity.status(404).body("Usuário não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado");
         }
     }
 
@@ -90,6 +109,9 @@ public class UsuarioService {
                 if (!usuarioEntityCadastrado.getNome().equals(form.getNome())) {
                     usuarioEntityCadastrado.setNome(form.getNome());
                 }
+                if(!usuarioEntityCadastrado.getApelido().equals(form.getApelido())){
+                    usuarioEntityCadastrado.setApelido(form.getApelido());
+                }
                 if (!usuarioEntityCadastrado.getEmail().equals(form.getEmail())) {
                     usuarioEntityCadastrado.setEmail(form.getEmail());
                 }
@@ -99,14 +121,14 @@ public class UsuarioService {
 
 
                 usuarioRepository.save(usuarioEntityCadastrado);
-                return ResponseEntity.status(201).body("UsuarioEntity atualizado com sucesso");
+                return ResponseEntity.status(201).body("Usuario atualizado com sucesso");
 
             } else {
                 return ResponseEntity.status(404).body("UsuarioEntity não encontrado");
             }
         }
         else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(usuarioInvalido);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado");
         }
     }
 
