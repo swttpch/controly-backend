@@ -94,8 +94,8 @@ public class PostagemController {
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario, -1);
     }
     @DeleteMapping
-    public ResponseEntity<String> deletePostagem(@RequestParam Long idComentario){
-        return postagemService.excluirPostagem(idComentario);
+    public ResponseEntity<String> deletePostagem(@RequestParam Long idPostagem) {
+        return postagemService.excluirPostagem(idPostagem);
     }
 
     @PutMapping("teste/{postagem}/{usuario}/{ponto}")

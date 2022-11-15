@@ -17,11 +17,17 @@ public interface PontuacaoPostagemRepository extends JpaRepository<PontuacaoPost
     @Query(value = "SELECT m FROM PontuacaoPostagem m WHERE m.postagem.idPostagem = ?1 AND m.usuario.idUsuario = ?2")
     Optional<PontuacaoPostagem> existByPostagemAndUsuario(Long idpostagem, Long idusuario);
 
-    @Transactional @Modifying
-    @Query(value="UPDATE PontuacaoPostagem p SET p.pontuacao = ?3 WHERE p.postagem.idPostagem = ?1 AND p.usuario.idUsuario = ?2")
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE PontuacaoPostagem p SET p.pontuacao = ?3 WHERE p.postagem.idPostagem = ?1 AND p.usuario.idUsuario = ?2")
     void setPontuacaoFor(Long idpostagem, Long idusuario, int pontuacao);
 
     @Query
     Optional<PontuacaoPostagem> findByPostagemIdPostagemAndUsuarioIdUsuario(Long idpostagem, Long idusuario);
+
+    @Transactional
+    @Modifying
+    @Query("delete from PontuacaoPostagem tb WHERE tb.postagem.idPostagem = :idPostagem")
+    void deleteByPostagem_idPostagem(Long idPostagem);
 }
 
