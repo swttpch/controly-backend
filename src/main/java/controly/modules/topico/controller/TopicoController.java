@@ -1,6 +1,6 @@
 package controly.modules.topico.controller;
 
-import controly.modules.topico.TopicoDTO;
+import controly.modules.topico.dto.TopicoDTO;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.topico.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package controly.modules.topico;
+package controly.modules.topico.dto;
 
 import controly.modules.topico.entities.TopicoEntity;
 import lombok.Data;

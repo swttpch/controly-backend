@@ -2,7 +2,7 @@ package controly.modules.topico.service;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.service.UsuarioService;
-import controly.modules.topico.TopicoDTO;
+import controly.modules.topico.dto.TopicoDTO;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import controly.modules.topico.repository.TopicoHasSeguidoresRepositoy;
