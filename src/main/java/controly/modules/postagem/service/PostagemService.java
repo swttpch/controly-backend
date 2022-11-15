@@ -1,5 +1,6 @@
 package controly.modules.postagem.service;
 
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.service.ValidationService;
@@ -7,12 +8,16 @@ import controly.modules.postagem.repository.PostagemRepository;
 import controly.modules.postagem.repository.PontuacaoPostagemRepository;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import static controly.config.Constant.IDNOTFOUND;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostagemService {
@@ -42,12 +47,15 @@ public class PostagemService {
 
     @Transactional
     public ResponseEntity<PostagemEntity> pegarPostagemPeloId(Long id){
-        if (validation.existsPostagem(id)) return ResponseEntity.status(404).build();
+        if (validation.existsPostagem(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
+        }
         PostagemEntity postagem = postagemRepository.findByIdPostagem(id);
         return ResponseEntity.status(200).body(postagem);
     }
 
     public ResponseEntity<String> setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
         if (
             validation.existsPostagem(postagem) ||
                     validation.existsUsuario(usuario)
@@ -57,7 +65,7 @@ public class PostagemService {
             pontuacaoPostagemRepository.save(
                     new PontuacaoPostagem()
                             .setPostagem(postagemRepository.findByIdPostagem(postagem))
-                            .setUsuario(usuarioRepository.findByIdUsuario(usuario))
+                            .setUsuario(usuarioEntity)
                             .setPontuacao(ponto)
             );
         } else {
@@ -68,7 +76,7 @@ public class PostagemService {
 
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {
         if (validation.existsPostagem(idPostagem))
-            return ResponseEntity.status(404).body(IDNOTFOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
 
         postagemRepository.delete(
                 postagemRepository.findByIdPostagem(idPostagem)

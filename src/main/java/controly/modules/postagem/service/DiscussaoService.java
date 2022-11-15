@@ -1,5 +1,6 @@
 package controly.modules.postagem.service;
 
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.service.ValidationService;
 import controly.modules.postagem.repository.PostagemRepository;
 import controly.modules.topico.repository.TopicoRepository;
@@ -33,12 +34,13 @@ public class DiscussaoService implements Ipostagem {
 
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem discussao) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(discussao.getIdUsuario()).orElseThrow();
         if (validation.existsUsuario(discussao.getIdUsuario()) || validation.existsTopico(discussao.getIdTopico()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
         postagemRepository.save(
                 discussao.converterPostagem(
                         topicoRepository.findByIdTopico(discussao.getIdTopico()),
-                        usuarioRepository.findByIdUsuario(discussao.getIdUsuario())
+                        usuarioEntity
                 )
         );
         return ResponseEntity.status(201).body("Discussão postada.");

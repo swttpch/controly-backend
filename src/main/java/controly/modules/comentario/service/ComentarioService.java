@@ -1,5 +1,6 @@
 package controly.modules.comentario.service;
 
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.service.ValidationService;
 import controly.modules.postagem.entities.Postagem;
 import controly.modules.comentario.entities.ComentarioEntity;
@@ -43,12 +44,13 @@ public class ComentarioService implements Ipostagem {
 
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem post) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(post.getIdUsuario()).orElseThrow();
         if (validation.existsUsuario(post.getIdUsuario()) || validation.existsPostagem(post.getIdPostagem()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
         comentarioRepository.save(
                 post.converterPostagem(
                         postagemRepository.findByIdPostagem(post.getIdPostagem()),
-                        usuarioRepository.findByIdUsuario(post.getIdUsuario())
+                        usuarioEntity
                 )
         );
         return ResponseEntity.status(201).body("Comentario postado.");
@@ -65,6 +67,7 @@ public class ComentarioService implements Ipostagem {
     }
     @Transactional
     public ResponseEntity<String> setPontuacaoComentario(Long comentario, Long usuario, int ponto){
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
         if (
                 validation.existsComentario(comentario) ||
                         validation.existsUsuario(usuario)
@@ -74,7 +77,7 @@ public class ComentarioService implements Ipostagem {
             pontuacaoComentarioRepository.save(
                     new PontuacaoComentario()
                             .setComentario(comentarioRepository.findByIdComentario(comentario))
-                            .setUsuario(usuarioRepository.findByIdUsuario(usuario))
+                            .setUsuario(usuarioEntity)
                             .setPontuacao(ponto)
             );
         } else {

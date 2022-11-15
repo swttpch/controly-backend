@@ -8,8 +8,10 @@ import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.modules.postagem.service.PostagemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -36,7 +38,9 @@ public class PerfilService {
     }
 
     public ResponseEntity<PerfilDTO> getPerfilById(Long id){
-        if (validation.existsUsuario(id)) return ResponseEntity.status(404).build();
+        if (validation.existsUsuario(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado");
+        }
         UsuarioEntity usuario = usuarioService.buscarUsuarioPorId(id).get();
 
         List<PostagemEntity> postagemEntityList = postagemService.getPostagemByIdUser(id).getBody();
