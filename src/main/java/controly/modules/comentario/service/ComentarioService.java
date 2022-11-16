@@ -19,27 +19,23 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static controly.config.Constant.IDNOTFOUND;
+
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
-    final private PostagemRepository postagemRepository;
+    private PostagemRepository postagemRepository;
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    final private ComentarioRepository comentarioRepository;
+    private ComentarioRepository comentarioRepository;
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
     @Autowired
-    final private PontuacaoComentarioRepository pontuacaoComentarioRepository;
+    private PontuacaoComentarioRepository pontuacaoComentarioRepository;
 
-    public ComentarioService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, ComentarioRepository comentarioRepository, ValidationService validation, PontuacaoComentarioRepository pontuacaoComentarioRepository) {
-        this.postagemRepository = postagemRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.comentarioRepository = comentarioRepository;
-        this.validation = validation;
-        this.pontuacaoComentarioRepository = pontuacaoComentarioRepository;
+    public ComentarioService() {
     }
 
     @Override

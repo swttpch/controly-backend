@@ -1,41 +1,36 @@
 package controly.modules.postagem.service;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
+import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
 import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.postagem.entities.PostagemEntity;
-import controly.service.ValidationService;
-import controly.modules.postagem.repository.PostagemRepository;
 import controly.modules.postagem.repository.PontuacaoPostagemRepository;
-import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
+import controly.modules.postagem.repository.PostagemRepository;
+import controly.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static controly.config.Constant.IDNOTFOUND;
-
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+
+import static controly.config.Constant.IDNOTFOUND;
 
 @Service
 public class PostagemService {
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
     @Autowired
-    final private PostagemRepository postagemRepository;
+    private PostagemRepository postagemRepository;
     @Autowired
-    final private PontuacaoPostagemRepository pontuacaoPostagemRepository;
+    private PontuacaoPostagemRepository pontuacaoPostagemRepository;
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public PostagemService(ValidationService validation, PostagemRepository postagemRepository, PontuacaoPostagemRepository pontuacaoPostagemRepository, UsuarioRepository usuarioRepository) {
-        this.validation = validation;
-        this.postagemRepository = postagemRepository;
-        this.pontuacaoPostagemRepository = pontuacaoPostagemRepository;
-        this.usuarioRepository = usuarioRepository;
+    public PostagemService() {
     }
 
     @Transactional

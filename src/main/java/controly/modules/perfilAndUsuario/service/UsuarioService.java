@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +21,12 @@ import java.util.Optional;
 public class UsuarioService {
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     RoleRepository roleRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    public UsuarioService() {}
 
     @Transactional
     public ResponseEntity<String> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser){

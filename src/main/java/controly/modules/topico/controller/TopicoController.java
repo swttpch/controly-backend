@@ -15,9 +15,9 @@ import java.util.List;
 public class TopicoController {
 
     @Autowired
-    final private TopicoService topicoService;
-    public TopicoController(TopicoService topicoService) {
-        this.topicoService = topicoService;
+    private TopicoService topicoService;
+
+    public TopicoController() {
     }
 
     @PreAuthorize("hasAnyRole('ADM')")

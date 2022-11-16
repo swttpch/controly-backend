@@ -22,22 +22,17 @@ import java.util.List;
 @RequestMapping("/postagens")
 public class PostagemController {
     @Autowired
-    final private DiscussaoService discussaoService;
+    private DiscussaoService discussaoService;
     @Autowired
-    final private ComentarioService comentarioService;
+    private ComentarioService comentarioService;
     @Autowired
-    final private DuvidaService duvidaService;
+    private DuvidaService duvidaService;
     @Autowired
-    final private PostagemService postagemService;
+    private PostagemService postagemService;
     @Autowired
-    final private Postar postar;
+    private Postar postar;
 
-    public PostagemController(DiscussaoService discussaoService, ComentarioService comentarioService, DuvidaService duvidaService, PostagemService postagemService, Postar postar) {
-        this.discussaoService = discussaoService;
-        this.comentarioService = comentarioService;
-        this.duvidaService = duvidaService;
-        this.postagemService = postagemService;
-        this.postar = postar;
+    public PostagemController() {
     }
 
     @PreAuthorize("hasAnyRole('ADM')")

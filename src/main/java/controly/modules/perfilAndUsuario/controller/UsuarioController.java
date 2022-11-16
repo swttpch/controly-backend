@@ -18,14 +18,12 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
     @Autowired
-    final private UsuarioService usuarioService;
+    private UsuarioService usuarioService;
 
     @Autowired
-    final private RecuperarSenhaService recuperarSenhaService;
+    private RecuperarSenhaService recuperarSenhaService;
 
-    public UsuarioController(UsuarioService usuarioService, RecuperarSenhaService recuperarSenhaService) {
-        this.usuarioService = usuarioService;
-        this.recuperarSenhaService = recuperarSenhaService;
+    public UsuarioController() {
     }
 
     @PreAuthorize("hasAnyRole('ADM')")

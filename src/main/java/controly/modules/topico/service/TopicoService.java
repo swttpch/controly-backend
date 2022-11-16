@@ -22,22 +22,18 @@ import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class TopicoService {
     @Autowired
-    final private TopicoRepository topicoRepository;
+    private TopicoRepository topicoRepository;
 
     @Autowired
-    private final TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
+    private TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
 
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
 
     @Autowired
-    final private UsuarioService usuarioService;
+    private UsuarioService usuarioService;
 
-    public TopicoService(TopicoRepository topicoRepository, TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy, ValidationService validation, UsuarioService usuarioService) {
-        this.topicoRepository = topicoRepository;
-        this.topicoHasSeguidoresRepositoy = topicoHasSeguidoresRepositoy;
-        this.validation = validation;
-        this.usuarioService = usuarioService;
+    public TopicoService() {
     }
 
     public ResponseEntity<List<TopicoDTO>> getTopicos() {
