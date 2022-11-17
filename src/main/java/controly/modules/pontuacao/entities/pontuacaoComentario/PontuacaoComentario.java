@@ -2,6 +2,8 @@ package controly.modules.pontuacao.entities.pontuacaoComentario;
 
 import controly.modules.comentario.entities.ComentarioEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -13,9 +15,10 @@ public class PontuacaoComentario {
 
     @ManyToOne(cascade=CascadeType.ALL)
     @MapsId("idComentario") @JoinColumn(name = "idComentario")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ComentarioEntity comentario;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @MapsId("idUsuario") @JoinColumn(name = "idUsuario")
     private UsuarioEntity usuario;
 

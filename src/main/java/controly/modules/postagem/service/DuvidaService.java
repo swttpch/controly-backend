@@ -1,5 +1,6 @@
 package controly.modules.postagem.service;
 
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.service.ValidationService;
 import controly.modules.postagem.entities.Postagem;
 import controly.modules.comentario.repository.ComentarioRepository;
@@ -17,37 +18,33 @@ import javax.transaction.Transactional;
 @Service
 public class DuvidaService implements Ipostagem {
     @Autowired
-    final private PostagemRepository postagemRepository;
+    private PostagemRepository postagemRepository;
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    final private TopicoRepository topicoRepository;
+    private TopicoRepository topicoRepository;
 
     @Autowired
-    final private ComentarioRepository comentarioRepository;
+    private ComentarioRepository comentarioRepository;
 
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
 
-    public DuvidaService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, ComentarioRepository comentarioRepository, ValidationService validation) {
-        this.postagemRepository = postagemRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.topicoRepository = topicoRepository;
-        this.comentarioRepository = comentarioRepository;
-        this.validation = validation;
+    public DuvidaService() {
     }
 
 
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem duvida) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(duvida.getIdUsuario()).orElseThrow();
         if (validation.existsTopico(duvida.getIdTopico()) || validation.existsUsuario(duvida.getIdUsuario()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
         postagemRepository.save(
                 duvida.converterPostagem(
                         topicoRepository.findByIdTopico(duvida.getIdTopico()),
-                        usuarioRepository.findByIdUsuario(duvida.getIdUsuario())
+                        usuarioEntity
                 ).initResposta()
         );
         return ResponseEntity.status(201).body("Duvida postada.");

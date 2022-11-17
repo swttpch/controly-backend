@@ -8,6 +8,8 @@ import controly.modules.postagem.entities.PostagemEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -28,10 +30,13 @@ public class ComentarioEntity implements Serializable {
     private LocalDateTime criadoEm;
     @Column(name = "atualizadoEm") @Nullable
     private LocalDateTime atualizadoEm;
-    @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "idPostagem", referencedColumnName = "idPostagem")@JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private PostagemEntity postagem;
 
     @OneToMany(mappedBy = "comentario",cascade=CascadeType.ALL) @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<PontuacaoComentario> pontuacaoComentarios = new HashSet<>();
 
     @ManyToOne @JoinColumn(name = "idUsuario", referencedColumnName = "idUsuario")

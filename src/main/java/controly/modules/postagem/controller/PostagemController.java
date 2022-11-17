@@ -13,6 +13,7 @@ import controly.modules.comentario.service.ComentarioService;
 import controly.strategy.Postar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,83 +22,102 @@ import java.util.List;
 @RequestMapping("/postagens")
 public class PostagemController {
     @Autowired
-    final private DiscussaoService discussaoService;
+    private DiscussaoService discussaoService;
     @Autowired
-    final private ComentarioService comentarioService;
+    private ComentarioService comentarioService;
     @Autowired
-    final private DuvidaService duvidaService;
+    private DuvidaService duvidaService;
     @Autowired
-    final private PostagemService postagemService;
+    private PostagemService postagemService;
     @Autowired
-    final private Postar postar;
+    private Postar postar;
 
-    public PostagemController(DiscussaoService discussaoService, ComentarioService comentarioService, DuvidaService duvidaService, PostagemService postagemService, Postar postar) {
-        this.discussaoService = discussaoService;
-        this.comentarioService = comentarioService;
-        this.duvidaService = duvidaService;
-        this.postagemService = postagemService;
-        this.postar = postar;
+    public PostagemController() {
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/discussao")
     public ResponseEntity<String> cadastrarDiscussao(@RequestBody Discussao post) {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
+
+    @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping("/all")
     public ResponseEntity<List<PostagemEntity>> pegarTodasDiscussoes(){
         return postagemService.todasPostagens();
     }
 
-    @GetMapping
-    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@RequestParam Long idPostagem){
+
+    @PreAuthorize("hasAnyRole('ADM')")
+    @GetMapping("{idPostagem}")
+    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@PathVariable Long idPostagem){
         return postagemService.pegarPostagemPeloId(idPostagem);
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/duvida")
     public ResponseEntity<String> cadastrarDuvida(@RequestBody Duvida post){
         postar.setPostagem(duvidaService);
         return postar.postar(post);
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("/duvida")
     public ResponseEntity<String> atribuirRespostaADuvida(@RequestParam Long idDuvida, @RequestParam Long idComentario){
         return duvidaService.definirRespostaDaPostagem(idDuvida, idComentario);
     }
+
+    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/comentario")
     public ResponseEntity<String> cadastrarComentario(@RequestBody Comentario post) {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
     }
-    @GetMapping("/comentario")
-    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@RequestParam Long idPostagem){
+
+    @PreAuthorize("hasAnyRole('ADM')")
+    @GetMapping("/comentario/{idPostagem}")
+    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@PathVariable Long idPostagem){
         return comentarioService.getAllCommentsFromPost(idPostagem);
     }
-    @DeleteMapping("/comentario")
-    public ResponseEntity<String> deleteComentario(@RequestParam Long idComentario){
+
+    @PreAuthorize("hasAnyRole('ADM')")
+    @DeleteMapping("/comentario/{idComentario}")
+    public ResponseEntity<String> deleteComentario(@PathVariable Long idComentario){
         return comentarioService.excluirPostagem(idComentario);
     }
-    @PutMapping("/postagem/subir")
-    public ResponseEntity<String> subirPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
+
+    @PreAuthorize("hasAnyRole('ADM')")
+    @PutMapping("/postagem/subir/{idPostagem}/{idUsuario}")
+    public ResponseEntity<String> subirPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, 1);
     }
-    @PutMapping("/postagem/descer")
-    public ResponseEntity<String> descerPostagem(@RequestParam Long idPostagem, @RequestParam Long idUsuario){
+
+    @PreAuthorize("hasAnyRole('ADM')")
+    @PutMapping("/postagem/descer/{idPostagem}/{idUsuario}")
+    public ResponseEntity<String> descerPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
     }
+
+    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("/comentario/subir")
     public ResponseEntity<String> subirComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario, 1);
     }
+
+    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("/comentario/descer")
     public ResponseEntity<String> descerComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario, -1);
     }
+
+    @PreAuthorize("hasAnyRole('ADM')")
     @DeleteMapping
     public ResponseEntity<String> deletePostagem(@RequestParam Long idPostagem) {
         return postagemService.excluirPostagem(idPostagem);
     }
 
+    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("teste/{postagem}/{usuario}/{ponto}")
     public ResponseEntity<PontuacaoPostagem> teste(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
         return postagemService.findPontuacaoPostagem(postagem, usuario,ponto);

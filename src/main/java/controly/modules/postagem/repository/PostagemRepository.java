@@ -2,6 +2,7 @@ package controly.modules.postagem.repository;
 
 import controly.modules.postagem.entities.PostagemEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,6 +14,8 @@ public interface PostagemRepository extends JpaRepository<PostagemEntity, Long> 
     PostagemEntity findByIdPostagem(Long id);
 
     List<PostagemEntity> findByDonoIdUsuario(Long idUser);
+
+    int deleteByIdPostagem(Long id);
 
     @Transactional
     @Modifying

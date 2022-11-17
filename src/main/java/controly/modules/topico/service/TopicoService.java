@@ -2,7 +2,7 @@ package controly.modules.topico.service;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.service.UsuarioService;
-import controly.modules.topico.TopicoDTO;
+import controly.modules.topico.dto.TopicoDTO;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import controly.modules.topico.repository.TopicoHasSeguidoresRepositoy;
@@ -22,22 +22,18 @@ import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class TopicoService {
     @Autowired
-    final private TopicoRepository topicoRepository;
+    private TopicoRepository topicoRepository;
 
     @Autowired
-    private final TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
+    private TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
 
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
 
     @Autowired
-    final private UsuarioService usuarioService;
+    private UsuarioService usuarioService;
 
-    public TopicoService(TopicoRepository topicoRepository, TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy, ValidationService validation, UsuarioService usuarioService) {
-        this.topicoRepository = topicoRepository;
-        this.topicoHasSeguidoresRepositoy = topicoHasSeguidoresRepositoy;
-        this.validation = validation;
-        this.usuarioService = usuarioService;
+    public TopicoService() {
     }
 
     public ResponseEntity<List<TopicoDTO>> getTopicos() {

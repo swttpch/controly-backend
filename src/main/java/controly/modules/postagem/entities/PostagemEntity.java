@@ -8,6 +8,8 @@ import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.topico.entities.TopicoEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -45,12 +47,14 @@ public class PostagemEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idPostagem")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ComentarioEntity> comentarios;
 
     @Embedded
     private RespostaDuvidaEntity respostaDuvidaEntity;
 
     @OneToMany(mappedBy = "postagem",cascade=CascadeType.ALL) @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
 
     @JsonProperty
