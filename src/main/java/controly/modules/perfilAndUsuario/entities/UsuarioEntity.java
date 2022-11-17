@@ -38,9 +38,6 @@ public class UsuarioEntity implements Serializable, UserDetails {
     private Boolean isAtivo=true;
     @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.PERSIST)
     private List<RoleEntity> roles;
-    @OneToMany(mappedBy = "usuario") @JsonIgnore
-    private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
-
 
     public UsuarioEntity(String nome, String apelido, String senha, String email) {
         this.nome = nome;

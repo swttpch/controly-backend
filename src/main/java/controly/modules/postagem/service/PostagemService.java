@@ -68,15 +68,15 @@ public class PostagemService {
         }
         return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a postagem de ID %d.", ponto, postagem));
     }
-
+    @Transactional
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {
-        if (validation.existsPostagem(idPostagem))
+        if (validation.existsPostagem(idPostagem)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
-
-        postagemRepository.delete(
-                postagemRepository.findByIdPostagem(idPostagem)
-        );
-        return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida.");
+        }
+        PostagemEntity postagem = postagemRepository.findByIdPostagem(idPostagem);
+        //postagemRepository.delete(postagem);
+        int result = postagemRepository.deleteByIdPostagem(idPostagem);
+        return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida. nº: " + result);
     }
 
     @Transactional
