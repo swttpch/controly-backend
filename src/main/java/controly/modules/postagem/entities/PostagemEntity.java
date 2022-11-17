@@ -42,12 +42,12 @@ public class PostagemEntity implements Serializable {
     @Column(name = "titulo")
     private String titulo;
 
-    @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name="idTopico", referencedColumnName = "idTopico", nullable = false)
+    @OneToOne @JoinColumn(name="idTopico", referencedColumnName = "idTopico", nullable = false)
     private TopicoEntity topico;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idPostagem")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ComentarioEntity> comentarios;
 
     @Embedded
