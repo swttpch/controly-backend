@@ -1,8 +1,11 @@
 package controly.modules.perfilAndUsuario.controller;
 
 
+import controly.config.Constant;
+import controly.modules.perfilAndUsuario.dto.DataGithubPostRequest;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
+import controly.modules.perfilAndUsuario.service.GithubService;
 import controly.modules.recuperarSenha.form.RecuperarSenhaForm;
 import controly.modules.recuperarSenha.service.RecuperarSenhaService;
 import controly.modules.perfilAndUsuario.service.UsuarioService;
@@ -13,15 +16,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
     private RecuperarSenhaService recuperarSenhaService;
+
+    @Autowired
+    private GithubService githubService;
 
     public UsuarioController() {
     }
@@ -62,6 +68,14 @@ public class UsuarioController {
     @PostMapping("/recuperar-senha")
     public ResponseEntity<?> recuperarSenha(@RequestBody RecuperarSenhaForm form){
         return recuperarSenhaService.recuperarSenha(form);
+    }
+    @PreAuthorize("hasAnyRole('ADM')")
+    @GetMapping("/github")
+    public ResponseEntity<String> getGithubUser(@RequestParam String code){
+        System.out.println(code);
+        DataGithubPostRequest data = new DataGithubPostRequest(code);
+        String response = githubService.consumeApi(Constant.GITHUB_AUTH_ACCESSTOKEN_URL, data);
+        return ResponseEntity.status(200).body(response);
     }
 
 }
