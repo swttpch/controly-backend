@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-//@Profile("prod")
+@Profile("dev")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 

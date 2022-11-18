@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -15,15 +16,17 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class TopicoHasSeguidoresEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY) @JsonIgnore
+    @GeneratedValue(strategy = IDENTITY)
+    @JsonIgnore
     private Long id;
 
-    @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "id_usuario", referencedColumnName = "idUsuario")
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "idUsuario")
     @JsonIgnore
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private UsuarioEntity usuario;
 
-    @ManyToOne(cascade=CascadeType.ALL) @JoinColumn(name = "id_topico", referencedColumnName = "idTopico")
+    @ManyToOne
+    @JoinColumn(name = "id_topico", referencedColumnName = "idTopico")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private TopicoEntity topico;
 
