@@ -111,12 +111,16 @@ public class TopicoService {
         if (validation.existsTopico(idTopico) && validation.existsUsuario(idUsuario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
 
-        TopicoHasSeguidoresEntity topicoHasSeguidores = new TopicoHasSeguidoresEntity();
+        TopicoHasSeguidoresEntity topicoHasSeguidores = topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario);
 
-        topicoHasSeguidores.setId(topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario).getId());
+        if (topicoHasSeguidores == null ) {
+            return ResponseEntity.status(404).body(String.format("Esse usuario não segue esse topico"));
+        } else {
 
-        topicoHasSeguidoresRepositoy.deleteById(topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario).getId());
+            topicoHasSeguidoresRepositoy.deleteById(topicoHasSeguidores.getId());
 
-        return ResponseEntity.status(201).body(String.format("Usuario de id %d parou de seguir topico de id %d.", idTopico, idUsuario));
+            return ResponseEntity.status(201).body(String.format("Usuario de id %d parou de seguir topico de id %d.", idTopico, idUsuario));
+
+        }
     }
 }
