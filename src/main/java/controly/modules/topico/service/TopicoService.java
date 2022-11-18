@@ -108,7 +108,7 @@ public class TopicoService {
 
     @Transactional
     public ResponseEntity<?> unfollowTopico(Long idTopico, Long idUsuario) {
-        if (validation.existsTopico(idTopico) && validation.existsUsuario(idUsuario))
+        if (validation.existsTopico(idTopico) || validation.existsUsuario(idUsuario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
 
         TopicoHasSeguidoresEntity topicoHasSeguidores = topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario);
