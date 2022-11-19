@@ -63,8 +63,8 @@ public class PostagemController {
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/duvida")
-    public ResponseEntity<String> atribuirRespostaADuvida(@RequestParam Long idDuvida, @RequestParam Long idComentario){
+    @PutMapping("/duvida/{idDuvida}/{idComentario}")
+    public ResponseEntity<String> atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario){
         return duvidaService.definirRespostaDaPostagem(idDuvida, idComentario);
     }
 
@@ -100,26 +100,26 @@ public class PostagemController {
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/comentario/subir")
-    public ResponseEntity<String> subirComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
+    @PutMapping("/comentario/subir/{idComentario}/{idUsuario}")
+    public ResponseEntity<String> subirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario, 1);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/comentario/descer")
-    public ResponseEntity<String> descerComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
+    @PutMapping("/comentario/descer/{idComentario}/{idUsuario}")
+    public ResponseEntity<String> descerComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario, -1);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @DeleteMapping
-    public ResponseEntity<String> deletePostagem(@RequestParam Long idPostagem) {
+    @DeleteMapping("{idPostagem}")
+    public ResponseEntity<String> deletePostagem(@PathVariable Long idPostagem) {
         return postagemService.excluirPostagem(idPostagem);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("teste/{postagem}/{usuario}/{ponto}")
-    public ResponseEntity<PontuacaoPostagem> teste(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
+    public ResponseEntity<PontuacaoPostagem> findPontuacaoPostagem(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
         return postagemService.findPontuacaoPostagem(postagem, usuario,ponto);
     }
 }
