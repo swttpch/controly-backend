@@ -1,4 +1,4 @@
-package controly.modules.pontuacao.form;
+package controly.modules.postagem.pontuacao.form;
 
 import controly.modules.postagem.entities.Postagem;
 import controly.modules.comentario.entities.ComentarioEntity;

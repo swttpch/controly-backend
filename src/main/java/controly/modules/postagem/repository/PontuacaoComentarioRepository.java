@@ -1,7 +1,7 @@
 package controly.modules.postagem.repository;
 
 import controly.modules.comentario.entities.ComentarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
+import controly.modules.postagem.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,5 +1,6 @@
 package controly.modules.postagem.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import controly.modules.comentario.entities.ComentarioEntity;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;

@@ -2,9 +2,9 @@ package controly.modules.postagem.controller;
 
 import controly.modules.comentario.form.Comentario;
 import controly.modules.comentario.entities.ComentarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
-import controly.modules.pontuacao.form.Discussao;
-import controly.modules.pontuacao.form.Duvida;
+import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
+import controly.modules.postagem.pontuacao.form.Discussao;
+import controly.modules.postagem.pontuacao.form.Duvida;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.modules.postagem.service.DiscussaoService;
 import controly.modules.postagem.service.DuvidaService;

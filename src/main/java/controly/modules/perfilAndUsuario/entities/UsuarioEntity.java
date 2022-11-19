@@ -1,8 +1,5 @@
 package controly.modules.perfilAndUsuario.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import controly.modules.perfilAndUsuario.EnumRole;
-import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
