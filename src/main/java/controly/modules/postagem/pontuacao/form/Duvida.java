@@ -1,5 +1,6 @@
 package controly.modules.postagem.pontuacao.form;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import controly.modules.postagem.entities.Postagem;
 import controly.modules.comentario.entities.ComentarioEntity;
 import controly.modules.postagem.entities.PostagemEntity;
@@ -77,6 +78,7 @@ public class Duvida extends Postagem {
     }
 
     @Override
+    @JsonIgnore
     public Long getIdPostagem() {
         return null;
     }

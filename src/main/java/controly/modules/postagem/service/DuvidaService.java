@@ -1,6 +1,7 @@
 package controly.modules.postagem.service;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
+import controly.modules.postagem.entities.PostagemEntity;
 import controly.service.ValidationService;
 import controly.modules.postagem.entities.Postagem;
 import controly.modules.comentario.repository.ComentarioRepository;
@@ -42,11 +43,14 @@ public class DuvidaService implements Ipostagem {
         UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(duvida.getIdUsuario()).orElseThrow();
         if (validation.existsTopico(duvida.getIdTopico()) || validation.existsUsuario(duvida.getIdUsuario()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
+
+        PostagemEntity postagem =  duvida.converterPostagem(
+                topicoRepository.findByIdTopico(duvida.getIdTopico()),
+                usuarioEntity
+        ).initResposta();
+
         postagemRepository.save(
-                duvida.converterPostagem(
-                        topicoRepository.findByIdTopico(duvida.getIdTopico()),
-                        usuarioEntity
-                ).initResposta()
+                postagem
         );
         return ResponseEntity.status(201).body("Duvida postada.");
     }
