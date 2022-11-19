@@ -37,7 +37,7 @@ public class PostagemController {
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/discussao")
-    public ResponseEntity<String> cadastrarDiscussao(@RequestBody Discussao post) {
+    public ResponseEntity<?> cadastrarDiscussao(@RequestBody Discussao post) {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
@@ -57,7 +57,7 @@ public class PostagemController {
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/duvida")
-    public ResponseEntity<String> cadastrarDuvida(@RequestBody Duvida post){
+    public ResponseEntity<?> cadastrarDuvida(@RequestBody Duvida post){
         postar.setPostagem(duvidaService);
         return postar.postar(post);
     }
@@ -70,7 +70,7 @@ public class PostagemController {
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/comentario")
-    public ResponseEntity<String> cadastrarComentario(@RequestBody Comentario post) {
+    public ResponseEntity<?> cadastrarComentario(@RequestBody Comentario post) {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
     }

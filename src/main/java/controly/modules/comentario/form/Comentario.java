@@ -46,7 +46,7 @@ public class Comentario extends Postagem {
     }
 
     @Override @JsonIgnore
-    public ComentarioEntity converterPostagem(PostagemEntity postagem, UsuarioEntity usuario) {
+    public ComentarioEntity converterComentario(PostagemEntity postagem, UsuarioEntity usuario) {
         ComentarioEntity comentario = new ComentarioEntity();
         comentario.setConteudo(conteudo);
         comentario.setCriadoEm(LocalDateTime.now());

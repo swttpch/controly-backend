@@ -44,7 +44,7 @@ public class ComentarioService implements Ipostagem {
         if (validation.existsUsuario(post.getIdUsuario()) || validation.existsPostagem(post.getIdPostagem()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
         comentarioRepository.save(
-                post.converterPostagem(
+                post.converterComentario(
                         postagemRepository.findByIdPostagem(post.getIdPostagem()),
                         usuarioEntity
                 )

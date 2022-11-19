@@ -1,6 +1,5 @@
 package controly.modules.postagem.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import controly.modules.comentario.entities.ComentarioEntity;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
@@ -15,5 +14,5 @@ public abstract class Postagem {
 
     abstract public PostagemEntity converterPostagem(TopicoEntity topico, UsuarioEntity usuario);
 
-    abstract public ComentarioEntity converterPostagem(PostagemEntity postagem, UsuarioEntity usuario);
+    abstract public ComentarioEntity converterComentario(PostagemEntity postagem, UsuarioEntity usuario);
 }

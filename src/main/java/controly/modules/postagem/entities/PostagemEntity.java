@@ -27,7 +27,7 @@ import java.util.Set;
 public class PostagemEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id @GeneratedValue(strategy = GenerationType.TABLE) @Column(name = "idPostagem")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "idPostagem")
     private Long idPostagem;
 
     @Column(name = "conteudo")
@@ -137,5 +137,13 @@ public class PostagemEntity implements Serializable {
 
     public void setRespostaDuvidaEntity(RespostaDuvidaEntity respostaDuvidaEntity) {
         this.respostaDuvidaEntity = respostaDuvidaEntity;
+    }
+
+    public Long getIdPostagem() {
+        return idPostagem;
+    }
+
+    public void setIdPostagem(Long idPostagem) {
+        this.idPostagem = idPostagem;
     }
 }

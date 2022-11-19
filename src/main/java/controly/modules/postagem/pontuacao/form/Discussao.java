@@ -67,7 +67,7 @@ public class Discussao extends Postagem {
     }
 
     @Override
-    public ComentarioEntity converterPostagem(PostagemEntity postagem, UsuarioEntity usuario) {
+    public ComentarioEntity converterComentario(PostagemEntity postagem, UsuarioEntity usuario) {
         return null;
     }
 }

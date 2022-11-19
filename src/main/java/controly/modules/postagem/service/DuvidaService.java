@@ -37,6 +37,7 @@ public class DuvidaService implements Ipostagem {
 
 
     @Override
+    @Transactional
     public ResponseEntity<String> enviarPostagem(Postagem duvida) {
         UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(duvida.getIdUsuario()).orElseThrow();
         if (validation.existsTopico(duvida.getIdTopico()) || validation.existsUsuario(duvida.getIdUsuario()))
