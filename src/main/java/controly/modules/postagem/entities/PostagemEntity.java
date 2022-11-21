@@ -47,7 +47,7 @@ public class PostagemEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idPostagem")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ComentarioEntity> comentarios;
 
     @Embedded

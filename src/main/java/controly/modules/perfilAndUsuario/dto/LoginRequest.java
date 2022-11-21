@@ -1,6 +1,5 @@
 package controly.modules.perfilAndUsuario.dto;
 
-import javax.validation.constraints.Email;
 
 public class LoginRequest {
     private String email;

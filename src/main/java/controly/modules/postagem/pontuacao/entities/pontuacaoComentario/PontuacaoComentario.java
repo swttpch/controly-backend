@@ -24,7 +24,6 @@ public class PontuacaoComentario {
 
     private int pontuacao;
 
-
     public ComentarioEntity getComentario() {
         return comentario;
     }
