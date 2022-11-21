@@ -2,7 +2,7 @@ package controly.modules.postagem.service;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
-import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
+import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.modules.postagem.repository.PontuacaoPostagemRepository;
 import controly.modules.postagem.repository.PostagemRepository;

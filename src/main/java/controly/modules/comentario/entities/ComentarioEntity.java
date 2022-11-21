@@ -2,7 +2,7 @@ package controly.modules.comentario.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import controly.modules.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
+import controly.modules.postagem.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.postagem.entities.PostagemEntity;
 import lombok.AllArgsConstructor;

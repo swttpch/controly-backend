@@ -14,7 +14,7 @@ public class Postar {
         this.postagem = postagem;
     }
 
-    public ResponseEntity postar(Postagem post){
+    public ResponseEntity<?> postar(Postagem post){
         return postagem.enviarPostagem(post);
     }
 

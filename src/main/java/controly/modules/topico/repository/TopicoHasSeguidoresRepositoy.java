@@ -14,6 +14,6 @@ public interface TopicoHasSeguidoresRepositoy extends JpaRepository<TopicoHasSeg
     @Query("SELECT COUNT(id_usuario) FROM TopicoHasSeguidoresEntity WHERE id_topico = :idTopico")
     Integer countTopicoHasSeguidoresByIdUsuario(Long idTopico);
 
-    @Query(value = "SELECT s.id FROM TopicoHasSeguidoresEntity s WHERE s.topico.idTopico = :idTopico AND s.usuario.idUsuario = :idUsuario")
-    Long findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(Long idTopico, Long idUsuario);
+    @Query(value = "SELECT s FROM TopicoHasSeguidoresEntity s WHERE s.topico.idTopico = :idTopico AND s.usuario.idUsuario = :idUsuario")
+    TopicoHasSeguidoresEntity findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(Long idTopico, Long idUsuario);
 }

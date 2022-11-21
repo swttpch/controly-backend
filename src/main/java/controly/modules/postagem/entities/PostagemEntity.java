@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import controly.modules.comentario.entities.ComentarioEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
+import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.topico.entities.TopicoEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

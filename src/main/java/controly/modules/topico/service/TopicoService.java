@@ -80,31 +80,47 @@ public class TopicoService {
 
     @Transactional
     public ResponseEntity<?> followTopico(Long idTopico, Long idUsuario) {
-        if (validation.existsTopico(idTopico) && validation.existsUsuario(idUsuario))
+        if (validation.existsTopico(idTopico) || validation.existsUsuario(idUsuario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
-        TopicoHasSeguidoresEntity topicoHasSeguidores = new TopicoHasSeguidoresEntity();
-        TopicoEntity topico = topicoRepository.findByIdTopico(idTopico);
-        UsuarioEntity usuario = usuarioService.buscarUsuarioPorId(idUsuario).get();
 
-        topicoHasSeguidores.setTopico(topico);
-        topicoHasSeguidores.setUsuario(usuario);
+        TopicoHasSeguidoresEntity topicoHasSeguidores = topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario);
 
-        topicoHasSeguidoresRepositoy.save(topicoHasSeguidores);
+        if (topicoHasSeguidores == null ) {
+            TopicoEntity topico = topicoRepository.findByIdTopico(idTopico);
+            UsuarioEntity usuario = usuarioService.buscarUsuarioPorId(idUsuario).get();
 
-        return ResponseEntity.status(201).body(String.format("Usuario de id %d comecou a seguir topico de id %d.", idTopico, idUsuario));
+            topicoHasSeguidores = new TopicoHasSeguidoresEntity();
+            topicoHasSeguidores.setTopico(topico);
+            topicoHasSeguidores.setUsuario(usuario);
+
+            topicoHasSeguidoresRepositoy.save(topicoHasSeguidores);
+
+            return ResponseEntity.status(201).body(String.format("Usuario de id %d comecou a seguir topico de id %d.", idTopico, idUsuario));
+
+        } else {
+
+            return ResponseEntity.status(404).body(String.format("Esse usuario já segue esse topico"));
+
+        }
+
+
     }
 
     @Transactional
     public ResponseEntity<?> unfollowTopico(Long idTopico, Long idUsuario) {
-        if (validation.existsTopico(idTopico) && validation.existsUsuario(idUsuario))
+        if (validation.existsTopico(idTopico) || validation.existsUsuario(idUsuario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
 
-        TopicoHasSeguidoresEntity topicoHasSeguidores = new TopicoHasSeguidoresEntity();
+        TopicoHasSeguidoresEntity topicoHasSeguidores = topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario);
 
-        topicoHasSeguidores.setId(topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario));
+        if (topicoHasSeguidores == null ) {
+            return ResponseEntity.status(404).body(String.format("Esse usuario não segue esse topico"));
+        } else {
 
-        topicoHasSeguidoresRepositoy.deleteById(topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario));
+            topicoHasSeguidoresRepositoy.deleteById(topicoHasSeguidores.getId());
 
-        return ResponseEntity.status(201).body(String.format("Usuario de id %d parou de seguir topico de id %d.", idTopico, idUsuario));
+            return ResponseEntity.status(201).body(String.format("Usuario de id %d parou de seguir topico de id %d.", idTopico, idUsuario));
+
+        }
     }
 }

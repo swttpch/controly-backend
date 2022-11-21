@@ -2,9 +2,9 @@ package controly.modules.postagem.controller;
 
 import controly.modules.comentario.form.Comentario;
 import controly.modules.comentario.entities.ComentarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
-import controly.modules.pontuacao.form.Discussao;
-import controly.modules.pontuacao.form.Duvida;
+import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
+import controly.modules.postagem.pontuacao.form.Discussao;
+import controly.modules.postagem.pontuacao.form.Duvida;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.modules.postagem.service.DiscussaoService;
 import controly.modules.postagem.service.DuvidaService;
@@ -37,7 +37,7 @@ public class PostagemController {
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/discussao")
-    public ResponseEntity<String> cadastrarDiscussao(@RequestBody Discussao post) {
+    public ResponseEntity<?> cadastrarDiscussao(@RequestBody Discussao post) {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
@@ -57,20 +57,20 @@ public class PostagemController {
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/duvida")
-    public ResponseEntity<String> cadastrarDuvida(@RequestBody Duvida post){
+    public ResponseEntity<?> cadastrarDuvida(@RequestBody Duvida post){
         postar.setPostagem(duvidaService);
         return postar.postar(post);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/duvida")
-    public ResponseEntity<String> atribuirRespostaADuvida(@RequestParam Long idDuvida, @RequestParam Long idComentario){
+    @PutMapping("/duvida/{idDuvida}/{idComentario}")
+    public ResponseEntity<String> atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario){
         return duvidaService.definirRespostaDaPostagem(idDuvida, idComentario);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/comentario")
-    public ResponseEntity<String> cadastrarComentario(@RequestBody Comentario post) {
+    public ResponseEntity<?> cadastrarComentario(@RequestBody Comentario post) {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
     }
@@ -100,26 +100,26 @@ public class PostagemController {
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/comentario/subir")
-    public ResponseEntity<String> subirComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
+    @PutMapping("/comentario/subir/{idComentario}/{idUsuario}")
+    public ResponseEntity<String> subirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario, 1);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/comentario/descer")
-    public ResponseEntity<String> descerComentario(@RequestParam Long idComentario, @RequestParam Long idUsuario){
+    @PutMapping("/comentario/descer/{idComentario}/{idUsuario}")
+    public ResponseEntity<String> descerComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario, -1);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
-    @DeleteMapping
-    public ResponseEntity<String> deletePostagem(@RequestParam Long idComentario){
-        return postagemService.excluirPostagem(idComentario);
+    @DeleteMapping("{idPostagem}")
+    public ResponseEntity<String> deletePostagem(@PathVariable Long idPostagem) {
+        return postagemService.excluirPostagem(idPostagem);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("teste/{postagem}/{usuario}/{ponto}")
-    public ResponseEntity<PontuacaoPostagem> teste(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
+    public ResponseEntity<PontuacaoPostagem> findPontuacaoPostagem(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
         return postagemService.findPontuacaoPostagem(postagem, usuario,ponto);
     }
 }

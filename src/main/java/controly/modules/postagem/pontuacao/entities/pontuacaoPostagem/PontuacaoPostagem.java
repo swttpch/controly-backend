@@ -1,4 +1,4 @@
-package controly.modules.pontuacao.entities.pontuacaoPostagem;
+package controly.modules.postagem.pontuacao.entities.pontuacaoPostagem;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.postagem.entities.PostagemEntity;

@@ -4,7 +4,7 @@ import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.service.ValidationService;
 import controly.modules.postagem.entities.Postagem;
 import controly.modules.comentario.entities.ComentarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
+import controly.modules.postagem.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
 import controly.modules.comentario.repository.ComentarioRepository;
 import controly.modules.postagem.repository.PontuacaoComentarioRepository;
 import controly.modules.postagem.repository.PostagemRepository;
@@ -44,7 +44,7 @@ public class ComentarioService implements Ipostagem {
         if (validation.existsUsuario(post.getIdUsuario()) || validation.existsPostagem(post.getIdPostagem()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
         comentarioRepository.save(
-                post.converterPostagem(
+                post.converterComentario(
                         postagemRepository.findByIdPostagem(post.getIdPostagem()),
                         usuarioEntity
                 )
