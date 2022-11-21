@@ -1,9 +1,10 @@
 package controly.modules.comentario.service;
 
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.service.ValidationService;
 import controly.modules.postagem.entities.Postagem;
 import controly.modules.comentario.entities.ComentarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
+import controly.modules.postagem.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
 import controly.modules.comentario.repository.ComentarioRepository;
 import controly.modules.postagem.repository.PontuacaoComentarioRepository;
 import controly.modules.postagem.repository.PostagemRepository;
@@ -18,37 +19,34 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static controly.config.Constant.IDNOTFOUND;
+
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
-    final private PostagemRepository postagemRepository;
+    private PostagemRepository postagemRepository;
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    final private ComentarioRepository comentarioRepository;
+    private ComentarioRepository comentarioRepository;
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
     @Autowired
-    final private PontuacaoComentarioRepository pontuacaoComentarioRepository;
+    private PontuacaoComentarioRepository pontuacaoComentarioRepository;
 
-    public ComentarioService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, ComentarioRepository comentarioRepository, ValidationService validation, PontuacaoComentarioRepository pontuacaoComentarioRepository) {
-        this.postagemRepository = postagemRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.comentarioRepository = comentarioRepository;
-        this.validation = validation;
-        this.pontuacaoComentarioRepository = pontuacaoComentarioRepository;
+    public ComentarioService() {
     }
 
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem post) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(post.getIdUsuario()).orElseThrow();
         if (validation.existsUsuario(post.getIdUsuario()) || validation.existsPostagem(post.getIdPostagem()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
         comentarioRepository.save(
-                post.converterPostagem(
+                post.converterComentario(
                         postagemRepository.findByIdPostagem(post.getIdPostagem()),
-                        usuarioRepository.findByIdUsuario(post.getIdUsuario())
+                        usuarioEntity
                 )
         );
         return ResponseEntity.status(201).body("Comentario postado.");
@@ -65,6 +63,7 @@ public class ComentarioService implements Ipostagem {
     }
     @Transactional
     public ResponseEntity<String> setPontuacaoComentario(Long comentario, Long usuario, int ponto){
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
         if (
                 validation.existsComentario(comentario) ||
                         validation.existsUsuario(usuario)
@@ -74,7 +73,7 @@ public class ComentarioService implements Ipostagem {
             pontuacaoComentarioRepository.save(
                     new PontuacaoComentario()
                             .setComentario(comentarioRepository.findByIdComentario(comentario))
-                            .setUsuario(usuarioRepository.findByIdUsuario(usuario))
+                            .setUsuario(usuarioEntity)
                             .setPontuacao(ponto)
             );
         } else {

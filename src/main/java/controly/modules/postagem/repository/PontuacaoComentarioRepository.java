@@ -1,7 +1,7 @@
 package controly.modules.postagem.repository;
 
 import controly.modules.comentario.entities.ComentarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
+import controly.modules.postagem.pontuacao.entities.pontuacaoComentario.PontuacaoComentario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +19,10 @@ public interface PontuacaoComentarioRepository extends JpaRepository<PontuacaoCo
     @Transactional @Modifying
     @Query(value="UPDATE PontuacaoComentario p SET p.pontuacao = ?3 WHERE p.comentario.idComentario = ?1 AND p.usuario.idUsuario = ?2")
     void setPontuacaoFor(Long idcomentario, Long idusuario, int pontuacao);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM PontuacaoComentario WHERE comentario.idComentario = :idComentario")
+    void deleteByComentario_idComentario(Long idComentario);
+
 }

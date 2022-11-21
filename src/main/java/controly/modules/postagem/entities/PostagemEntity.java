@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import controly.modules.comentario.entities.ComentarioEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
-import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
+import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.topico.entities.TopicoEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -40,17 +42,19 @@ public class PostagemEntity implements Serializable {
     @Column(name = "titulo")
     private String titulo;
 
-    @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name="idTopico", referencedColumnName = "idTopico", nullable = false)
+    @OneToOne @JoinColumn(name="idTopico", referencedColumnName = "idTopico", nullable = false)
     private TopicoEntity topico;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idPostagem")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ComentarioEntity> comentarios;
 
     @Embedded
     private RespostaDuvidaEntity respostaDuvidaEntity;
 
     @OneToMany(mappedBy = "postagem",cascade=CascadeType.ALL) @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
 
     @JsonProperty

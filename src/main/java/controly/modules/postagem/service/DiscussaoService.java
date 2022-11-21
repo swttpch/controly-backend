@@ -1,5 +1,6 @@
 package controly.modules.postagem.service;
 
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.service.ValidationService;
 import controly.modules.postagem.repository.PostagemRepository;
 import controly.modules.topico.repository.TopicoRepository;
@@ -14,31 +15,28 @@ import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class DiscussaoService implements Ipostagem {
     @Autowired
-    final private PostagemRepository postagemRepository;
+    private PostagemRepository postagemRepository;
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    final private TopicoRepository topicoRepository;
+    private TopicoRepository topicoRepository;
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
 
-    public DiscussaoService(PostagemRepository postagemRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, ValidationService validation) {
-        this.postagemRepository = postagemRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.topicoRepository = topicoRepository;
-        this.validation = validation;
+    public DiscussaoService() {
     }
 
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem discussao) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(discussao.getIdUsuario()).orElseThrow();
         if (validation.existsUsuario(discussao.getIdUsuario()) || validation.existsTopico(discussao.getIdTopico()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
         postagemRepository.save(
                 discussao.converterPostagem(
                         topicoRepository.findByIdTopico(discussao.getIdTopico()),
-                        usuarioRepository.findByIdUsuario(discussao.getIdUsuario())
+                        usuarioEntity
                 )
         );
         return ResponseEntity.status(201).body("Discussão postada.");

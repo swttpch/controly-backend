@@ -1,8 +1,16 @@
 package controly.modules.perfilAndUsuario.form;
 
+import controly.modules.perfilAndUsuario.EnumRole;
+import controly.modules.perfilAndUsuario.entities.RoleEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
+import controly.modules.perfilAndUsuario.repository.RoleRepository;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CadastrarNovoUsuarioForm {
 
@@ -11,14 +19,13 @@ public class CadastrarNovoUsuarioForm {
     private String nome;
     @NotNull
     private String apelido;
-    //private int avatar;
     @NotNull
     @Length(min=8)
     private String senha;
     @NotNull
+    @Email
     private String email;
-    //private EnumUsuarioStatus status = EnumUsuarioStatus.ATIVO;
-
+    private EnumRole role;
 
 
     public String getNome() {
@@ -53,13 +60,23 @@ public class CadastrarNovoUsuarioForm {
         this.email = email;
     }
 
+    public EnumRole getRole() {
+        return role;
+    }
+
+    public void setRole(EnumRole role) {
+        this.role = role;
+    }
+
     public UsuarioEntity converter() {
+
         UsuarioEntity usuario = new UsuarioEntity();
         usuario.setEmail(email);
         usuario.setSenha(senha);
         usuario.setNome(nome);
         usuario.setAvatar(1);
         usuario.setApelido(apelido);
+
         return usuario;
     }
 }

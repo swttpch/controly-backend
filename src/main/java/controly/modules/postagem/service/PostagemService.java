@@ -1,36 +1,36 @@
 package controly.modules.postagem.service;
 
-import controly.modules.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
-import controly.modules.postagem.entities.PostagemEntity;
-import controly.service.ValidationService;
-import controly.modules.postagem.repository.PostagemRepository;
-import controly.modules.postagem.repository.PontuacaoPostagemRepository;
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
+import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
+import controly.modules.postagem.entities.PostagemEntity;
+import controly.modules.postagem.repository.PontuacaoPostagemRepository;
+import controly.modules.postagem.repository.PostagemRepository;
+import controly.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import static controly.config.Constant.IDNOTFOUND;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static controly.config.Constant.IDNOTFOUND;
+
 @Service
 public class PostagemService {
     @Autowired
-    final private ValidationService validation;
+    private ValidationService validation;
     @Autowired
-    final private PostagemRepository postagemRepository;
+    private PostagemRepository postagemRepository;
     @Autowired
-    final private PontuacaoPostagemRepository pontuacaoPostagemRepository;
+    private PontuacaoPostagemRepository pontuacaoPostagemRepository;
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public PostagemService(ValidationService validation, PostagemRepository postagemRepository, PontuacaoPostagemRepository pontuacaoPostagemRepository, UsuarioRepository usuarioRepository) {
-        this.validation = validation;
-        this.postagemRepository = postagemRepository;
-        this.pontuacaoPostagemRepository = pontuacaoPostagemRepository;
-        this.usuarioRepository = usuarioRepository;
+    public PostagemService() {
     }
 
     @Transactional
@@ -42,12 +42,15 @@ public class PostagemService {
 
     @Transactional
     public ResponseEntity<PostagemEntity> pegarPostagemPeloId(Long id){
-        if (validation.existsPostagem(id)) return ResponseEntity.status(404).build();
+        if (validation.existsPostagem(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
+        }
         PostagemEntity postagem = postagemRepository.findByIdPostagem(id);
         return ResponseEntity.status(200).body(postagem);
     }
 
     public ResponseEntity<String> setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
         if (
             validation.existsPostagem(postagem) ||
                     validation.existsUsuario(usuario)
@@ -57,7 +60,7 @@ public class PostagemService {
             pontuacaoPostagemRepository.save(
                     new PontuacaoPostagem()
                             .setPostagem(postagemRepository.findByIdPostagem(postagem))
-                            .setUsuario(usuarioRepository.findByIdUsuario(usuario))
+                            .setUsuario(usuarioEntity)
                             .setPontuacao(ponto)
             );
         } else {
@@ -65,15 +68,15 @@ public class PostagemService {
         }
         return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a postagem de ID %d.", ponto, postagem));
     }
-
+    @Transactional
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {
-        if (validation.existsPostagem(idPostagem))
-            return ResponseEntity.status(404).body(IDNOTFOUND);
-
-        postagemRepository.delete(
-                postagemRepository.findByIdPostagem(idPostagem)
-        );
-        return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida.");
+        if (validation.existsPostagem(idPostagem)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
+        }
+        PostagemEntity postagem = postagemRepository.findByIdPostagem(idPostagem);
+        //postagemRepository.delete(postagem);
+        int result = postagemRepository.deleteByIdPostagem(idPostagem);
+        return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida. nº: " + result);
     }
 
     @Transactional

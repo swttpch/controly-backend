@@ -1,7 +1,9 @@
-package controly.modules.pontuacao.entities.pontuacaoPostagem;
+package controly.modules.postagem.pontuacao.entities.pontuacaoPostagem;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.postagem.entities.PostagemEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 @Entity
@@ -11,10 +13,11 @@ public class PontuacaoPostagem {
     final private PontuacaoPostagemId id = new PontuacaoPostagemId();
 
     @ManyToOne(cascade=CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @MapsId("idPostagem") @JoinColumn(name = "idPostagem")
     private PostagemEntity postagem;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @MapsId("idUsuario") @JoinColumn(name = "idUsuario")
     private UsuarioEntity usuario;
 
