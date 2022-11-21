@@ -1,9 +1,9 @@
 package controly.modules.topico.controller;
 
+import controly.modules.topico.dto.TopicoDTO;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.topico.repository.TopicoHasSeguidoresRepositoy;
 import controly.modules.topico.repository.TopicoRepository;
-import controly.modules.topico.service.TopicoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,9 +23,6 @@ class TopicoControllerTest {
 
     @Autowired
     private TopicoController controller;
-
-    @Autowired
-    private TopicoService service;
 
     @MockBean
     private TopicoRepository repository;
@@ -44,37 +43,79 @@ class TopicoControllerTest {
     }
 
     @Test
-    @DisplayName("Devera retornar um 201 e seguir o topico")
+    @DisplayName("Devera retornar um 404 e não trazer um topico por id")
     void getTopicoFailed() {
+
+        when(repository.findById(anyLong())).thenReturn(Optional.empty());
+
+        ResponseEntity<TopicoEntity> topico = controller.getTopico(anyLong());
+
+        assertEquals(404, topico.getStatusCodeValue());
+
     }
 
     @Test
     @DisplayName("Devera retornar um 200 e trazer uma lista de topicos")
     void getTopicosSucess() {
+
+        when(repository.findAll()).thenReturn(List.of(
+                new TopicoEntity()));
+
+        when(hasSeguidoresRepository.countTopicoHasSeguidoresByIdUsuario(1L)).thenReturn(1);
+
+        ResponseEntity<List<TopicoDTO>> topicoDTO = controller.getTopicos();
+
+        assertEquals(200, topicoDTO.getStatusCodeValue());
     }
 
     @Test
-    @DisplayName("Devera retornar um 201 e seguir o topico")
+    @DisplayName("Devera retornar um 204 e não trazer uma lista de topicos")
     void getTopicosFailed() {
+        when(repository.findAll()).thenReturn(
+                new ArrayList<>());
+
+        when(hasSeguidoresRepository.countTopicoHasSeguidoresByIdUsuario(1L)).thenReturn(1);
+
+        ResponseEntity<List<TopicoDTO>> topicoDTO = controller.getTopicos();
+
+        assertEquals(204, topicoDTO.getStatusCodeValue());
     }
 
     @Test
     @DisplayName("Devera retornar um 201 e seguir o topico")
     void followTopicoSuccess() {
+
+        ResponseEntity<?> teste = controller.followTopico(1L,1L);
+
+        assertEquals(201, teste.getStatusCodeValue());
+        assertNotNull(teste.getBody());
     }
 
     @Test
     @DisplayName("Devera retornar um 400 e não seguir um topico")
     void followTopicoFailed() {
+
+        ResponseEntity<?> teste = controller.followTopico(35453435454L,35453435454L);
+
+        assertEquals(404, teste.getStatusCodeValue());
+        assertNotNull(teste.getBody());
     }
 
     @Test
-    @DisplayName("Devera retornar um 201 e seguir o topico")
+    @DisplayName("Devera retornar um 201 e deixar de seguir o topico")
     void unfollowTopicoSucess() {
+        ResponseEntity<?> teste = controller.unfollowTopico(1L,1L);
+
+        assertEquals(201, teste.getStatusCodeValue());
+        assertNotNull(teste.getBody());
     }
 
     @Test
-    @DisplayName("Devera retornar um 201 e seguir o topico")
-    void postTopicosFailed() {
+    @DisplayName("Devera retornar um 404 e não deixar de seguir um topico")
+    void unfollowTopicoFailed() {
+        ResponseEntity<?> teste = controller.unfollowTopico(35453435454L,35453435454L);
+
+        assertEquals(404, teste.getStatusCodeValue());
+        assertNotNull(teste.getBody());
     }
 }
