@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -34,48 +35,68 @@ public class UsuarioController {
 
     @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUsuario(@PathVariable Long id){
+    public ResponseEntity<?> getUsuario(@PathVariable Long id) {
         return usuarioService.getUsuarioCadastrado(id);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping
-    public ResponseEntity<List<UsuarioEntity>> getListUsuarios(){
+    public ResponseEntity<List<UsuarioEntity>> getListUsuarios() {
         return usuarioService.getListUsuarios();
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping
-    public ResponseEntity<String> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user){
+    public ResponseEntity<String> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user) {
         return usuarioService.cadastrarUsuario(user);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> deletarUsuario(@PathVariable Long id){
+    public ResponseEntity<?> deletarUsuario(@PathVariable Long id) {
         return usuarioService.deletarUsuario(id);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarUsuario(@PathVariable Long id,
-                                                   @RequestBody CadastrarNovoUsuarioForm form){
-        return usuarioService.atualizarUsuario(id,form);
+                                                   @RequestBody CadastrarNovoUsuarioForm form) {
+        return usuarioService.atualizarUsuario(id, form);
     }
 
     @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/recuperar-senha")
-    public ResponseEntity<?> recuperarSenha(@RequestBody RecuperarSenhaForm form){
+    public ResponseEntity<?> recuperarSenha(@RequestBody RecuperarSenhaForm form) {
         return recuperarSenhaService.recuperarSenha(form);
     }
+
     @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping("/github")
-    public ResponseEntity<String> getGithubUser(@RequestParam String code){
+    public ResponseEntity<String> getGithubUser(@RequestParam String code) {
         System.out.println(code);
         DataGithubPostRequest data = new DataGithubPostRequest(code);
         String response = githubService.consumeApi(Constant.GITHUB_AUTH_ACCESSTOKEN_URL, data);
         return ResponseEntity.status(200).body(response);
+    }
+
+    @PreAuthorize("hasAnyRole('ADM')")
+    @PutMapping("atualizar/apelido-avatar/{idUsuario}")
+    public ResponseEntity<String> atualizarDadosUsuario(
+            @PathVariable Long idUsuario,
+            @RequestParam(required = false) String apelido,
+            @RequestParam(required = false) Integer avatar
+    ) {
+
+        if (apelido != null) {
+            return usuarioService.atualizarApelido(idUsuario, apelido);
+
+        } else if (avatar != null) {
+            return usuarioService.atualizarAvatar(idUsuario, avatar);
+        } else {
+            return ResponseEntity.status(200).body("Passe ou um apelido, ou um avatar");
+
+        }
     }
 
 }
