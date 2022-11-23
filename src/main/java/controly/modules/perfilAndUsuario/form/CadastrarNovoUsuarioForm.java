@@ -1,16 +1,11 @@
 package controly.modules.perfilAndUsuario.form;
 
 import controly.modules.perfilAndUsuario.EnumRole;
-import controly.modules.perfilAndUsuario.entities.RoleEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
-import controly.modules.perfilAndUsuario.repository.RoleRepository;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CadastrarNovoUsuarioForm {
 

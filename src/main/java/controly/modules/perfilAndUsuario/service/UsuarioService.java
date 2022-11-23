@@ -1,10 +1,8 @@
 package controly.modules.perfilAndUsuario.service;
 
 import controly.modules.perfilAndUsuario.ValidacaoUsuario;
-import controly.modules.perfilAndUsuario.entities.RoleEntity;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
-import controly.modules.perfilAndUsuario.repository.RoleRepository;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +21,6 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
 
     public UsuarioService() {
     }
@@ -39,10 +35,6 @@ public class UsuarioService {
             if (usuarioRepository.findByEmail(novoUser.getEmail()).isEmpty()) {
 
                 UsuarioEntity usuarioEntity = novoUser.converter();
-                RoleEntity role = roleRepository.findByEnumRole(novoUser.getRole());
-                List<RoleEntity> listaEnum = new ArrayList<>();
-                listaEnum.add(role);
-                usuarioEntity.setRoles(listaEnum);
 
                 usuarioRepository.save(usuarioEntity);
                 return ResponseEntity.status(HttpStatus.CREATED).body("UsuarioEntity cadastrado com sucesso");

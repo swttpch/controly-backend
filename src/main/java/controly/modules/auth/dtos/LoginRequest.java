@@ -1,4 +1,5 @@
-package controly.modules.perfilAndUsuario.dto;
+package controly.modules.auth.dtos;
+
 
 
 public class LoginRequest {
@@ -13,4 +14,6 @@ public class LoginRequest {
     public String getSenha() {
         return senha;
     }
+
+
 }
