@@ -1,7 +1,7 @@
 insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('ADMINISTRADOR', 'adm', 'adm@teste.com', '12345678', 1, true);
 insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('MODERADOR', 'mod', 'mod@teste.com', '12345678', 1, true);
 insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('USUARIO', 'usr', 'usr@teste.com', '12345678', 1, true);
-insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('Donilo', 'Don616', 'contato.pontes@bandtec.com.br', '12345678', 5, true);
+insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('Donilo', 'Don616', 'donilo.pontes@bandtec.com.br', '12345678', 5, true);
 insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('Hanna', 'H4nn4', 'hanna.santos@bandtec.com.br', '12345678', 4, true);
 insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('Letícia', 'Let1ci4', 'leticia.costa@bandtec.com.br', '12345678', 3, true);
 insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('Igor', '1g0r', 'igor.gsouza@bandtec.com.br', '12345678', 7, true);
@@ -11,13 +11,18 @@ insert into tb_usuario (nome, apelido, email, senha, avatar, is_ativo) values ('
 
 
 
-insert into tb_topico (nome, descricao) values ('topico1', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
-insert into tb_topico (nome, descricao) values ('topico2', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
-insert into tb_topico (nome, descricao) values ('topico3', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds');
+insert into tb_topico (nome, descricao) values ('Flutter', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('Java', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('React', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('JS', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('Html', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('Php', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('Spring', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('Laravel', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('Mysql', 'Um kit de desenvolvimento que blá blá');
+insert into tb_topico (nome, descricao) values ('Css', 'Um kit de desenvolvimento que blá blá');
 
 
-insert into tb_postagem ( titulo, conteudo, id_usuario, id_topico) values ('Discussao1', 'conteudo da postagem1', 1 , 3);
-insert into tb_postagem ( titulo, conteudo, id_usuario, id_topico) values ('Discussao2', 'conteudo da postagem1', 2 , 2);
 insert into tb_postagem ( titulo, conteudo, id_usuario, id_topico) values ('Como posso resolver este bug no java?', 'Como posso resolver est', 4 , 1);
 insert into tb_postagem ( titulo, conteudo, id_usuario, id_topico) values ('Não consigo aprender REACT', 'xxxxxxxxxxxxxx', 5 , 1);
 insert into tb_postagem ( titulo, conteudo, id_usuario, id_topico) values ('Me ajude com o Git!', 'xxxxxxxxxxxxxx', 6 , 1);
