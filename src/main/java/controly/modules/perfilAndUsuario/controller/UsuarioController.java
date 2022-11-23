@@ -17,8 +17,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;

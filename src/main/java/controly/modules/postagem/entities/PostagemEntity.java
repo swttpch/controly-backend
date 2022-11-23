@@ -25,7 +25,7 @@ import java.util.Set;
 @SecondaryTable(name= "tbRespostaDuvida", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idPostagem"))
 public class PostagemEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.TABLE) @Column(name = "idPostagem")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "idPostagem")
     private Long idPostagem;
 
     @Column(name = "conteudo")
