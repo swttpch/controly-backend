@@ -2,6 +2,8 @@ package controly.modules.perfilAndUsuario.service;
 
 import controly.modules.perfilAndUsuario.dto.PerfilDTO;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
+import controly.modules.topico.entities.TopicoEntity;
+import controly.modules.topico.repository.TopicoHasSeguidoresRepositoy;
 import controly.modules.topico.service.TopicoService;
 import controly.service.ValidationService;
 import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("ALL")
 @Service
@@ -23,6 +26,9 @@ public class PerfilService {
 
     @Autowired
     private TopicoService topicoService;
+
+    @Autowired
+    private TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
 
     @Autowired
     private ValidationService validation;
@@ -41,13 +47,18 @@ public class PerfilService {
 
         List<PostagemEntity> postagemEntityList = postagemService.getPostagemByIdUser(id).getBody();
 
-        List<TopicoHasSeguidoresEntity> topicoEntityList = topicoService.getTopicosByIdUser(id).getBody();
+        List<TopicoHasSeguidoresEntity> topicoHasSeguidoresEntities =
+                topicoHasSeguidoresRepositoy.findTopicosHasSeguidoresTopicoEntityByUsuario_IdUsuario(id);
+        List<TopicoEntity> topicosSeguidos = topicoHasSeguidoresEntities
+                .stream()
+                .map(topico -> topico.getTopico())
+                .collect(Collectors.toList());
 
         PerfilDTO perfilDTO = new PerfilDTO();
 
         perfilDTO.setUsuario(usuario);
         perfilDTO.setPostagens(postagemEntityList);
-        perfilDTO.setTopicos_seguidos(topicoEntityList);
+        perfilDTO.setTopicos_seguidos(topicosSeguidos);
 
         return ResponseEntity.status(200).body(perfilDTO);
     }

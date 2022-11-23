@@ -1,6 +1,7 @@
 package controly.modules.perfilAndUsuario.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import controly.modules.topico.entities.TopicoEntity;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -37,6 +39,8 @@ public class UsuarioEntity implements Serializable {
 
     @JsonIgnore
     private Long idGithub;
+
+    private String descricao;
 
     public UsuarioEntity(String nome, String apelido, String senha, String email) {
         this.nome = nome;
