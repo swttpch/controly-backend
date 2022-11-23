@@ -69,7 +69,7 @@ public class CadastrarNovoUsuarioForm {
         usuario.setEmail(email);
         usuario.setSenha(senha);
         usuario.setNome(nome);
-        usuario.setAvatar(1);
+        usuario.setAvatar("1");
         usuario.setApelido(apelido);
 
         return usuario;

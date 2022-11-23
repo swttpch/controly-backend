@@ -3,6 +3,7 @@ package controly.modules.perfilAndUsuario.controller;
 
 import controly.config.Constant;
 import controly.modules.perfilAndUsuario.dto.DataGithubPostRequest;
+import controly.modules.perfilAndUsuario.dto.GitHubInformacoes;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
 import controly.modules.perfilAndUsuario.service.GithubService;
@@ -19,7 +20,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping("/usuarios")
 public class UsuarioController {
     @Autowired
@@ -81,12 +82,17 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(response);
     }
 
+    @PostMapping("/github")
+    public ResponseEntity<UsuarioEntity> postGitHubUser(@RequestBody GitHubInformacoes usuario){
+        return usuarioService.autenticarGithub(usuario);
+    }
+
 
         @PutMapping("/atualizar/apelido-avatar/{idUsuario}")
     public ResponseEntity<?> atualizarDadosUsuario(
             @PathVariable Long idUsuario,
             @RequestParam(required = false) String apelido,
-            @RequestParam(required = false) Integer avatar
+            @RequestParam(required = false) String avatar
     ) {
         if(apelido == null && avatar == null) {
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passe um avatar ou um apelido para ser atualizado");

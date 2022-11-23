@@ -1,6 +1,7 @@
 package controly.modules.perfilAndUsuario.service;
 
 import controly.modules.perfilAndUsuario.ValidacaoUsuario;
+import controly.modules.perfilAndUsuario.dto.GitHubInformacoes;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
@@ -129,7 +130,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void atualizarAvatar(Long idUsuario, Integer novoAvatar) {
+    public void atualizarAvatar(Long idUsuario, String novoAvatar) {
         UsuarioEntity usuario = buscarUsuarioPorId(idUsuario)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
         usuario.setAvatar(novoAvatar);
@@ -141,4 +142,13 @@ public class UsuarioService {
     }
 
 
+    public ResponseEntity<UsuarioEntity> autenticarGithub(GitHubInformacoes usuario) {
+        Optional<UsuarioEntity> optionalUsuarioEntity = usuarioRepository.findByIdGithub(usuario.getIdGithub());
+        if (optionalUsuarioEntity.isPresent()){
+            return ResponseEntity.status(200).body(optionalUsuarioEntity.get());
+        }
+        UsuarioEntity novoUsuario = usuario.converter();
+        usuarioRepository.save(novoUsuario);
+        return ResponseEntity.status(201).body(novoUsuario);
+    }
 }

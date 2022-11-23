@@ -23,18 +23,20 @@ public class UsuarioEntity implements Serializable {
     private String nome;
     @NotNull
     private String apelido;
-    private int avatar;
+
+    private String avatar;
 
     @JsonIgnore
     @Length(min=8)
     private String senha;
-    @NotNull
+
     @Email
     private String email;
     @JsonIgnore
     private Boolean isAtivo=true;
 
-
+    @JsonIgnore
+    private Long idGithub;
 
     public UsuarioEntity(String nome, String apelido, String senha, String email) {
         this.nome = nome;
