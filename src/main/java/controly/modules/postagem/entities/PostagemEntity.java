@@ -27,7 +27,7 @@ import java.util.Set;
 public class PostagemEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id @GeneratedValue(strategy = GenerationType.TABLE) @Column(name = "idPostagem")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "idPostagem")
     private Long idPostagem;
 
     @Column(name = "conteudo")
