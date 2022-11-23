@@ -40,7 +40,7 @@ public class UsuarioEntity implements Serializable {
     @JsonIgnore
     private Long idGithub;
 
-    private String descricao;
+    private String descricao = "";
 
     public UsuarioEntity(String nome, String apelido, String senha, String email) {
         this.nome = nome;

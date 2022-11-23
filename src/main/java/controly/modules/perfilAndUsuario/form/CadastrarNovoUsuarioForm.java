@@ -22,6 +22,7 @@ public class CadastrarNovoUsuarioForm {
     private String email;
     private EnumRole role;
 
+    private String descricao;
 
     public String getNome() {
         return nome;

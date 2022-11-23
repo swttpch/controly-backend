@@ -1,6 +1,7 @@
 package controly.modules.perfilAndUsuario.service;
 
 import controly.modules.perfilAndUsuario.ValidacaoUsuario;
+import controly.modules.perfilAndUsuario.dto.AtualizarUsuarioRequest;
 import controly.modules.perfilAndUsuario.dto.GitHubInformacoes;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
@@ -85,41 +86,22 @@ public class UsuarioService {
         }
     }
 
-    public ResponseEntity<String> atualizarUsuario(Long id, CadastrarNovoUsuarioForm form) {
+    @Transactional
+    public ResponseEntity<String> atualizarUsuario(Long id, AtualizarUsuarioRequest form) {
+        UsuarioEntity usuario = usuarioRepository.findByIdUsuario(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        usuario.setDescricao("");
 
-        String usuarioInvalido = new ValidacaoUsuario().validar(form);
+        if (!usuario.getNome().equals(form.getNome()) && !form.getNome().isBlank())
+            usuario.setNome(form.getNome());
 
-        if (usuarioInvalido == null) {
+        if (!usuario.getApelido().equals(form.getApelido()) && !form.getApelido().isBlank())
+            usuario.setApelido(form.getApelido());
 
-            Optional<UsuarioEntity> usuario = buscarUsuarioPorId(id);
+        if (!usuario.getDescricao().equals(form.getDescricao()) && !form.getDescricao().isBlank())
+            usuario.setDescricao(form.getDescricao());
 
-            if (usuario.isPresent()) {
-
-                UsuarioEntity usuarioEntityCadastrado = usuario.get();
-
-                if (!usuarioEntityCadastrado.getNome().equals(form.getNome())) {
-                    usuarioEntityCadastrado.setNome(form.getNome());
-                }
-                if (!usuarioEntityCadastrado.getApelido().equals(form.getApelido())) {
-                    usuarioEntityCadastrado.setApelido(form.getApelido());
-                }
-                if (!usuarioEntityCadastrado.getEmail().equals(form.getEmail())) {
-                    usuarioEntityCadastrado.setEmail(form.getEmail());
-                }
-                if (!usuarioEntityCadastrado.getSenha().equals(form.getSenha())) {
-                    usuarioEntityCadastrado.setSenha(form.getSenha());
-                }
-
-
-                usuarioRepository.save(usuarioEntityCadastrado);
-                return ResponseEntity.status(201).body("Usuario atualizado com sucesso");
-
-            } else {
-                return ResponseEntity.status(404).body("UsuarioEntity não encontrado");
-            }
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-        }
+        return ResponseEntity.status(200).build();
     }
 
     @Transactional

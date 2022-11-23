@@ -2,6 +2,7 @@ package controly.modules.perfilAndUsuario.controller;
 
 
 import controly.config.Constant;
+import controly.modules.perfilAndUsuario.dto.AtualizarUsuarioRequest;
 import controly.modules.perfilAndUsuario.dto.DataGithubPostRequest;
 import controly.modules.perfilAndUsuario.dto.GitHubInformacoes;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
@@ -63,7 +64,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarUsuario(@PathVariable Long id,
-                                                   @RequestBody CadastrarNovoUsuarioForm form) {
+                                                   @RequestBody AtualizarUsuarioRequest form) {
         return usuarioService.atualizarUsuario(id, form);
     }
 
