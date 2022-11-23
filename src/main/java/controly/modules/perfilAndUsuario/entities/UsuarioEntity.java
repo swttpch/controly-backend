@@ -31,6 +31,7 @@ public class UsuarioEntity implements Serializable {
     @NotNull
     @Email
     private String email;
+    @JsonIgnore
     private Boolean isAtivo=true;
 
 
