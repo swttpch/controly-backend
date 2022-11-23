@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("ALL")
@@ -59,7 +61,10 @@ public class PerfilService {
         perfilDTO.setUsuario(usuario);
         perfilDTO.setPostagens(postagemEntityList);
         perfilDTO.setTopicos_seguidos(topicosSeguidos);
-
+        if (perfilDTO.getPostagens() == null) return ResponseEntity.status(200).body(perfilDTO);
+        if (perfilDTO.getPostagens().size() == 0) return ResponseEntity.status(200).body(perfilDTO);
+        PostagemEntity postagemMaiorPontuacao = postagemEntityList.stream().max(Comparator.comparing(PostagemEntity::getPontuacao)).orElse(null);
+        perfilDTO.setPostagemMaiorPontuacao(postagemMaiorPontuacao);
         return ResponseEntity.status(200).body(perfilDTO);
     }
 }

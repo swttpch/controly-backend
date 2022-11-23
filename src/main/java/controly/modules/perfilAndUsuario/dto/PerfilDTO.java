@@ -17,8 +17,5 @@ public class PerfilDTO {
     private UsuarioEntity usuario;
     private List<PostagemEntity> postagens;
     private List<TopicoEntity> topicos_seguidos;
-    @JsonProperty
-    public PostagemEntity getPostagemMaisPontuada(){
-        return postagens.stream().max(Comparator.comparing(PostagemEntity::getPontuacao)).orElse(null);
-    }
+    private PostagemEntity postagemMaiorPontuacao;
 }
