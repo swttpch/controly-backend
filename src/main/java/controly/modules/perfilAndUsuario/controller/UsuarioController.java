@@ -10,8 +10,10 @@ import controly.modules.recuperarSenha.form.RecuperarSenhaForm;
 import controly.modules.recuperarSenha.service.RecuperarSenhaService;
 import controly.modules.perfilAndUsuario.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -46,7 +48,7 @@ public class UsuarioController {
 
 
     @PostMapping
-    public ResponseEntity<String> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user) {
+    public ResponseEntity<UsuarioEntity> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user) {
         return usuarioService.cadastrarUsuario(user);
     }
 
@@ -80,22 +82,22 @@ public class UsuarioController {
     }
 
 
-    @PutMapping("atualizar/apelido-avatar/{idUsuario}")
-    public ResponseEntity<String> atualizarDadosUsuario(
+        @PutMapping("/atualizar/apelido-avatar/{idUsuario}")
+    public ResponseEntity<?> atualizarDadosUsuario(
             @PathVariable Long idUsuario,
             @RequestParam(required = false) String apelido,
             @RequestParam(required = false) Integer avatar
     ) {
-
-        if (apelido != null) {
-            return usuarioService.atualizarApelido(idUsuario, apelido);
-
-        } else if (avatar != null) {
-            return usuarioService.atualizarAvatar(idUsuario, avatar);
-        } else {
-            return ResponseEntity.status(200).body("Passe ou um apelido, ou um avatar");
-
+        if(apelido == null && avatar == null) {
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passe um avatar ou um apelido para ser atualizado");
         }
+        if (apelido != null) {
+            usuarioService.atualizarApelido(idUsuario, apelido);
+        }
+        if (avatar != null) {
+            usuarioService.atualizarAvatar(idUsuario, avatar);
+        }
+        return getUsuario(idUsuario);
     }
 
 

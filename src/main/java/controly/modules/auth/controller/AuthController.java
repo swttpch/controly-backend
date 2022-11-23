@@ -1,20 +1,21 @@
 package controly.modules.auth.controller;
 
 import controly.modules.auth.dtos.LoginRequest;
+import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
-    @PostMapping
-    public ResponseEntity<?> login(@RequestBody LoginRequest login){
-        return authService.login(login);
+    @PostMapping()
+    public ResponseEntity<UsuarioEntity> login(@RequestBody LoginRequest login){
+        return authService.login(login.getEmail(), login.getSenha());
     }
 }

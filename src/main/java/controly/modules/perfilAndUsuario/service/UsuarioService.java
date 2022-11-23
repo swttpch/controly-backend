@@ -25,7 +25,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public ResponseEntity<String> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser) {
+    public ResponseEntity<UsuarioEntity> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser) {
 
         String usuarioInvalido = new ValidacaoUsuario().validar(novoUser);
 
@@ -36,7 +36,7 @@ public class UsuarioService {
                 UsuarioEntity usuarioEntity = novoUser.converter();
 
                 usuarioRepository.save(usuarioEntity);
-                return ResponseEntity.status(HttpStatus.CREATED).body("UsuarioEntity cadastrado com sucesso");
+                return ResponseEntity.status(HttpStatus.CREATED).body(usuarioEntity);
 
             } else {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já existe na base de dados");
@@ -122,54 +122,23 @@ public class UsuarioService {
     }
 
     @Transactional
-    public ResponseEntity<String> atualizarApelido(Long idUsuario, String novoApelido) {
-
-        Optional<UsuarioEntity> usuario = buscarUsuarioPorId(idUsuario);
-
-        if (usuario.isPresent()) {
-
-            UsuarioEntity novoUsuario = usuario.get();
-
-            if (novoUsuario.getApelido().equals(novoApelido)) {
-                return ResponseEntity.status(201).body("O apelido deve ser diferente do atual");
-
-            } else {
-                novoUsuario.setApelido(novoApelido);
-                usuarioRepository.save(novoUsuario);
-                return ResponseEntity.status(201).body("Apelido atualizado com sucesso");
-            }
-
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-        }
+    public void atualizarApelido(Long idUsuario, String novoApelido) {
+        UsuarioEntity usuario = buscarUsuarioPorId(idUsuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        usuario.setApelido(novoApelido);
     }
 
     @Transactional
-    public ResponseEntity<String> atualizarAvatar(Long idUsuario, Integer novoAvatar) {
-
-        Optional<UsuarioEntity> usuario = buscarUsuarioPorId(idUsuario);
-
-        if (usuario.isPresent()) {
-
-            UsuarioEntity novoUsuario = usuario.get();
-
-            if (novoUsuario.getAvatar() == novoAvatar) {
-                return ResponseEntity.status(201).body("O avatar deve ser diferente do atual");
-
-            } else {
-                novoUsuario.setAvatar(novoAvatar);
-                usuarioRepository.save(novoUsuario);
-                return ResponseEntity.status(201).body("Avatar atualizado com sucesso");
-            }
-
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-        }
+    public void atualizarAvatar(Long idUsuario, Integer novoAvatar) {
+        UsuarioEntity usuario = buscarUsuarioPorId(idUsuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        usuario.setAvatar(novoAvatar);
     }
 
     public UsuarioEntity login(String email, String senha) {
         Optional<UsuarioEntity> usuarioPromisse = usuarioRepository.findByEmailAndSenha(email, senha);
         return usuarioPromisse.orElse(null);
     }
+
 
 }
