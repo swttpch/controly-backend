@@ -2,6 +2,7 @@ package controly.modules.postagem.controller;
 
 import controly.modules.comentario.form.Comentario;
 import controly.modules.comentario.entities.ComentarioEntity;
+import controly.modules.postagem.dtos.PostagemDTO;
 import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.postagem.pontuacao.form.Discussao;
 import controly.modules.postagem.pontuacao.form.Duvida;
@@ -41,7 +42,7 @@ public class PostagemController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PostagemEntity>> pegarTodasDiscussoes(){
+    public ResponseEntity<List<PostagemDTO>> pegarTodasDiscussoes(){
         return postagemService.todasPostagens();
     }
 

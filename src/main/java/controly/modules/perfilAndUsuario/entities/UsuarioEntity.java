@@ -1,8 +1,8 @@
 package controly.modules.perfilAndUsuario.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -24,7 +24,8 @@ public class UsuarioEntity implements Serializable {
     @NotNull
     private String apelido;
     private int avatar;
-    @NotNull
+
+    @JsonIgnore
     @Length(min=8)
     private String senha;
     @NotNull

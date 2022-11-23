@@ -39,6 +39,8 @@ public class TopicoService {
     public ResponseEntity<List<TopicoDTO>> getTopicos() {
         List<TopicoEntity> topicos = topicoRepository.findAll();
 
+        if (topicos.isEmpty()) return ResponseEntity.status(204).build();
+
         List<TopicoDTO> topicoDTOList = new ArrayList<>();
 
 

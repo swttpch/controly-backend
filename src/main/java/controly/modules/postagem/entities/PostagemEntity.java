@@ -13,7 +13,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -24,8 +23,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "tbPostagem")
 @SecondaryTable(name= "tbRespostaDuvida", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idPostagem"))
-public class PostagemEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class PostagemEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.TABLE) @Column(name = "idPostagem")
     private Long idPostagem;
@@ -47,7 +45,6 @@ public class PostagemEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idPostagem")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<ComentarioEntity> comentarios;
 
     @Embedded
@@ -56,6 +53,7 @@ public class PostagemEntity implements Serializable {
     @OneToMany(mappedBy = "postagem",cascade=CascadeType.ALL) @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
+
 
     @JsonProperty
     public int getPontuacao(){
@@ -137,5 +135,13 @@ public class PostagemEntity implements Serializable {
 
     public void setRespostaDuvidaEntity(RespostaDuvidaEntity respostaDuvidaEntity) {
         this.respostaDuvidaEntity = respostaDuvidaEntity;
+    }
+
+    public Long getIdPostagem() {
+        return idPostagem;
+    }
+
+    public void setIdPostagem(Long idPostagem) {
+        this.idPostagem = idPostagem;
     }
 }
