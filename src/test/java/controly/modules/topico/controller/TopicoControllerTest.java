@@ -37,7 +37,7 @@ class TopicoControllerTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(new TopicoEntity()));
 
-        ResponseEntity<TopicoEntity> topico = controller.getTopico(anyLong());
+        ResponseEntity<TopicoDTO> topico = controller.getTopico(anyLong());
 
         assertEquals(200, topico.getStatusCodeValue());
     }
@@ -48,7 +48,7 @@ class TopicoControllerTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
-        ResponseEntity<TopicoEntity> topico = controller.getTopico(anyLong());
+        ResponseEntity<TopicoDTO> topico = controller.getTopico(anyLong());
 
         assertEquals(404, topico.getStatusCodeValue());
 

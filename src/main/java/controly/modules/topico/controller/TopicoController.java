@@ -21,7 +21,7 @@ public class TopicoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TopicoEntity> getTopico(@PathVariable long id){
+    public ResponseEntity<TopicoDTO> getTopico(@PathVariable long id){
         return topicoService.getTopicoById(id);
     }
 
