@@ -1,10 +1,10 @@
 package controly.modules.perfilAndUsuario.service;
 
 import controly.modules.perfilAndUsuario.ValidacaoUsuario;
-import controly.modules.perfilAndUsuario.entities.RoleEntity;
+import controly.modules.perfilAndUsuario.dto.AtualizarUsuarioRequest;
+import controly.modules.perfilAndUsuario.dto.GitHubInformacoes;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
-import controly.modules.perfilAndUsuario.repository.RoleRepository;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,14 +22,12 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
 
     public UsuarioService() {
     }
 
     @Transactional
-    public ResponseEntity<String> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser) {
+    public ResponseEntity<UsuarioEntity> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser) {
 
         String usuarioInvalido = new ValidacaoUsuario().validar(novoUser);
 
@@ -39,13 +36,9 @@ public class UsuarioService {
             if (usuarioRepository.findByEmail(novoUser.getEmail()).isEmpty()) {
 
                 UsuarioEntity usuarioEntity = novoUser.converter();
-                RoleEntity role = roleRepository.findByEnumRole(novoUser.getRole());
-                List<RoleEntity> listaEnum = new ArrayList<>();
-                listaEnum.add(role);
-                usuarioEntity.setRoles(listaEnum);
 
                 usuarioRepository.save(usuarioEntity);
-                return ResponseEntity.status(HttpStatus.CREATED).body("UsuarioEntity cadastrado com sucesso");
+                return ResponseEntity.status(HttpStatus.CREATED).body(usuarioEntity);
 
             } else {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já existe na base de dados");
@@ -93,87 +86,36 @@ public class UsuarioService {
         }
     }
 
-    public ResponseEntity<String> atualizarUsuario(Long id, CadastrarNovoUsuarioForm form) {
+    @Transactional
+    public ResponseEntity<String> atualizarUsuario(Long id, AtualizarUsuarioRequest form) {
+        UsuarioEntity usuario = usuarioRepository.findByIdUsuario(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        usuario.setDescricao("");
 
-        String usuarioInvalido = new ValidacaoUsuario().validar(form);
+        if (!usuario.getNome().equals(form.getNome()) && !form.getNome().isBlank())
+            usuario.setNome(form.getNome());
 
-        if (usuarioInvalido == null) {
+        if (!usuario.getApelido().equals(form.getApelido()) && !form.getApelido().isBlank())
+            usuario.setApelido(form.getApelido());
 
-            Optional<UsuarioEntity> usuario = buscarUsuarioPorId(id);
+        if (!usuario.getDescricao().equals(form.getDescricao()) && !form.getDescricao().isBlank())
+            usuario.setDescricao(form.getDescricao());
 
-            if (usuario.isPresent()) {
-
-                UsuarioEntity usuarioEntityCadastrado = usuario.get();
-
-                if (!usuarioEntityCadastrado.getNome().equals(form.getNome())) {
-                    usuarioEntityCadastrado.setNome(form.getNome());
-                }
-                if (!usuarioEntityCadastrado.getApelido().equals(form.getApelido())) {
-                    usuarioEntityCadastrado.setApelido(form.getApelido());
-                }
-                if (!usuarioEntityCadastrado.getEmail().equals(form.getEmail())) {
-                    usuarioEntityCadastrado.setEmail(form.getEmail());
-                }
-                if (!usuarioEntityCadastrado.getSenha().equals(form.getSenha())) {
-                    usuarioEntityCadastrado.setSenha(form.getSenha());
-                }
-
-
-                usuarioRepository.save(usuarioEntityCadastrado);
-                return ResponseEntity.status(201).body("Usuario atualizado com sucesso");
-
-            } else {
-                return ResponseEntity.status(404).body("UsuarioEntity não encontrado");
-            }
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-        }
+        return ResponseEntity.status(200).build();
     }
 
     @Transactional
-    public ResponseEntity<String> atualizarApelido(Long idUsuario, String novoApelido) {
-
-        Optional<UsuarioEntity> usuario = buscarUsuarioPorId(idUsuario);
-
-        if (usuario.isPresent()) {
-
-            UsuarioEntity novoUsuario = usuario.get();
-
-            if (novoUsuario.getApelido().equals(novoApelido)) {
-                return ResponseEntity.status(201).body("O apelido deve ser diferente do atual");
-
-            } else {
-                novoUsuario.setApelido(novoApelido);
-                usuarioRepository.save(novoUsuario);
-                return ResponseEntity.status(201).body("Apelido atualizado com sucesso");
-            }
-
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-        }
+    public void atualizarApelido(Long idUsuario, String novoApelido) {
+        UsuarioEntity usuario = buscarUsuarioPorId(idUsuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        usuario.setApelido(novoApelido);
     }
 
     @Transactional
-    public ResponseEntity<String> atualizarAvatar(Long idUsuario, Integer novoAvatar) {
-
-        Optional<UsuarioEntity> usuario = buscarUsuarioPorId(idUsuario);
-
-        if (usuario.isPresent()) {
-
-            UsuarioEntity novoUsuario = usuario.get();
-
-            if (novoUsuario.getAvatar() == novoAvatar) {
-                return ResponseEntity.status(201).body("O avatar deve ser diferente do atual");
-
-            } else {
-                novoUsuario.setAvatar(novoAvatar);
-                usuarioRepository.save(novoUsuario);
-                return ResponseEntity.status(201).body("Avatar atualizado com sucesso");
-            }
-
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-        }
+    public void atualizarAvatar(Long idUsuario, String novoAvatar) {
+        UsuarioEntity usuario = buscarUsuarioPorId(idUsuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        usuario.setAvatar(novoAvatar);
     }
 
     public UsuarioEntity login(String email, String senha) {
@@ -181,4 +123,14 @@ public class UsuarioService {
         return usuarioPromisse.orElse(null);
     }
 
+
+    public ResponseEntity<UsuarioEntity> autenticarGithub(GitHubInformacoes usuario) {
+        Optional<UsuarioEntity> optionalUsuarioEntity = usuarioRepository.findByIdGithub(usuario.getIdGithub());
+        if (optionalUsuarioEntity.isPresent()){
+            return ResponseEntity.status(200).body(optionalUsuarioEntity.get());
+        }
+        UsuarioEntity novoUsuario = usuario.converter();
+        usuarioRepository.save(novoUsuario);
+        return ResponseEntity.status(201).body(novoUsuario);
+    }
 }

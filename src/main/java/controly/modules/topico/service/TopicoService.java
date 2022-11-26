@@ -39,6 +39,8 @@ public class TopicoService {
     public ResponseEntity<List<TopicoDTO>> getTopicos() {
         List<TopicoEntity> topicos = topicoRepository.findAll();
 
+        if (topicos.isEmpty()) return ResponseEntity.status(204).build();
+
         List<TopicoDTO> topicoDTOList = new ArrayList<>();
 
 
@@ -59,9 +61,19 @@ public class TopicoService {
     }
 
     @Transactional
-    public ResponseEntity<TopicoEntity> getTopicoById(Long id) {
-        if (validation.existsTopico(id)) return ResponseEntity.status(404).build();
-        return ResponseEntity.status(200).body(topicoRepository.findByIdTopico(id));
+    public ResponseEntity<TopicoDTO> getTopicoById(Long id) {
+        if (validation.existsTopico(id)){
+            return ResponseEntity.status(404).build();
+        }
+        TopicoEntity topico = topicoRepository.findByIdTopico(id);
+        TopicoDTO topicoDTO = new TopicoDTO();
+
+        topicoDTO.setIdTopico(topico.getIdTopico());
+        topicoDTO.setNome(topico.getNome());
+        topicoDTO.setDescricao(topico.getDescricao());
+        topicoDTO.setSeguidores(topicoHasSeguidoresRepositoy.countTopicoHasSeguidoresByIdUsuario(topico.getIdTopico()));
+
+        return ResponseEntity.status(200).body(topicoDTO);
     }
 
     public ResponseEntity<List<TopicoHasSeguidoresEntity>> getTopicosByIdUser(Long idUser) {
