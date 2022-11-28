@@ -8,9 +8,9 @@ import controly.modules.perfilAndUsuario.dto.GitHubInformacoes;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
 import controly.modules.perfilAndUsuario.service.GithubService;
+import controly.modules.perfilAndUsuario.service.UsuarioService;
 import controly.modules.recuperarSenha.form.RecuperarSenhaForm;
 import controly.modules.recuperarSenha.service.RecuperarSenhaService;
-import controly.modules.perfilAndUsuario.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -107,6 +107,8 @@ public class UsuarioController {
         return getUsuario(idUsuario);
     }
 
-
-
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Void> verificaEmailExiste(@PathVariable String email){
+        return usuarioService.verificaEmailExiste(email);
+    }
 }

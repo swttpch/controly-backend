@@ -133,4 +133,12 @@ public class UsuarioService {
         usuarioRepository.save(novoUsuario);
         return ResponseEntity.status(201).body(novoUsuario);
     }
+
+    public ResponseEntity<Void> verificaEmailExiste(String email) {
+        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
+        if (usuarioEntity.isPresent()) {
+            return ResponseEntity.status(200).build();
+        }
+        return  ResponseEntity.status(404).build();
+    }
 }
