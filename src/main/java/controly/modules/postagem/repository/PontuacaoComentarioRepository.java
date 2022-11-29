@@ -16,13 +16,9 @@ public interface PontuacaoComentarioRepository extends JpaRepository<PontuacaoCo
     @Query(value = "SELECT m FROM PontuacaoComentario m WHERE m.comentario.idComentario = ?1 AND m.usuario.idUsuario = ?2")
     Optional<PontuacaoComentario> existByComentarioAndUsuario(Long idComentario, Long idusuario);
 
-    @Transactional @Modifying
-    @Query(value="UPDATE PontuacaoComentario p SET p.pontuacao = ?3 WHERE p.comentario.idComentario = ?1 AND p.usuario.idUsuario = ?2")
-    void setPontuacaoFor(Long idcomentario, Long idusuario, int pontuacao);
-
     @Transactional
     @Modifying
-    @Query("DELETE FROM PontuacaoComentario WHERE comentario.idComentario = :idComentario")
-    void deleteByComentario_idComentario(Long idComentario);
+    @Query("DELETE FROM PontuacaoComentario WHERE comentario.idComentario = :idComentario and usuario.idUsuario = :idUsuario")
+    void deleteByComentario_idComentario(Long idComentario, Long idUsuario);
 
 }

@@ -90,14 +90,9 @@ public class PostagemController {
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
     }
 
-    @PutMapping("/comentario/subir/{idComentario}/{idUsuario}")
-    public ResponseEntity<String> subirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return comentarioService.setPontuacaoComentario(idComentario, idUsuario, 1);
-    }
-
-    @PutMapping("/comentario/descer/{idComentario}/{idUsuario}")
-    public ResponseEntity<String> descerComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return comentarioService.setPontuacaoComentario(idComentario, idUsuario, -1);
+    @PutMapping("/comentario/curtir/{idComentario}/{idUsuario}")
+    public ResponseEntity<String> curtirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
+        return comentarioService.setPontuacaoComentario(idComentario, idUsuario);
     }
 
     @DeleteMapping("{idPostagem}")
