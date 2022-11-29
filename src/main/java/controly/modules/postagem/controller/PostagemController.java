@@ -95,6 +95,11 @@ public class PostagemController {
         return comentarioService.setPontuacaoComentario(idComentario, idUsuario);
     }
 
+    @GetMapping("/comentario/curtir/{idComentario}/{idUsuario}")
+    public ResponseEntity<Boolean> existsCurtida(@PathVariable Long idComentario, @PathVariable Long idUsuario){
+        return comentarioService.existsCurtida(idComentario, idUsuario);
+    }
+
     @DeleteMapping("{idPostagem}")
     public ResponseEntity<String> deletePostagem(@PathVariable Long idPostagem) {
         return postagemService.excluirPostagem(idPostagem);

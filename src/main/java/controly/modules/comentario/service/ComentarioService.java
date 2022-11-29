@@ -82,6 +82,19 @@ public class ComentarioService implements Ipostagem {
         }
     }
 
+    public ResponseEntity<Boolean> existsCurtida(Long comentario, Long usuario){
+        if (
+                validation.existsComentario(comentario) ||
+                        validation.existsUsuario(usuario)
+        ) return ResponseEntity.status(404).build();
+        if (!pontuacaoComentarioRepository.existByComentarioAndUsuario(comentario, usuario).isPresent()){
+
+            return ResponseEntity.status(200).body(false);
+        } else {
+            return ResponseEntity.status(200).body(true);
+        }
+    }
+
     public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(Long idPostagem) {
         if (
                 validation.existsPostagem(idPostagem)
