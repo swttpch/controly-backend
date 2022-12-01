@@ -22,7 +22,6 @@ public class PontuacaoComentario {
     @MapsId("idUsuario") @JoinColumn(name = "idUsuario")
     private UsuarioEntity usuario;
 
-    private int pontuacao;
 
     public ComentarioEntity getComentario() {
         return comentario;
@@ -39,15 +38,6 @@ public class PontuacaoComentario {
 
     public PontuacaoComentario setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
-        return this;
-    }
-
-    public int getPontuacao() {
-        return pontuacao;
-    }
-
-    public PontuacaoComentario setPontuacao(int pontuacao) {
-        this.pontuacao = pontuacao;
         return this;
     }
 }

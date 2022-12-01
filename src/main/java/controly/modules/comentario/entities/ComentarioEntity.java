@@ -44,6 +44,10 @@ public class ComentarioEntity implements Serializable {
 
     @JsonProperty
     public int getPontuacao(){
-        return pontuacaoComentarios.stream().mapToInt(PontuacaoComentario::getPontuacao).sum();
+        return pontuacaoComentarios.size();
+    }
+
+    public void deleteCurtida(Long idUsuario){
+        pontuacaoComentarios.removeIf(pontuacaoComentario -> pontuacaoComentario.getUsuario().getIdUsuario() == idUsuario);
     }
 }
