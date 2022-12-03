@@ -21,7 +21,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://controly.azurewebsites.net")
 @RequestMapping("/usuarios")
 public class UsuarioController {
     @Autowired
