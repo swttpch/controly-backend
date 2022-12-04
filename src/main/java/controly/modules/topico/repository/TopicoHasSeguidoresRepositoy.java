@@ -1,6 +1,5 @@
 package controly.modules.topico.repository;
 
-import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +18,6 @@ public interface TopicoHasSeguidoresRepositoy extends JpaRepository<TopicoHasSeg
     @Query(value = "SELECT s FROM TopicoHasSeguidoresEntity s WHERE s.topico.idTopico = :idTopico AND s.usuario.idUsuario = :idUsuario")
     TopicoHasSeguidoresEntity findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(Long idTopico, Long idUsuario);
 
+    @Query(value = "SELECT s FROM TopicoHasSeguidoresEntity s WHERE s.topico.idTopico = :idTopico AND s.usuario.idUsuario = :idUsuario")
+    Optional<TopicoHasSeguidoresEntity> existsFollowUser(Long idTopico, Long idUsuario);
 }

@@ -45,4 +45,8 @@ public class TopicoController {
         return topicoService.postTopicos(topicoEntity);
     }
 
+    @GetMapping("/{idTopico}/{idUsuario}")
+    public ResponseEntity<Boolean> userFollowTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
+        return topicoService.userFollowTopico(idTopico, idUsuario);
+    }
 }
