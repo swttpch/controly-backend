@@ -62,24 +62,37 @@ public class ComentarioService implements Ipostagem {
         return ResponseEntity.status(200).body("Comentário excluido.");
     }
     @Transactional
-    public ResponseEntity<String> setPontuacaoComentario(Long comentario, Long usuario, int ponto){
-        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
+    public ResponseEntity<String> setPontuacaoComentario(Long comentario, Long usuario){
         if (
                 validation.existsComentario(comentario) ||
                         validation.existsUsuario(usuario)
         ) return ResponseEntity.status(404).body(IDNOTFOUND);
-
-        if (!validation.existsPontuacaoWithComentarioAndUsuario(comentario, usuario)){
+        ComentarioEntity comentario1 = comentarioRepository.findByIdComentario(comentario);
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
+        if (!pontuacaoComentarioRepository.existByComentarioAndUsuario(comentario, usuario).isPresent()){
             pontuacaoComentarioRepository.save(
                     new PontuacaoComentario()
                             .setComentario(comentarioRepository.findByIdComentario(comentario))
                             .setUsuario(usuarioEntity)
-                            .setPontuacao(ponto)
             );
+            return ResponseEntity.status(200).body("Curtida criada");
         } else {
-            pontuacaoComentarioRepository.setPontuacaoFor(comentario, usuario, ponto);
+            pontuacaoComentarioRepository.deleteByComentario_idComentario(comentario,usuario);
+            return ResponseEntity.status(200).body("Curtida excluida");
         }
-        return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a comentário de ID %d.", ponto, comentario));
+    }
+
+    public ResponseEntity<Boolean> existsCurtida(Long comentario, Long usuario){
+        if (
+                validation.existsComentario(comentario) ||
+                        validation.existsUsuario(usuario)
+        ) return ResponseEntity.status(404).build();
+        if (!pontuacaoComentarioRepository.existByComentarioAndUsuario(comentario, usuario).isPresent()){
+
+            return ResponseEntity.status(200).body(false);
+        } else {
+            return ResponseEntity.status(200).body(true);
+        }
     }
 
     public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(Long idPostagem) {
