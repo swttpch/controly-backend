@@ -2,24 +2,27 @@ package controly.modules.perfilAndUsuario.controller;
 
 
 import controly.config.Constant;
+import controly.modules.perfilAndUsuario.dto.AtualizarUsuarioRequest;
 import controly.modules.perfilAndUsuario.dto.DataGithubPostRequest;
+import controly.modules.perfilAndUsuario.dto.GitHubInformacoes;
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.form.CadastrarNovoUsuarioForm;
 import controly.modules.perfilAndUsuario.service.GithubService;
+import controly.modules.perfilAndUsuario.service.UsuarioService;
 import controly.modules.recuperarSenha.form.RecuperarSenhaForm;
 import controly.modules.recuperarSenha.service.RecuperarSenhaService;
-import controly.modules.perfilAndUsuario.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "https://controly.azurewebsites.net")
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
@@ -33,45 +36,45 @@ public class UsuarioController {
     public UsuarioController() {
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getUsuario(@PathVariable Long id) {
         return usuarioService.getUsuarioCadastrado(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
+
     @GetMapping
     public ResponseEntity<List<UsuarioEntity>> getListUsuarios() {
         return usuarioService.getListUsuarios();
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
+
     @PostMapping
-    public ResponseEntity<String> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user) {
+    public ResponseEntity<UsuarioEntity> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user) {
         return usuarioService.cadastrarUsuario(user);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
+
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> deletarUsuario(@PathVariable Long id) {
         return usuarioService.deletarUsuario(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
+
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarUsuario(@PathVariable Long id,
-                                                   @RequestBody CadastrarNovoUsuarioForm form) {
+                                                   @RequestBody AtualizarUsuarioRequest form) {
         return usuarioService.atualizarUsuario(id, form);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
+
     @PostMapping("/recuperar-senha")
     public ResponseEntity<?> recuperarSenha(@RequestBody RecuperarSenhaForm form) {
         return recuperarSenhaService.recuperarSenha(form);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
+
     @GetMapping("/github")
     public ResponseEntity<String> getGithubUser(@RequestParam String code) {
         System.out.println(code);
@@ -80,23 +83,32 @@ public class UsuarioController {
         return ResponseEntity.status(200).body(response);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("atualizar/apelido-avatar/{idUsuario}")
-    public ResponseEntity<String> atualizarDadosUsuario(
-            @PathVariable Long idUsuario,
-            @RequestParam(required = false) String apelido,
-            @RequestParam(required = false) Integer avatar
-    ) {
-
-        if (apelido != null) {
-            return usuarioService.atualizarApelido(idUsuario, apelido);
-
-        } else if (avatar != null) {
-            return usuarioService.atualizarAvatar(idUsuario, avatar);
-        } else {
-            return ResponseEntity.status(200).body("Passe ou um apelido, ou um avatar");
-
-        }
+    @PostMapping("/github")
+    public ResponseEntity<UsuarioEntity> postGitHubUser(@RequestBody GitHubInformacoes usuario){
+        return usuarioService.autenticarGithub(usuario);
     }
 
+
+        @PutMapping("/atualizar/apelido-avatar/{idUsuario}")
+    public ResponseEntity<?> atualizarDadosUsuario(
+            @PathVariable Long idUsuario,
+            @RequestParam(required = false) String apelido,
+            @RequestParam(required = false) String avatar
+    ) {
+        if(apelido == null && avatar == null) {
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passe um avatar ou um apelido para ser atualizado");
+        }
+        if (apelido != null) {
+            usuarioService.atualizarApelido(idUsuario, apelido);
+        }
+        if (avatar != null) {
+            usuarioService.atualizarAvatar(idUsuario, avatar);
+        }
+        return getUsuario(idUsuario);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<Void> verificaEmailExiste(@PathVariable String email){
+        return usuarioService.verificaEmailExiste(email);
+    }
 }

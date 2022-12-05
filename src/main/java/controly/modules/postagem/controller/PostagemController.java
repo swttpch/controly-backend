@@ -2,6 +2,7 @@ package controly.modules.postagem.controller;
 
 import controly.modules.comentario.form.Comentario;
 import controly.modules.comentario.entities.ComentarioEntity;
+import controly.modules.postagem.dtos.PostagemDTO;
 import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.postagem.pontuacao.form.Discussao;
 import controly.modules.postagem.pontuacao.form.Duvida;
@@ -13,12 +14,12 @@ import controly.modules.comentario.service.ComentarioService;
 import controly.strategy.Postar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "https://controly.azurewebsites.net")
 @RequestMapping("/postagens")
 public class PostagemController {
     @Autowired
@@ -35,89 +36,75 @@ public class PostagemController {
     public PostagemController() {
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/discussao")
     public ResponseEntity<?> cadastrarDiscussao(@RequestBody Discussao post) {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping("/all")
-    public ResponseEntity<List<PostagemEntity>> pegarTodasDiscussoes(){
+    public ResponseEntity<List<PostagemDTO>> pegarTodasDiscussoes(){
         return postagemService.todasPostagens();
     }
 
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping("{idPostagem}")
     public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@PathVariable Long idPostagem){
         return postagemService.pegarPostagemPeloId(idPostagem);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/duvida")
     public ResponseEntity<?> cadastrarDuvida(@RequestBody Duvida post){
         postar.setPostagem(duvidaService);
         return postar.postar(post);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("/duvida/{idDuvida}/{idComentario}")
     public ResponseEntity<String> atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario){
         return duvidaService.definirRespostaDaPostagem(idDuvida, idComentario);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @PostMapping("/comentario")
     public ResponseEntity<?> cadastrarComentario(@RequestBody Comentario post) {
         postar.setPostagem(comentarioService);
         return postar.postar(post);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @GetMapping("/comentario/{idPostagem}")
     public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@PathVariable Long idPostagem){
         return comentarioService.getAllCommentsFromPost(idPostagem);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @DeleteMapping("/comentario/{idComentario}")
     public ResponseEntity<String> deleteComentario(@PathVariable Long idComentario){
         return comentarioService.excluirPostagem(idComentario);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("/postagem/subir/{idPostagem}/{idUsuario}")
     public ResponseEntity<String> subirPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, 1);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("/postagem/descer/{idPostagem}/{idUsuario}")
     public ResponseEntity<String> descerPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
         return postagemService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/comentario/subir/{idComentario}/{idUsuario}")
-    public ResponseEntity<String> subirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return comentarioService.setPontuacaoComentario(idComentario, idUsuario, 1);
+    @PutMapping("/comentario/curtir/{idComentario}/{idUsuario}")
+    public ResponseEntity<String> curtirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
+        return comentarioService.setPontuacaoComentario(idComentario, idUsuario);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
-    @PutMapping("/comentario/descer/{idComentario}/{idUsuario}")
-    public ResponseEntity<String> descerComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return comentarioService.setPontuacaoComentario(idComentario, idUsuario, -1);
+    @GetMapping("/comentario/curtir/{idComentario}/{idUsuario}")
+    public ResponseEntity<Boolean> existsCurtida(@PathVariable Long idComentario, @PathVariable Long idUsuario){
+        return comentarioService.existsCurtida(idComentario, idUsuario);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @DeleteMapping("{idPostagem}")
     public ResponseEntity<String> deletePostagem(@PathVariable Long idPostagem) {
         return postagemService.excluirPostagem(idPostagem);
     }
 
-    @PreAuthorize("hasAnyRole('ADM')")
     @PutMapping("teste/{postagem}/{usuario}/{ponto}")
     public ResponseEntity<PontuacaoPostagem> findPontuacaoPostagem(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
         return postagemService.findPontuacaoPostagem(postagem, usuario,ponto);

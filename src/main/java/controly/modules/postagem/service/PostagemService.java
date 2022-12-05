@@ -2,6 +2,7 @@ package controly.modules.postagem.service;
 
 import controly.modules.perfilAndUsuario.entities.UsuarioEntity;
 import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
+import controly.modules.postagem.dtos.PostagemDTO;
 import controly.modules.postagem.pontuacao.entities.pontuacaoPostagem.PontuacaoPostagem;
 import controly.modules.postagem.entities.PostagemEntity;
 import controly.modules.postagem.repository.PontuacaoPostagemRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 import static controly.config.Constant.IDNOTFOUND;
@@ -34,10 +36,32 @@ public class PostagemService {
     }
 
     @Transactional
-    public ResponseEntity<List<PostagemEntity>> todasPostagens() {
-        List<PostagemEntity> postagemEntities = postagemRepository.findAll();
-        if (postagemEntities.isEmpty()) return ResponseEntity.status(204).build();
-        return ResponseEntity.status(200).body(postagemEntities);
+    public ResponseEntity<List<PostagemDTO>> todasPostagens() {
+
+        List<PostagemEntity> postagens = postagemRepository.findAll();
+
+        if (postagens.isEmpty()) return ResponseEntity.status(204).build();
+
+        List<PostagemDTO> postagemDTOlist = new ArrayList<>();
+
+        for (PostagemEntity postagem : postagens) {
+
+            PostagemDTO postagemDT = new PostagemDTO();
+
+            postagemDT.setIdPostagem(postagem.getIdPostagem());
+            postagemDT.setTitulo(postagem.getTitulo());
+            postagemDT.setConteudo(postagem.getConteudo());
+            postagemDT.setTopico(postagem.getTopico());
+            postagemDT.setAtualizadoEm(postagem.getAtualizadoEm());
+            postagemDT.setPontuacaoPostagem(postagem.getPontuacao());
+
+            postagemDT.setDono(postagem.getDono());
+            postagemDTOlist.add(postagemDT);
+
+        }
+
+        return ResponseEntity.status(200).body(postagemDTOlist);
+
     }
 
     @Transactional
