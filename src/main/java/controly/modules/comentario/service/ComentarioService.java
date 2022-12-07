@@ -72,7 +72,7 @@ public class ComentarioService implements Ipostagem {
         if (!pontuacaoComentarioRepository.existByComentarioAndUsuario(comentario, usuario).isPresent()){
             pontuacaoComentarioRepository.save(
                     new PontuacaoComentario()
-                            .setComentario(comentarioRepository.findByIdComentario(comentario))
+                            .setComentario(comentario1)
                             .setUsuario(usuarioEntity)
             );
             return ResponseEntity.status(200).body("Curtida criada");

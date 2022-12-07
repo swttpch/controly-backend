@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "https://controly.azurewebsites.net")
+@CrossOrigin(origins = "*")
 @RequestMapping("/postagens")
 public class PostagemController {
     @Autowired
