@@ -6,15 +6,17 @@ import controly.modules.topico.dto.TopicoDTO;
 import controly.modules.topico.entities.TopicoEntity;
 import controly.modules.topico.entities.TopicoHasSeguidoresEntity;
 import controly.modules.topico.repository.TopicoHasSeguidoresRepositoy;
-import controly.service.ValidationService;
 import controly.modules.topico.repository.TopicoRepository;
+import controly.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.*;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static controly.config.Constant.IDNOTFOUND;
 
@@ -134,5 +136,11 @@ public class TopicoService {
             return ResponseEntity.status(201).body(String.format("Usuario de id %d parou de seguir topico de id %d.", idTopico, idUsuario));
 
         }
+    }
+
+    public ResponseEntity<Boolean> userFollowTopico(Long idTopico, Long idUsuario) {
+        Optional<TopicoHasSeguidoresEntity> topicoHasSeguidores = topicoHasSeguidoresRepositoy.existsFollowUser(idTopico, idUsuario);
+        if (topicoHasSeguidores.isPresent()) return ResponseEntity.status(200).body(true);
+        return ResponseEntity.status(200).body(false);
     }
 }
