@@ -1,9 +1,10 @@
 package controly.modules.topico.controller;
 
-import controly.modules.topico.dto.TopicoDTO;
-import controly.modules.topico.entities.TopicoEntity;
-import controly.modules.topico.repository.TopicoHasSeguidoresRepositoy;
-import controly.modules.topico.repository.TopicoRepository;
+import controly.controller.TopicoController;
+import controly.dto.TopicoDTO;
+import controly.entities.TopicoEntity;
+import controly.repository.TopicoHasSeguidoresRepositoy;
+import controly.repository.TopicoRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package controly.strategy;
 
-import controly.modules.postagem.entities.Postagem;
 import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

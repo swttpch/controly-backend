@@ -1,0 +1,65 @@
+package controly.service;
+
+import controly.entities.UsuarioEntity;
+import controly.entities.PostagemEntity;
+import controly.strategy.Postagem;
+import controly.repository.ComentarioRepository;
+import controly.repository.PostagemRepository;
+import controly.repository.TopicoRepository;
+import controly.repository.UsuarioRepository;
+import controly.strategy.Ipostagem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import static controly.config.Constant.IDNOTFOUND;
+
+import javax.transaction.Transactional;
+
+@Service
+public class DuvidaService implements Ipostagem {
+    @Autowired
+    private PostagemRepository postagemRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private TopicoRepository topicoRepository;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
+    @Autowired
+    private ValidationService validation;
+
+    public DuvidaService() {
+    }
+
+
+    @Override
+    @Transactional
+    public ResponseEntity<String> enviarPostagem(Postagem duvida) {
+        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(duvida.getIdUsuario()).orElseThrow();
+        if (validation.existsTopico(duvida.getIdTopico()) || validation.existsUsuario(duvida.getIdUsuario()))
+            return ResponseEntity.status(404).body(IDNOTFOUND);
+
+        PostagemEntity postagem =  duvida.converterPostagem(
+                topicoRepository.findByIdTopico(duvida.getIdTopico()),
+                usuarioEntity
+        ).initResposta();
+
+        postagemRepository.save(
+                postagem
+        );
+        return ResponseEntity.status(201).body("Duvida postada.");
+    }
+
+    @Transactional
+    public ResponseEntity<String> definirRespostaDaPostagem(Long idPostagem, Long idComentario){
+        if (validation.existsPostagem(idPostagem) || validation.existsComentario(idComentario))
+            return ResponseEntity.status(404).body(IDNOTFOUND);
+        postagemRepository.findByIdPostagem(idPostagem)
+            .setResposta(comentarioRepository.findByIdComentario(idComentario));
+        return ResponseEntity.status(201).body("Resposta atribuida.");
+    }
+}

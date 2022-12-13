@@ -1,11 +1,11 @@
 package controly.service;
 
-import controly.modules.comentario.repository.ComentarioRepository;
-import controly.modules.perfilAndUsuario.repository.UsuarioRepository;
-import controly.modules.postagem.repository.PontuacaoComentarioRepository;
-import controly.modules.postagem.repository.PontuacaoPostagemRepository;
-import controly.modules.postagem.repository.PostagemRepository;
-import controly.modules.topico.repository.TopicoRepository;
+import controly.repository.ComentarioRepository;
+import controly.repository.UsuarioRepository;
+import controly.repository.PontuacaoComentarioRepository;
+import controly.repository.PontuacaoPostagemRepository;
+import controly.repository.PostagemRepository;
+import controly.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,31 +36,27 @@ public class ValidationService {
         this.pontuacaoComentarioRepository = pontuacaoComentarioRepository;
     }
 
-    @Transactional
+
     public boolean existsUsuario(Long idUsuario){
         return usuarioRepository.findById(idUsuario).isEmpty();
     }
-    @Transactional
+
     public boolean existsPostagem(Long idPostagem){
         return postagemRepository.findById(idPostagem).isEmpty();
     }
 
-    @Transactional
+
     public boolean existsComentario(Long idComentario){
         return comentarioRepository.findById(idComentario).isEmpty();
     }
-    @Transactional
+
     public boolean existsTopico(Long idTopico){
         return topicoRepository.findById(idTopico).isEmpty();
     }
 
-    @Transactional
-    public boolean existsPontuacaoWithPostagemAndUsuario(Long idPostagem, Long idUsuario){
+
+    public boolean existsPontuacaoWithPostagemAndUsuario(Long idPostagem, Long idUsuario) {
         return pontuacaoPostagemRepository.existByPostagemAndUsuario(idPostagem, idUsuario).isPresent();
-    }
-    @Transactional
-    public boolean existsPontuacaoWithComentarioAndUsuario(Long idComentario, Long idUsuario){
-        return pontuacaoComentarioRepository.existByComentarioAndUsuario(idComentario, idUsuario).isPresent();
     }
 
 }
