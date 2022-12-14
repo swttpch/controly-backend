@@ -1,14 +1,12 @@
 package controly.strategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import controly.entities.ComentarioEntity;
-import controly.entities.PostagemEntity;
-import controly.entities.TopicoEntity;
-import controly.entities.UsuarioEntity;
+import controly.entities.CommentEntity;
+import controly.entities.PostEntity;
+import controly.entities.TopicEntity;
+import controly.entities.UserEntity;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @NoArgsConstructor
@@ -56,12 +54,12 @@ public class Duvida extends Postagem {
     }
 
     @Override
-    public PostagemEntity converterPostagem(TopicoEntity topico, UsuarioEntity usuario) {
-        PostagemEntity postagem = new PostagemEntity();
-        postagem.setTitulo(titulo);
-        postagem.setConteudo(conteudo);
-        postagem.setDono(usuario);
-        postagem.setTopico(topico);
+    public PostEntity converterPostagem(TopicEntity topico, UserEntity usuario) {
+        PostEntity postagem = new PostEntity();
+        postagem.setTitle(titulo);
+        postagem.setContent(conteudo);
+        postagem.setOwner(usuario);
+        postagem.setTopic(topico);
         return postagem;
     }
 
@@ -71,7 +69,7 @@ public class Duvida extends Postagem {
 
     // ----- TRASH CODE BELOW -----
     @Override
-    public ComentarioEntity converterComentario(PostagemEntity postagem, UsuarioEntity usuario) {
+    public CommentEntity converterComentario(PostEntity postagem, UserEntity usuario) {
         return null;
     }
 

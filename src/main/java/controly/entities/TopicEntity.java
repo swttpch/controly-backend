@@ -6,18 +6,18 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="tbTopico")
+@Table(name="tbTopic")
 @Data
-public class TopicoEntity {
+public class TopicEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idTopico;
+    private Long idTopic;
 
     @NotNull
-    private String nome;
+    private String name;
 
     @NotNull
-    private String descricao;
+    private String about;
 
 }

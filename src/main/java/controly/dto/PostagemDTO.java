@@ -1,26 +1,25 @@
 package controly.dto;
 
-import controly.entities.UsuarioEntity;
-import controly.entities.PostagemEntity;
-import controly.entities.TopicoEntity;
+import controly.entities.UserEntity;
+import controly.entities.PostEntity;
+import controly.entities.TopicEntity;
 import lombok.Data;
 
 import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 @Data
 public class PostagemDTO {
 
     @Id
-    private Long idPostagem = new PostagemEntity().getIdPostagem();
+    private Long idPostagem = new PostEntity().getIdPost();
 
-    private String titulo = new PostagemEntity().getTitulo();
+    private String titulo = new PostEntity().getTitle();
 
-    private String conteudo = new PostagemEntity().getConteudo();
+    private String conteudo = new PostEntity().getContent();
 
-    private UsuarioEntity dono = new PostagemEntity().getDono();
+    private UserEntity dono = new PostEntity().getOwner();
 
-    private TopicoEntity topico = new PostagemEntity().getTopico();
+    private TopicEntity topico = new PostEntity().getTopic();
 
-    private Integer pontuacaoPostagem = new PostagemEntity().getPontuacao();
+    private Integer pontuacaoPostagem = new PostEntity().getPoints();
 }

@@ -1,7 +1,7 @@
 package controly.controller;
 
 import controly.dto.TopicoDTO;
-import controly.entities.TopicoEntity;
+import controly.entities.TopicEntity;
 import controly.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +41,8 @@ public class TopicoController {
     }
 
     @PostMapping
-    public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
-        return topicoService.postTopicos(topicoEntity);
+    public ResponseEntity<TopicEntity> postTopicos(@RequestBody TopicEntity topicEntity) {
+        return topicoService.postTopicos(topicEntity);
     }
 
     @GetMapping("/{idTopico}/{idUsuario}")

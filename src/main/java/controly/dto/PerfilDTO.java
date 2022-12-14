@@ -1,8 +1,8 @@
 package controly.dto;
 
-import controly.entities.TopicoEntity;
-import controly.entities.UsuarioEntity;
-import controly.entities.PostagemEntity;
+import controly.entities.TopicEntity;
+import controly.entities.UserEntity;
+import controly.entities.PostEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 public class PerfilDTO {
 
-    private UsuarioEntity usuario;
-    private List<PostagemEntity> postagens;
-    private List<TopicoEntity> topicos_seguidos;
-    private PostagemEntity postagemMaiorPontuacao;
+    private UserEntity usuario;
+    private List<PostEntity> postagens;
+    private List<TopicEntity> topicos_seguidos;
+    private PostEntity postagemMaiorPontuacao;
 }

@@ -1,62 +1,60 @@
 package controly.service;
 
-import controly.repository.ComentarioRepository;
-import controly.repository.UsuarioRepository;
-import controly.repository.PontuacaoComentarioRepository;
-import controly.repository.PontuacaoPostagemRepository;
-import controly.repository.PostagemRepository;
-import controly.repository.TopicoRepository;
+import controly.repository.CommentRepository;
+import controly.repository.UserRepository;
+import controly.repository.CommentPointsRepository;
+import controly.repository.PostPointsRepository;
+import controly.repository.PostRepository;
+import controly.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @Service
 public class ValidationService {
     @Autowired
-    final private PostagemRepository postagemRepository;
+    final private PostRepository postRepository;
     @Autowired
-    final private ComentarioRepository comentarioRepository;
+    final private CommentRepository commentRepository;
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    final private UserRepository userRepository;
     @Autowired
-    final private TopicoRepository topicoRepository;
+    final private TopicRepository topicRepository;
     @Autowired
-    final private PontuacaoPostagemRepository pontuacaoPostagemRepository;
+    final private PostPointsRepository postPointsRepository;
 
     @Autowired
-    final private PontuacaoComentarioRepository pontuacaoComentarioRepository;
+    final private CommentPointsRepository commentPointsRepository;
 
-    public ValidationService(PostagemRepository postagemRepository, ComentarioRepository comentarioRepository, UsuarioRepository usuarioRepository, TopicoRepository topicoRepository, PontuacaoPostagemRepository pontuacaoPostagemRepository, PontuacaoComentarioRepository pontuacaoComentarioRepository) {
-        this.postagemRepository = postagemRepository;
-        this.comentarioRepository = comentarioRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.topicoRepository = topicoRepository;
-        this.pontuacaoPostagemRepository = pontuacaoPostagemRepository;
-        this.pontuacaoComentarioRepository = pontuacaoComentarioRepository;
+    public ValidationService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, TopicRepository topicRepository, PostPointsRepository postPointsRepository, CommentPointsRepository commentPointsRepository) {
+        this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
+        this.topicRepository = topicRepository;
+        this.postPointsRepository = postPointsRepository;
+        this.commentPointsRepository = commentPointsRepository;
     }
 
 
     public boolean existsUsuario(Long idUsuario){
-        return usuarioRepository.findById(idUsuario).isEmpty();
+        return userRepository.findById(idUsuario).isEmpty();
     }
 
     public boolean existsPostagem(Long idPostagem){
-        return postagemRepository.findById(idPostagem).isEmpty();
+        return postRepository.findById(idPostagem).isEmpty();
     }
 
 
     public boolean existsComentario(Long idComentario){
-        return comentarioRepository.findById(idComentario).isEmpty();
+        return commentRepository.findById(idComentario).isEmpty();
     }
 
     public boolean existsTopico(Long idTopico){
-        return topicoRepository.findById(idTopico).isEmpty();
+        return topicRepository.findById(idTopico).isEmpty();
     }
 
 
     public boolean existsPontuacaoWithPostagemAndUsuario(Long idPostagem, Long idUsuario) {
-        return pontuacaoPostagemRepository.existByPostagemAndUsuario(idPostagem, idUsuario).isPresent();
+        return postPointsRepository.existByPostAndUser(idPostagem, idUsuario).isPresent();
     }
 
 }

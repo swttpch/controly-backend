@@ -1,10 +1,10 @@
 package controly.dto;
 
-import controly.entities.ComentarioEntity;
-import controly.entities.UsuarioEntity;
-import controly.entities.PontuacaoPostagem;
-import controly.entities.RespostaDuvidaEntity;
-import controly.entities.TopicoEntity;
+import controly.entities.CommentEntity;
+import controly.entities.UserEntity;
+import controly.entities.PostPointsEntity;
+import controly.entities.DoubtsAnswerEntity;
+import controly.entities.TopicEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,12 +19,12 @@ public class PostagemRes {
     private String conteudo;
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
-    private UsuarioEntity dono;
+    private UserEntity dono;
     private String titulo;
-    private TopicoEntity topico;
-    private List<ComentarioEntity> comentarios;
-    private RespostaDuvidaEntity respostaDuvidaEntity;
-    private Set<PontuacaoPostagem> pontuacaoPostagem = new HashSet<>();
+    private TopicEntity topico;
+    private List<CommentEntity> comentarios;
+    private DoubtsAnswerEntity doubtsAnswerEntity;
+    private Set<PostPointsEntity> postPointEntities = new HashSet<>();
 
 
 }

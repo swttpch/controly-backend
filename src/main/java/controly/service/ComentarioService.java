@@ -1,13 +1,13 @@
 package controly.service;
 
-import controly.entities.UsuarioEntity;
+import controly.entities.UserEntity;
 import controly.strategy.Postagem;
-import controly.entities.ComentarioEntity;
-import controly.entities.PontuacaoComentario;
-import controly.repository.ComentarioRepository;
-import controly.repository.PontuacaoComentarioRepository;
-import controly.repository.PostagemRepository;
-import controly.repository.UsuarioRepository;
+import controly.entities.CommentEntity;
+import controly.entities.CommentPointsEntity;
+import controly.repository.CommentRepository;
+import controly.repository.CommentPointsRepository;
+import controly.repository.PostRepository;
+import controly.repository.UserRepository;
 import controly.strategy.Ipostagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,30 +22,30 @@ import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class ComentarioService implements Ipostagem {
     @Autowired
-    private PostagemRepository postagemRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private ComentarioRepository comentarioRepository;
+    private CommentRepository commentRepository;
     @Autowired
     private ValidationService validation;
     @Autowired
-    private PontuacaoComentarioRepository pontuacaoComentarioRepository;
+    private CommentPointsRepository commentPointsRepository;
 
     public ComentarioService() {
     }
 
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem post) {
-        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(post.getIdUsuario()).orElseThrow();
+        UserEntity userEntity = userRepository.findByIdUser(post.getIdUsuario()).orElseThrow();
         if (validation.existsUsuario(post.getIdUsuario()) || validation.existsPostagem(post.getIdPostagem()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
-        comentarioRepository.save(
+        commentRepository.save(
                 post.converterComentario(
-                        postagemRepository.findByIdPostagem(post.getIdPostagem()),
-                        usuarioEntity
+                        postRepository.findByIdPost(post.getIdPostagem()),
+                        userEntity
                 )
         );
         return ResponseEntity.status(201).body("Comentario postado.");
@@ -55,8 +55,8 @@ public class ComentarioService implements Ipostagem {
         if (validation.existsComentario(idComentario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
 
-        comentarioRepository.delete(
-                comentarioRepository.findByIdComentario(idComentario)
+        commentRepository.delete(
+                commentRepository.findByIdComment(idComentario)
         );
         return ResponseEntity.status(200).body("Comentário excluido.");
     }
@@ -66,17 +66,17 @@ public class ComentarioService implements Ipostagem {
                 validation.existsComentario(comentario) ||
                         validation.existsUsuario(usuario)
         ) return ResponseEntity.status(404).body(IDNOTFOUND);
-        ComentarioEntity comentario1 = comentarioRepository.findByIdComentario(comentario);
-        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
-        if (!pontuacaoComentarioRepository.existByComentarioAndUsuario(comentario, usuario).isPresent()){
-            pontuacaoComentarioRepository.save(
-                    new PontuacaoComentario()
-                            .setComentario(comentario1)
-                            .setUsuario(usuarioEntity)
+        CommentEntity comentario1 = commentRepository.findByIdComment(comentario);
+        UserEntity userEntity = userRepository.findByIdUser(usuario).orElseThrow();
+        if (!commentPointsRepository.existByCommentAndUser(comentario, usuario).isPresent()){
+            commentPointsRepository.save(
+                    new CommentPointsEntity()
+                            .setComment(comentario1)
+                            .setUser(userEntity)
             );
             return ResponseEntity.status(200).body("Curtida criada");
         } else {
-            pontuacaoComentarioRepository.deleteByComentario_idComentario(comentario,usuario);
+            commentPointsRepository.deleteByComment_idComment(comentario,usuario);
             return ResponseEntity.status(200).body("Curtida excluida");
         }
     }
@@ -86,7 +86,7 @@ public class ComentarioService implements Ipostagem {
                 validation.existsComentario(comentario) ||
                         validation.existsUsuario(usuario)
         ) return ResponseEntity.status(404).build();
-        if (!pontuacaoComentarioRepository.existByComentarioAndUsuario(comentario, usuario).isPresent()){
+        if (!commentPointsRepository.existByCommentAndUser(comentario, usuario).isPresent()){
 
             return ResponseEntity.status(200).body(false);
         } else {
@@ -94,11 +94,11 @@ public class ComentarioService implements Ipostagem {
         }
     }
 
-    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(Long idPostagem) {
+    public ResponseEntity<List<CommentEntity>> getAllCommentsFromPost(Long idPostagem) {
         if (
                 validation.existsPostagem(idPostagem)
         ) return ResponseEntity.status(404).build();
-        List<ComentarioEntity> comentarios = comentarioRepository.findByPostagemIdPostagem(idPostagem);
+        List<CommentEntity> comentarios = commentRepository.findByPostIdPost(idPostagem);
         if (comentarios.isEmpty()){
             return ResponseEntity.status(204).build();
         }

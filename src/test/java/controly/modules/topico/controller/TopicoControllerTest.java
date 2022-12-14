@@ -2,9 +2,9 @@ package controly.modules.topico.controller;
 
 import controly.controller.TopicoController;
 import controly.dto.TopicoDTO;
-import controly.entities.TopicoEntity;
-import controly.repository.TopicoHasSeguidoresRepositoy;
-import controly.repository.TopicoRepository;
+import controly.entities.TopicEntity;
+import controly.repository.TopicHasFollowersRepository;
+import controly.repository.TopicRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,10 @@ class TopicoControllerTest {
     private TopicoController controller;
 
     @MockBean
-    private TopicoRepository repository;
+    private TopicRepository repository;
 
     @MockBean
-    private TopicoHasSeguidoresRepositoy hasSeguidoresRepository;
+    private TopicHasFollowersRepository hasSeguidoresRepository;
 
 
 //    @Test
@@ -60,9 +60,9 @@ class TopicoControllerTest {
     void getTopicosSucess() {
 
         when(repository.findAll()).thenReturn(List.of(
-                new TopicoEntity()));
+                new TopicEntity()));
 
-        when(hasSeguidoresRepository.countTopicoHasSeguidoresByIdUsuario(1L)).thenReturn(1);
+        when(hasSeguidoresRepository.countFollowersATopicHas(1L)).thenReturn(1);
 
         ResponseEntity<List<TopicoDTO>> topicoDTO = controller.getTopicos();
 
@@ -75,7 +75,7 @@ class TopicoControllerTest {
         when(repository.findAll()).thenReturn(
                 new ArrayList<>());
 
-        when(hasSeguidoresRepository.countTopicoHasSeguidoresByIdUsuario(1L)).thenReturn(1);
+        when(hasSeguidoresRepository.countFollowersATopicHas(1L)).thenReturn(1);
 
         ResponseEntity<List<TopicoDTO>> topicoDTO = controller.getTopicos();
 

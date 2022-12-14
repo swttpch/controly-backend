@@ -1,7 +1,7 @@
 package controly.dto;
 
 
-import controly.entities.UsuarioEntity;
+import controly.entities.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,12 +25,12 @@ public class GitHubInformacoes {
     private String email;
 
 
-    public UsuarioEntity converter() {
+    public UserEntity converter() {
 
-        UsuarioEntity usuario = new UsuarioEntity();
-        usuario.setNome(nome);
+        UserEntity usuario = new UserEntity();
+        usuario.setName(nome);
         usuario.setAvatar(avatar);
-        usuario.setApelido(apelido);
+        usuario.setNickname(apelido);
         usuario.setIdGithub(idGithub);
         usuario.setEmail(email);
         return usuario;

@@ -1,10 +1,10 @@
 package controly.strategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import controly.entities.ComentarioEntity;
-import controly.entities.PostagemEntity;
-import controly.entities.TopicoEntity;
-import controly.entities.UsuarioEntity;
+import controly.entities.CommentEntity;
+import controly.entities.PostEntity;
+import controly.entities.TopicEntity;
+import controly.entities.UserEntity;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -45,12 +45,12 @@ public class Comentario extends Postagem {
     }
 
     @Override @JsonIgnore
-    public ComentarioEntity converterComentario(PostagemEntity postagem, UsuarioEntity usuario) {
-        ComentarioEntity comentario = new ComentarioEntity();
-        comentario.setConteudo(conteudo);
-        comentario.setCriadoEm(LocalDateTime.now());
-        comentario.setDono(usuario);
-        comentario.setPostagem(postagem);
+    public CommentEntity converterComentario(PostEntity postagem, UserEntity usuario) {
+        CommentEntity comentario = new CommentEntity();
+        comentario.setContent(conteudo);
+        comentario.setCreatedIn(LocalDateTime.now());
+        comentario.setOwner(usuario);
+        comentario.setPost(postagem);
         return comentario;
     }
 
@@ -63,7 +63,7 @@ public class Comentario extends Postagem {
     }
 
     @Override @JsonIgnore
-    public PostagemEntity converterPostagem(TopicoEntity topico, UsuarioEntity usuario) {
+    public PostEntity converterPostagem(TopicEntity topico, UserEntity usuario) {
         return null;
     }
 }

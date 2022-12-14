@@ -1,12 +1,12 @@
 package controly.controller;
 
 import controly.strategy.Comentario;
-import controly.entities.ComentarioEntity;
+import controly.entities.CommentEntity;
 import controly.dto.PostagemDTO;
-import controly.entities.PontuacaoPostagem;
+import controly.entities.PostPointsEntity;
 import controly.strategy.Discussao;
 import controly.strategy.Duvida;
-import controly.entities.PostagemEntity;
+import controly.entities.PostEntity;
 import controly.service.DiscussaoService;
 import controly.service.DuvidaService;
 import controly.service.PostagemService;
@@ -49,7 +49,7 @@ public class PostagemController {
 
 
     @GetMapping("{idPostagem}")
-    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(@PathVariable Long idPostagem){
+    public ResponseEntity<PostEntity> pegarPostagemPeloId(@PathVariable Long idPostagem){
         return postagemService.pegarPostagemPeloId(idPostagem);
     }
 
@@ -71,7 +71,7 @@ public class PostagemController {
     }
 
     @GetMapping("/comentario/{idPostagem}")
-    public ResponseEntity<List<ComentarioEntity>> getAllCommentsFromPost(@PathVariable Long idPostagem){
+    public ResponseEntity<List<CommentEntity>> getAllCommentsFromPost(@PathVariable Long idPostagem){
         return comentarioService.getAllCommentsFromPost(idPostagem);
     }
 
@@ -106,7 +106,7 @@ public class PostagemController {
     }
 
     @PutMapping("teste/{postagem}/{usuario}/{ponto}")
-    public ResponseEntity<PontuacaoPostagem> findPontuacaoPostagem(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
+    public ResponseEntity<PostPointsEntity> findPontuacaoPostagem(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
         return postagemService.findPontuacaoPostagem(postagem, usuario,ponto);
     }
 }

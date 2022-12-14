@@ -1,7 +1,7 @@
 package controly.dto;
 
 import controly.EnumRole;
-import controly.entities.UsuarioEntity;
+import controly.entities.UserEntity;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -64,14 +64,14 @@ public class CadastrarNovoUsuarioForm {
         this.role = role;
     }
 
-    public UsuarioEntity converter() {
+    public UserEntity converter() {
 
-        UsuarioEntity usuario = new UsuarioEntity();
+        UserEntity usuario = new UserEntity();
         usuario.setEmail(email);
-        usuario.setSenha(senha);
-        usuario.setNome(nome);
+        usuario.setPassword(senha);
+        usuario.setName(nome);
         usuario.setAvatar("1");
-        usuario.setApelido(apelido);
+        usuario.setNickname(apelido);
 
         return usuario;
     }

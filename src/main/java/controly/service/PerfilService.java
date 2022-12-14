@@ -1,11 +1,11 @@
 package controly.service;
 
 import controly.dto.PerfilDTO;
-import controly.entities.UsuarioEntity;
-import controly.entities.TopicoEntity;
-import controly.repository.TopicoHasSeguidoresRepositoy;
-import controly.entities.TopicoHasSeguidoresEntity;
-import controly.entities.PostagemEntity;
+import controly.entities.UserEntity;
+import controly.entities.TopicEntity;
+import controly.repository.TopicHasFollowersRepository;
+import controly.entities.TopicHasFollowersEntity;
+import controly.entities.PostEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("ALL")
@@ -27,7 +26,7 @@ public class PerfilService {
     private TopicoService topicoService;
 
     @Autowired
-    private TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
+    private TopicHasFollowersRepository topicHasFollowersRepository;
 
     @Autowired
     private ValidationService validation;
@@ -42,25 +41,25 @@ public class PerfilService {
         if (validation.existsUsuario(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado");
         }
-        UsuarioEntity usuario = usuarioService.buscarUsuarioPorId(id).get();
+        UserEntity usuario = usuarioService.buscarUsuarioPorId(id).get();
 
-        List<PostagemEntity> postagemEntityList = postagemService.getPostagemByIdUser(id).getBody();
+        List<PostEntity> postEntityList = postagemService.getPostagemByIdUser(id).getBody();
 
-        List<TopicoHasSeguidoresEntity> topicoHasSeguidoresEntities =
-                topicoHasSeguidoresRepositoy.findTopicosHasSeguidoresTopicoEntityByUsuario_IdUsuario(id);
-        List<TopicoEntity> topicosSeguidos = topicoHasSeguidoresEntities
+        List<TopicHasFollowersEntity> topicoHasSeguidoresEntities =
+                topicHasFollowersRepository.findByFollowerIdUser(id);
+        List<TopicEntity> topicosSeguidos = topicoHasSeguidoresEntities
                 .stream()
-                .map(topico -> topico.getTopico())
+                .map(topico -> topico.getTopic())
                 .collect(Collectors.toList());
 
         PerfilDTO perfilDTO = new PerfilDTO();
 
         perfilDTO.setUsuario(usuario);
-        perfilDTO.setPostagens(postagemEntityList);
+        perfilDTO.setPostagens(postEntityList);
         perfilDTO.setTopicos_seguidos(topicosSeguidos);
         if (perfilDTO.getPostagens() == null) return ResponseEntity.status(200).body(perfilDTO);
         if (perfilDTO.getPostagens().size() == 0) return ResponseEntity.status(200).body(perfilDTO);
-        PostagemEntity postagemMaiorPontuacao = postagemEntityList.stream().max(Comparator.comparing(PostagemEntity::getPontuacao)).orElse(null);
+        PostEntity postagemMaiorPontuacao = postEntityList.stream().max(Comparator.comparing(PostEntity::getPoints)).orElse(null);
         perfilDTO.setPostagemMaiorPontuacao(postagemMaiorPontuacao);
         return ResponseEntity.status(200).body(perfilDTO);
     }

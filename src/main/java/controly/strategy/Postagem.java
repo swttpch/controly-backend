@@ -1,9 +1,9 @@
 package controly.strategy;
 
-import controly.entities.ComentarioEntity;
-import controly.entities.PostagemEntity;
-import controly.entities.TopicoEntity;
-import controly.entities.UsuarioEntity;
+import controly.entities.CommentEntity;
+import controly.entities.PostEntity;
+import controly.entities.TopicEntity;
+import controly.entities.UserEntity;
 
 public abstract class Postagem {
 
@@ -13,7 +13,7 @@ public abstract class Postagem {
 
     abstract public Long getIdPostagem();
 
-    abstract public PostagemEntity converterPostagem(TopicoEntity topico, UsuarioEntity usuario);
+    abstract public PostEntity converterPostagem(TopicEntity topico, UserEntity usuario);
 
-    abstract public ComentarioEntity converterComentario(PostagemEntity postagem, UsuarioEntity usuario);
+    abstract public CommentEntity converterComentario(PostEntity postagem, UserEntity usuario);
 }

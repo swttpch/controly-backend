@@ -3,9 +3,9 @@ package controly.service;
 import controly.ValidacaoUsuario;
 import controly.dto.AtualizarUsuarioRequest;
 import controly.dto.GitHubInformacoes;
-import controly.entities.UsuarioEntity;
+import controly.entities.UserEntity;
 import controly.dto.CadastrarNovoUsuarioForm;
-import controly.repository.UsuarioRepository;
+import controly.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,25 +20,25 @@ import java.util.Optional;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
 
     public UsuarioService() {
     }
 
     @Transactional
-    public ResponseEntity<UsuarioEntity> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser) {
+    public ResponseEntity<UserEntity> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser) {
 
         String usuarioInvalido = new ValidacaoUsuario().validar(novoUser);
 
         if (usuarioInvalido == null) {
 
-            if (usuarioRepository.findByEmail(novoUser.getEmail()).isEmpty()) {
+            if (userRepository.findByEmail(novoUser.getEmail()).isEmpty()) {
 
-                UsuarioEntity usuarioEntity = novoUser.converter();
+                UserEntity userEntity = novoUser.converter();
 
-                usuarioRepository.save(usuarioEntity);
-                return ResponseEntity.status(HttpStatus.CREATED).body(usuarioEntity);
+                userRepository.save(userEntity);
+                return ResponseEntity.status(HttpStatus.CREATED).body(userEntity);
 
             } else {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já existe na base de dados");
@@ -51,12 +51,12 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Optional<UsuarioEntity> buscarUsuarioPorId(Long id) {
-        return usuarioRepository.findByIdUsuario(id);
+    public Optional<UserEntity> buscarUsuarioPorId(Long id) {
+        return userRepository.findByIdUser(id);
     }
 
     public ResponseEntity<?> getUsuarioCadastrado(Long id) {
-        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findById(id);
+        Optional<UserEntity> usuarioEntity = userRepository.findById(id);
         if (usuarioEntity.isPresent()) {
             return ResponseEntity.status(200).body(usuarioEntity);
         }
@@ -65,8 +65,8 @@ public class UsuarioService {
         );
     }
 
-    public ResponseEntity<List<UsuarioEntity>> getListUsuarios() {
-        List<UsuarioEntity> lista = usuarioRepository.findAll();
+    public ResponseEntity<List<UserEntity>> getListUsuarios() {
+        List<UserEntity> lista = userRepository.findAll();
 
         return lista.isEmpty()
                 ? ResponseEntity.status(204).build()
@@ -75,11 +75,11 @@ public class UsuarioService {
 
     @Transactional
     public ResponseEntity<String> deletarUsuario(Long id) {
-        Optional<UsuarioEntity> usuario = this.buscarUsuarioPorId(id);
+        Optional<UserEntity> usuario = this.buscarUsuarioPorId(id);
 
         if (usuario.isPresent()) {
             usuario.get().setAtivo(false);
-            usuarioRepository.save(usuario.get());
+            userRepository.save(usuario.get());
             return ResponseEntity.status(200).body("Usuario desativado com sucesso");
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
@@ -88,54 +88,54 @@ public class UsuarioService {
 
     @Transactional
     public ResponseEntity<String> atualizarUsuario(Long id, AtualizarUsuarioRequest form) {
-        UsuarioEntity usuario = usuarioRepository.findByIdUsuario(id)
+        UserEntity usuario = userRepository.findByIdUser(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
-        usuario.setDescricao("");
+        usuario.setAbout("");
 
-        if (!usuario.getNome().equals(form.getNome()) && !form.getNome().isBlank())
-            usuario.setNome(form.getNome());
+        if (!usuario.getName().equals(form.getNome()) && !form.getNome().isBlank())
+            usuario.setName(form.getNome());
 
-        if (!usuario.getApelido().equals(form.getApelido()) && !form.getApelido().isBlank())
-            usuario.setApelido(form.getApelido());
+        if (!usuario.getNickname().equals(form.getApelido()) && !form.getApelido().isBlank())
+            usuario.setNickname(form.getApelido());
 
-        if (!usuario.getDescricao().equals(form.getDescricao()) && !form.getDescricao().isBlank())
-            usuario.setDescricao(form.getDescricao());
+        if (!usuario.getAbout().equals(form.getDescricao()) && !form.getDescricao().isBlank())
+            usuario.setAbout(form.getDescricao());
 
         return ResponseEntity.status(200).build();
     }
 
     @Transactional
     public void atualizarApelido(Long idUsuario, String novoApelido) {
-        UsuarioEntity usuario = buscarUsuarioPorId(idUsuario)
+        UserEntity usuario = buscarUsuarioPorId(idUsuario)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
-        usuario.setApelido(novoApelido);
+        usuario.setNickname(novoApelido);
     }
 
     @Transactional
     public void atualizarAvatar(Long idUsuario, String novoAvatar) {
-        UsuarioEntity usuario = buscarUsuarioPorId(idUsuario)
+        UserEntity usuario = buscarUsuarioPorId(idUsuario)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
         usuario.setAvatar(novoAvatar);
     }
 
-    public UsuarioEntity login(String email, String senha) {
-        Optional<UsuarioEntity> usuarioPromisse = usuarioRepository.findByEmailAndSenha(email, senha);
+    public UserEntity login(String email, String senha) {
+        Optional<UserEntity> usuarioPromisse = userRepository.findByEmailAndPassword(email, senha);
         return usuarioPromisse.orElse(null);
     }
 
 
-    public ResponseEntity<UsuarioEntity> autenticarGithub(GitHubInformacoes usuario) {
-        Optional<UsuarioEntity> optionalUsuarioEntity = usuarioRepository.findByIdGithub(usuario.getIdGithub());
+    public ResponseEntity<UserEntity> autenticarGithub(GitHubInformacoes usuario) {
+        Optional<UserEntity> optionalUsuarioEntity = userRepository.findByIdGithub(usuario.getIdGithub());
         if (optionalUsuarioEntity.isPresent()){
             return ResponseEntity.status(200).body(optionalUsuarioEntity.get());
         }
-        UsuarioEntity novoUsuario = usuario.converter();
-        usuarioRepository.save(novoUsuario);
+        UserEntity novoUsuario = usuario.converter();
+        userRepository.save(novoUsuario);
         return ResponseEntity.status(201).body(novoUsuario);
     }
 
     public ResponseEntity<Void> verificaEmailExiste(String email) {
-        Optional<UsuarioEntity> usuarioEntity = usuarioRepository.findByEmail(email);
+        Optional<UserEntity> usuarioEntity = userRepository.findByEmail(email);
         if (usuarioEntity.isPresent()) {
             return ResponseEntity.status(200).build();
         }

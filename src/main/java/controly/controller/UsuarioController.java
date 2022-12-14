@@ -5,7 +5,7 @@ import controly.config.Constant;
 import controly.dto.AtualizarUsuarioRequest;
 import controly.dto.DataGithubPostRequest;
 import controly.dto.GitHubInformacoes;
-import controly.entities.UsuarioEntity;
+import controly.entities.UserEntity;
 import controly.dto.CadastrarNovoUsuarioForm;
 import controly.service.GithubService;
 import controly.service.UsuarioService;
@@ -44,13 +44,13 @@ public class UsuarioController {
 
 
     @GetMapping
-    public ResponseEntity<List<UsuarioEntity>> getListUsuarios() {
+    public ResponseEntity<List<UserEntity>> getListUsuarios() {
         return usuarioService.getListUsuarios();
     }
 
 
     @PostMapping
-    public ResponseEntity<UsuarioEntity> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user) {
+    public ResponseEntity<UserEntity> cadastrarUsuario(@RequestBody CadastrarNovoUsuarioForm user) {
         return usuarioService.cadastrarUsuario(user);
     }
 
@@ -84,7 +84,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/github")
-    public ResponseEntity<UsuarioEntity> postGitHubUser(@RequestBody GitHubInformacoes usuario){
+    public ResponseEntity<UserEntity> postGitHubUser(@RequestBody GitHubInformacoes usuario){
         return usuarioService.autenticarGithub(usuario);
     }
 

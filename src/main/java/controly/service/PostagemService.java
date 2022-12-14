@@ -1,13 +1,12 @@
 package controly.service;
 
-import controly.entities.UsuarioEntity;
-import controly.repository.UsuarioRepository;
+import controly.entities.UserEntity;
+import controly.repository.UserRepository;
 import controly.dto.PostagemDTO;
-import controly.entities.PontuacaoPostagem;
-import controly.entities.PostagemEntity;
-import controly.repository.PontuacaoPostagemRepository;
-import controly.repository.PostagemRepository;
-import controly.service.ValidationService;
+import controly.entities.PostPointsEntity;
+import controly.entities.PostEntity;
+import controly.repository.PostPointsRepository;
+import controly.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +24,12 @@ public class PostagemService {
     @Autowired
     private ValidationService validation;
     @Autowired
-    private PostagemRepository postagemRepository;
+    private PostRepository postRepository;
     @Autowired
-    private PontuacaoPostagemRepository pontuacaoPostagemRepository;
+    private PostPointsRepository postPointsRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     public PostagemService() {
     }
@@ -38,23 +37,23 @@ public class PostagemService {
     @Transactional
     public ResponseEntity<List<PostagemDTO>> todasPostagens() {
 
-        List<PostagemEntity> postagens = postagemRepository.findAll();
+        List<PostEntity> postagens = postRepository.findAll();
 
         if (postagens.isEmpty()) return ResponseEntity.status(204).build();
 
         List<PostagemDTO> postagemDTOlist = new ArrayList<>();
 
-        for (PostagemEntity postagem : postagens) {
+        for (PostEntity postagem : postagens) {
 
             PostagemDTO postagemDT = new PostagemDTO();
 
-            postagemDT.setIdPostagem(postagem.getIdPostagem());
-            postagemDT.setTitulo(postagem.getTitulo());
-            postagemDT.setConteudo(postagem.getConteudo());
-            postagemDT.setTopico(postagem.getTopico());
-            postagemDT.setPontuacaoPostagem(postagem.getPontuacao());
+            postagemDT.setIdPostagem(postagem.getIdPost());
+            postagemDT.setTitulo(postagem.getTitle());
+            postagemDT.setConteudo(postagem.getContent());
+            postagemDT.setTopico(postagem.getTopic());
+            postagemDT.setPontuacaoPostagem(postagem.getPoints());
 
-            postagemDT.setDono(postagem.getDono());
+            postagemDT.setDono(postagem.getOwner());
             postagemDTOlist.add(postagemDT);
 
         }
@@ -64,30 +63,30 @@ public class PostagemService {
     }
 
     @Transactional
-    public ResponseEntity<PostagemEntity> pegarPostagemPeloId(Long id){
+    public ResponseEntity<PostEntity> pegarPostagemPeloId(Long id){
         if (validation.existsPostagem(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
         }
-        PostagemEntity postagem = postagemRepository.findByIdPostagem(id);
+        PostEntity postagem = postRepository.findByIdPost(id);
         return ResponseEntity.status(200).body(postagem);
     }
 
     public ResponseEntity<String> setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
-        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(usuario).orElseThrow();
+        UserEntity userEntity = userRepository.findByIdUser(usuario).orElseThrow();
         if (
             validation.existsPostagem(postagem) ||
                     validation.existsUsuario(usuario)
         ) return ResponseEntity.status(404).body(IDNOTFOUND);
 
         if (!validation.existsPontuacaoWithPostagemAndUsuario(postagem, usuario)){
-            pontuacaoPostagemRepository.save(
-                    new PontuacaoPostagem()
-                            .setPostagem(postagemRepository.findByIdPostagem(postagem))
-                            .setUsuario(usuarioEntity)
-                            .setPontuacao(ponto)
+            postPointsRepository.save(
+                    new PostPointsEntity()
+                            .setPost(postRepository.findByIdPost(postagem))
+                            .setUser(userEntity)
+                            .setPoints(ponto)
             );
         } else {
-            pontuacaoPostagemRepository.setPontuacaoFor(postagem, usuario, ponto);
+            postPointsRepository.setPointsFor(postagem, usuario, ponto);
         }
         return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a postagem de ID %d.", ponto, postagem));
     }
@@ -96,27 +95,27 @@ public class PostagemService {
         if (validation.existsPostagem(idPostagem)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
         }
-        PostagemEntity postagem = postagemRepository.findByIdPostagem(idPostagem);
+        PostEntity postagem = postRepository.findByIdPost(idPostagem);
         //postagemRepository.delete(postagem);
-        int result = postagemRepository.deleteByIdPostagem(idPostagem);
+        int result = postRepository.deleteByIdPost(idPostagem);
         return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida. nº: " + result);
     }
 
     @Transactional
-    public ResponseEntity<List<PostagemEntity>> getPostagemByIdUser(Long idUser){
+    public ResponseEntity<List<PostEntity>> getPostagemByIdUser(Long idUser){
         if (validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
 
-        List<PostagemEntity> postagemEntityList = postagemRepository.findByDonoIdUsuario(idUser);
+        List<PostEntity> postEntityList = postRepository.findByOwnerIdUser(idUser);
 
-        return postagemEntityList.isEmpty()
+        return postEntityList.isEmpty()
                 ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(postagemEntityList);
+                : ResponseEntity.status(200).body(postEntityList);
     }
 
     @Transactional
-    public ResponseEntity<PontuacaoPostagem> findPontuacaoPostagem(Long postagem, Long usuario, int pontuacao){
-        PontuacaoPostagem pontuacaoPostagem = pontuacaoPostagemRepository.findByPostagemIdPostagemAndUsuarioIdUsuario(postagem, usuario).get();
-        pontuacaoPostagem.setPontuacao(pontuacao);
-        return  ResponseEntity.status(200).body(pontuacaoPostagem);
+    public ResponseEntity<PostPointsEntity> findPontuacaoPostagem(Long postagem, Long usuario, int pontuacao){
+        PostPointsEntity postPointsEntity = postPointsRepository.findByPostIdPostAndUserIdUser(postagem, usuario).get();
+        postPointsEntity.setPoints(pontuacao);
+        return  ResponseEntity.status(200).body(postPointsEntity);
     }
 }

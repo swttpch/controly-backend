@@ -1,12 +1,12 @@
 package controly.service;
 
-import controly.entities.UsuarioEntity;
-import controly.entities.PostagemEntity;
+import controly.entities.UserEntity;
+import controly.entities.PostEntity;
 import controly.strategy.Postagem;
-import controly.repository.ComentarioRepository;
-import controly.repository.PostagemRepository;
-import controly.repository.TopicoRepository;
-import controly.repository.UsuarioRepository;
+import controly.repository.CommentRepository;
+import controly.repository.PostRepository;
+import controly.repository.TopicRepository;
+import controly.repository.UserRepository;
 import controly.strategy.Ipostagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +18,16 @@ import javax.transaction.Transactional;
 @Service
 public class DuvidaService implements Ipostagem {
     @Autowired
-    private PostagemRepository postagemRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private TopicoRepository topicoRepository;
+    private TopicRepository topicRepository;
 
     @Autowired
-    private ComentarioRepository comentarioRepository;
+    private CommentRepository commentRepository;
 
     @Autowired
     private ValidationService validation;
@@ -39,16 +39,16 @@ public class DuvidaService implements Ipostagem {
     @Override
     @Transactional
     public ResponseEntity<String> enviarPostagem(Postagem duvida) {
-        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(duvida.getIdUsuario()).orElseThrow();
+        UserEntity userEntity = userRepository.findByIdUser(duvida.getIdUsuario()).orElseThrow();
         if (validation.existsTopico(duvida.getIdTopico()) || validation.existsUsuario(duvida.getIdUsuario()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
 
-        PostagemEntity postagem =  duvida.converterPostagem(
-                topicoRepository.findByIdTopico(duvida.getIdTopico()),
-                usuarioEntity
-        ).initResposta();
+        PostEntity postagem =  duvida.converterPostagem(
+                topicRepository.findByIdTopic(duvida.getIdTopico()),
+                userEntity
+        ).initDoubt();
 
-        postagemRepository.save(
+        postRepository.save(
                 postagem
         );
         return ResponseEntity.status(201).body("Duvida postada.");
@@ -58,8 +58,8 @@ public class DuvidaService implements Ipostagem {
     public ResponseEntity<String> definirRespostaDaPostagem(Long idPostagem, Long idComentario){
         if (validation.existsPostagem(idPostagem) || validation.existsComentario(idComentario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
-        postagemRepository.findByIdPostagem(idPostagem)
-            .setResposta(comentarioRepository.findByIdComentario(idComentario));
+        postRepository.findByIdPost(idPostagem)
+            .setAnswer(commentRepository.findByIdComment(idComentario));
         return ResponseEntity.status(201).body("Resposta atribuida.");
     }
 }

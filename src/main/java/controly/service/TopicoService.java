@@ -1,11 +1,11 @@
 package controly.service;
 
-import controly.entities.UsuarioEntity;
+import controly.entities.UserEntity;
 import controly.dto.TopicoDTO;
-import controly.entities.TopicoEntity;
-import controly.entities.TopicoHasSeguidoresEntity;
-import controly.repository.TopicoHasSeguidoresRepositoy;
-import controly.repository.TopicoRepository;
+import controly.entities.TopicEntity;
+import controly.entities.TopicHasFollowersEntity;
+import controly.repository.TopicHasFollowersRepository;
+import controly.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,10 @@ import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class TopicoService {
     @Autowired
-    private TopicoRepository topicoRepository;
+    private TopicRepository topicRepository;
 
     @Autowired
-    private TopicoHasSeguidoresRepositoy topicoHasSeguidoresRepositoy;
+    private TopicHasFollowersRepository topicHasFollowersRepository;
 
     @Autowired
     private ValidationService validation;
@@ -37,21 +37,21 @@ public class TopicoService {
     }
 
     public ResponseEntity<List<TopicoDTO>> getTopicos() {
-        List<TopicoEntity> topicos = topicoRepository.findAll();
+        List<TopicEntity> topicos = topicRepository.findAll();
 
         if (topicos.isEmpty()) return ResponseEntity.status(204).build();
 
         List<TopicoDTO> topicoDTOList = new ArrayList<>();
 
 
-        for (TopicoEntity topico : topicos) {
+        for (TopicEntity topico : topicos) {
 
             TopicoDTO topicoDT = new TopicoDTO();
 
-            topicoDT.setIdTopico(topico.getIdTopico());
-            topicoDT.setNome(topico.getNome());
-            topicoDT.setDescricao(topico.getDescricao());
-            topicoDT.setSeguidores(topicoHasSeguidoresRepositoy.countTopicoHasSeguidoresByIdUsuario(topico.getIdTopico()));
+            topicoDT.setIdTopico(topico.getIdTopic());
+            topicoDT.setNome(topico.getName());
+            topicoDT.setDescricao(topico.getAbout());
+            topicoDT.setSeguidores(topicHasFollowersRepository.countFollowersATopicHas(topico.getIdTopic()));
 
             topicoDTOList.add(topicoDT);
 
@@ -65,29 +65,29 @@ public class TopicoService {
         if (validation.existsTopico(id)){
             return ResponseEntity.status(404).build();
         }
-        TopicoEntity topico = topicoRepository.findByIdTopico(id);
+        TopicEntity topico = topicRepository.findByIdTopic(id);
         TopicoDTO topicoDTO = new TopicoDTO();
 
-        topicoDTO.setIdTopico(topico.getIdTopico());
-        topicoDTO.setNome(topico.getNome());
-        topicoDTO.setDescricao(topico.getDescricao());
-        topicoDTO.setSeguidores(topicoHasSeguidoresRepositoy.countTopicoHasSeguidoresByIdUsuario(topico.getIdTopico()));
+        topicoDTO.setIdTopico(topico.getIdTopic());
+        topicoDTO.setNome(topico.getName());
+        topicoDTO.setDescricao(topico.getAbout());
+        topicoDTO.setSeguidores(topicHasFollowersRepository.countFollowersATopicHas(topico.getIdTopic()));
 
         return ResponseEntity.status(200).body(topicoDTO);
     }
 
-    public ResponseEntity<List<TopicoHasSeguidoresEntity>> getTopicosByIdUser(Long idUser) {
+    public ResponseEntity<List<TopicHasFollowersEntity>> getTopicosByIdUser(Long idUser) {
         if (validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
 
-        List<TopicoHasSeguidoresEntity> topicoEntityList = topicoHasSeguidoresRepositoy.findTopicosHasSeguidoresTopicoEntityByUsuario_IdUsuario(idUser);
+        List<TopicHasFollowersEntity> topicoEntityList = topicHasFollowersRepository.findByFollowerIdUser(idUser);
 
         return topicoEntityList.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(topicoEntityList);
     }
 
     @Transactional
-    public ResponseEntity<TopicoEntity> postTopicos(@RequestBody TopicoEntity topicoEntity) {
-        topicoRepository.save(topicoEntity);
-        return ResponseEntity.status(201).body(topicoEntity);
+    public ResponseEntity<TopicEntity> postTopicos(@RequestBody TopicEntity topicEntity) {
+        topicRepository.save(topicEntity);
+        return ResponseEntity.status(201).body(topicEntity);
     }
 
     @Transactional
@@ -95,17 +95,17 @@ public class TopicoService {
         if (validation.existsTopico(idTopico) || validation.existsUsuario(idUsuario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
 
-        TopicoHasSeguidoresEntity topicoHasSeguidores = topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario);
+        TopicHasFollowersEntity topicoHasSeguidores = topicHasFollowersRepository.findByTopicIdTopicAndUserIdUser(idTopico, idUsuario);
 
         if (topicoHasSeguidores == null ) {
-            TopicoEntity topico = topicoRepository.findByIdTopico(idTopico);
-            UsuarioEntity usuario = usuarioService.buscarUsuarioPorId(idUsuario).get();
+            TopicEntity topico = topicRepository.findByIdTopic(idTopico);
+            UserEntity usuario = usuarioService.buscarUsuarioPorId(idUsuario).get();
 
-            topicoHasSeguidores = new TopicoHasSeguidoresEntity();
-            topicoHasSeguidores.setTopico(topico);
-            topicoHasSeguidores.setUsuario(usuario);
+            topicoHasSeguidores = new TopicHasFollowersEntity();
+            topicoHasSeguidores.setTopic(topico);
+            topicoHasSeguidores.setFollower(usuario);
 
-            topicoHasSeguidoresRepositoy.save(topicoHasSeguidores);
+            topicHasFollowersRepository.save(topicoHasSeguidores);
 
             return ResponseEntity.status(201).body(String.format("Usuario de id %d comecou a seguir topico de id %d.", idTopico, idUsuario));
 
@@ -123,13 +123,13 @@ public class TopicoService {
         if (validation.existsTopico(idTopico) || validation.existsUsuario(idUsuario))
             return ResponseEntity.status(404).body(IDNOTFOUND);
 
-        TopicoHasSeguidoresEntity topicoHasSeguidores = topicoHasSeguidoresRepositoy.findTopicoHasSeguidoresEntityByTopico_idTopicoAndUsuario_idUsuario(idTopico, idUsuario);
+        TopicHasFollowersEntity topicoHasSeguidores = topicHasFollowersRepository.findByTopicIdTopicAndUserIdUser(idTopico, idUsuario);
 
         if (topicoHasSeguidores == null ) {
             return ResponseEntity.status(404).body(String.format("Esse usuario não segue esse topico"));
         } else {
 
-            topicoHasSeguidoresRepositoy.deleteById(topicoHasSeguidores.getId());
+            topicHasFollowersRepository.deleteById(topicoHasSeguidores.getId());
 
             return ResponseEntity.status(201).body(String.format("Usuario de id %d parou de seguir topico de id %d.", idTopico, idUsuario));
 
@@ -137,7 +137,7 @@ public class TopicoService {
     }
 
     public ResponseEntity<Boolean> userFollowTopico(Long idTopico, Long idUsuario) {
-        Optional<TopicoHasSeguidoresEntity> topicoHasSeguidores = topicoHasSeguidoresRepositoy.existsFollowUser(idTopico, idUsuario);
+        Optional<TopicHasFollowersEntity> topicoHasSeguidores = topicHasFollowersRepository.userFollowsTopico(idTopico, idUsuario);
         if (topicoHasSeguidores.isPresent()) return ResponseEntity.status(200).body(true);
         return ResponseEntity.status(200).body(false);
     }

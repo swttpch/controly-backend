@@ -1,9 +1,9 @@
 package controly.service;
 
-import controly.entities.UsuarioEntity;
-import controly.repository.PostagemRepository;
-import controly.repository.TopicoRepository;
-import controly.repository.UsuarioRepository;
+import controly.entities.UserEntity;
+import controly.repository.PostRepository;
+import controly.repository.TopicRepository;
+import controly.repository.UserRepository;
 import controly.strategy.Ipostagem;
 import controly.strategy.Postagem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,13 @@ import static controly.config.Constant.IDNOTFOUND;
 @Service
 public class DiscussaoService implements Ipostagem {
     @Autowired
-    private PostagemRepository postagemRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private TopicoRepository topicoRepository;
+    private TopicRepository topicRepository;
     @Autowired
     private ValidationService validation;
 
@@ -29,13 +29,13 @@ public class DiscussaoService implements Ipostagem {
 
     @Override
     public ResponseEntity<String> enviarPostagem(Postagem discussao) {
-        UsuarioEntity usuarioEntity = usuarioRepository.findByIdUsuario(discussao.getIdUsuario()).orElseThrow();
+        UserEntity userEntity = userRepository.findByIdUser(discussao.getIdUsuario()).orElseThrow();
         if (validation.existsUsuario(discussao.getIdUsuario()) || validation.existsTopico(discussao.getIdTopico()))
             return ResponseEntity.status(404).body(IDNOTFOUND);
-        postagemRepository.save(
+        postRepository.save(
                 discussao.converterPostagem(
-                        topicoRepository.findByIdTopico(discussao.getIdTopico()),
-                        usuarioEntity
+                        topicRepository.findByIdTopic(discussao.getIdTopico()),
+                        userEntity
                 )
         );
         return ResponseEntity.status(201).body("Discussão postada.");

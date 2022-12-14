@@ -1,12 +1,12 @@
 package controly.service;
 
 import controly.dto.RecuperarSenhaForm;
-import controly.entities.UsuarioEntity;
+import controly.entities.UserEntity;
 import controly.util.GeradorSenha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import controly.repository.UsuarioRepository;
+import controly.repository.UserRepository;
 
 import java.util.Optional;
 
@@ -20,26 +20,26 @@ public class RecuperarSenhaService {
     final private EmailService enviarEmail;
 
     @Autowired
-    final private UsuarioRepository usuarioRepository;
+    final private UserRepository userRepository;
 
-    public RecuperarSenhaService(GeradorSenha geradorSenha, EmailService enviarEmail, UsuarioRepository usuarioRepository) {
+    public RecuperarSenhaService(GeradorSenha geradorSenha, EmailService enviarEmail, UserRepository userRepository) {
         this.geradorSenha = geradorSenha;
         this.enviarEmail = enviarEmail;
-        this.usuarioRepository = usuarioRepository;
+        this.userRepository = userRepository;
     }
 
 
     public ResponseEntity<?> recuperarSenha(RecuperarSenhaForm usuario){
 
-        Optional<UsuarioEntity> usuarioEncotrado = usuarioRepository.findByEmail(usuario.getEmail());
+        Optional<UserEntity> usuarioEncotrado = userRepository.findByEmail(usuario.getEmail());
 
         if(usuarioEncotrado.isPresent()){
 
             String novaSenha = geradorSenha.gerarSenha();
-            usuarioEncotrado.get().setSenha(novaSenha);
-            usuarioRepository.save(usuarioEncotrado.get());
+            usuarioEncotrado.get().setPassword(novaSenha);
+            userRepository.save(usuarioEncotrado.get());
 
-            return enviarEmail.sendEmail(usuarioEncotrado.get().getNome(),usuarioEncotrado.get().getEmail(),novaSenha);
+            return enviarEmail.sendEmail(usuarioEncotrado.get().getName(),usuarioEncotrado.get().getEmail(),novaSenha);
 
         }
 
