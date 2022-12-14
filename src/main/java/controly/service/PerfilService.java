@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class PerfilService {
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService userService;
 
     @Autowired
     private TopicoService topicoService;
@@ -41,7 +41,7 @@ public class PerfilService {
         if (validation.existsUsuario(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado");
         }
-        UserEntity usuario = usuarioService.buscarUsuarioPorId(id).get();
+        UserEntity usuario = userService.getUserById(id);
 
         List<PostEntity> postEntityList = postagemService.getPostagemByIdUser(id).getBody();
 

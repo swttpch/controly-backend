@@ -31,7 +31,7 @@ public class TopicoService {
     private ValidationService validation;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService userService;
 
     public TopicoService() {
     }
@@ -99,7 +99,7 @@ public class TopicoService {
 
         if (topicoHasSeguidores == null ) {
             TopicEntity topico = topicRepository.findByIdTopic(idTopico);
-            UserEntity usuario = usuarioService.buscarUsuarioPorId(idUsuario).get();
+            UserEntity usuario = userService.getUserById(idUsuario);
 
             topicoHasSeguidores = new TopicHasFollowersEntity();
             topicoHasSeguidores.setTopic(topico);

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -35,6 +36,8 @@ public class UserEntity implements Serializable {
     private Long idGithub;
 
     private String about = "";
+    @Column(name = "disabledIn")
+    private LocalDateTime disabledIn;
 
     public UserEntity(String name, String nickname, String password, String email) {
         this.name = name;
@@ -44,17 +47,17 @@ public class UserEntity implements Serializable {
         this.isActive = true;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public int disableUser() {
+        if (!isActive) return 0;
+        setIsActive(false);
+        setDisabledIn(LocalDateTime.now());
+        return 1;
     }
 
-    public Boolean getActive() {
-        return isActive;
+    public int enableUser() {
+        if (isActive) return 0;
+        setIsActive(true);
+        setDisabledIn(null);
+        return 1;
     }
-
-    public void setAtivo(Boolean ativo) {
-        isActive = ativo;
-    }
-
-
 }

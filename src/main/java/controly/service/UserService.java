@@ -1,10 +1,11 @@
 package controly.service;
 
-import controly.ValidacaoUsuario;
 import controly.dto.AtualizarUsuarioRequest;
 import controly.dto.GitHubInformacoes;
 import controly.entities.UserEntity;
-import controly.dto.CadastrarNovoUsuarioForm;
+import controly.dto.CreateNewUserRequest;
+import controly.exception.EmailAlreadyExistsException;
+import controly.exception.UsersIdNotFould;
 import controly.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,73 +18,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioService {
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
 
-    public UsuarioService() {
+    @Transactional
+    public UserEntity createNewUser(CreateNewUserRequest newUser) {
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(newUser.getEmail());
+        if (optionalUser.isPresent()) throw new EmailAlreadyExistsException();
+        return userRepository.save(newUser.convert());
+    }
+
+    public UserEntity getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UsersIdNotFould::new);
+    }
+
+    public List<UserEntity> getListOfUsers() {
+        return userRepository.findAll();
     }
 
     @Transactional
-    public ResponseEntity<UserEntity> cadastrarUsuario(CadastrarNovoUsuarioForm novoUser) {
-
-        String usuarioInvalido = new ValidacaoUsuario().validar(novoUser);
-
-        if (usuarioInvalido == null) {
-
-            if (userRepository.findByEmail(novoUser.getEmail()).isEmpty()) {
-
-                UserEntity userEntity = novoUser.converter();
-
-                userRepository.save(userEntity);
-                return ResponseEntity.status(HttpStatus.CREATED).body(userEntity);
-
-            } else {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já existe na base de dados");
-            }
-
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, usuarioInvalido);
-        }
-
-    }
-
-    @Transactional
-    public Optional<UserEntity> buscarUsuarioPorId(Long id) {
-        return userRepository.findByIdUser(id);
-    }
-
-    public ResponseEntity<?> getUsuarioCadastrado(Long id) {
-        Optional<UserEntity> usuarioEntity = userRepository.findById(id);
-        if (usuarioEntity.isPresent()) {
-            return ResponseEntity.status(200).body(usuarioEntity);
-        }
-        throw new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "O id não corresponde a nenhum usuário encontrado na base de dados"
-        );
-    }
-
-    public ResponseEntity<List<UserEntity>> getListUsuarios() {
-        List<UserEntity> lista = userRepository.findAll();
-
-        return lista.isEmpty()
-                ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(lista);
-    }
-
-    @Transactional
-    public ResponseEntity<String> deletarUsuario(Long id) {
-        Optional<UserEntity> usuario = this.buscarUsuarioPorId(id);
-
-        if (usuario.isPresent()) {
-            usuario.get().setAtivo(false);
-            userRepository.save(usuario.get());
-            return ResponseEntity.status(200).body("Usuario desativado com sucesso");
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-        }
+    public int deleteUserById(Long id) {
+        UserEntity user = this.getUserById(id);
+        // if user is already disabled then return 0
+        // otherwise, disable this user and return 1
+        return user.disableUser();
     }
 
     @Transactional
@@ -106,15 +67,13 @@ public class UsuarioService {
 
     @Transactional
     public void atualizarApelido(Long idUsuario, String novoApelido) {
-        UserEntity usuario = buscarUsuarioPorId(idUsuario)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        UserEntity usuario = getUserById(idUsuario);
         usuario.setNickname(novoApelido);
     }
 
     @Transactional
     public void atualizarAvatar(Long idUsuario, String novoAvatar) {
-        UserEntity usuario = buscarUsuarioPorId(idUsuario)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        UserEntity usuario = getUserById(idUsuario);
         usuario.setAvatar(novoAvatar);
     }
 

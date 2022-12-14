@@ -1,10 +1,10 @@
 package controly;
 
-import controly.dto.CadastrarNovoUsuarioForm;
+import controly.dto.CreateNewUserRequest;
 
 public class ValidacaoUsuario {
 
-    public String validar(CadastrarNovoUsuarioForm form){
+    public String validar(CreateNewUserRequest form){
 
         if(!validaEmail(form)){
             return "Email Inválido";
@@ -20,15 +20,15 @@ public class ValidacaoUsuario {
         return null;
     }
 
-    public Boolean validaEmail(CadastrarNovoUsuarioForm form){
+    public Boolean validaEmail(CreateNewUserRequest form){
 
         String email = form.getEmail();
         return email.contains("@") && email.length() > 10 && email.contains(".");
     }
 
-    public Boolean validaSenha(CadastrarNovoUsuarioForm form){
+    public Boolean validaSenha(CreateNewUserRequest form){
 
-        String senha = form.getSenha();
+        String senha = form.getPassword();
         return senha.length()>=8;
     }
 
