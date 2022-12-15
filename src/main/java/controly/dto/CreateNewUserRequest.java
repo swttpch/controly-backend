@@ -1,7 +1,6 @@
 package controly.dto;
 
-import controly.entities.UserEntity;
-import lombok.Getter;
+import controly.entity.UserEntity;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

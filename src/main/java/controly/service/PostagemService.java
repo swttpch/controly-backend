@@ -1,10 +1,10 @@
 package controly.service;
 
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.repository.UserRepository;
 import controly.dto.PostagemDTO;
-import controly.entities.PostPointsEntity;
-import controly.entities.PostEntity;
+import controly.entity.PostPointsEntity;
+import controly.entity.PostEntity;
 import controly.repository.PostPointsRepository;
 import controly.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;

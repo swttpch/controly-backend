@@ -1,15 +1,13 @@
 package controly.service;
 
 import controly.dto.UpdateUsersInfoRequest;
-import controly.dto.GithubUserRequest;
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.dto.CreateNewUserRequest;
 import controly.exception.EmailAlreadyExistsException;
 import controly.exception.UsersIdNotFould;
 import controly.mapper.UserMapper;
 import controly.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

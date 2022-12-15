@@ -1,7 +1,7 @@
 package controly.mapper;
 
 import controly.dto.UpdateUsersInfoRequest;
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

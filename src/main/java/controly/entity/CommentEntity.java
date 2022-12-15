@@ -1,4 +1,4 @@
-package controly.entities;
+package controly.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

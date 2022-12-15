@@ -1,7 +1,6 @@
 package controly.dto;
 
-import controly.entities.TopicEntity;
-import lombok.Data;
+import controly.entity.TopicEntity;
 
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;

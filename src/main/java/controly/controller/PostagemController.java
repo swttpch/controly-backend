@@ -1,12 +1,12 @@
 package controly.controller;
 
 import controly.strategy.Comentario;
-import controly.entities.CommentEntity;
+import controly.entity.CommentEntity;
 import controly.dto.PostagemDTO;
-import controly.entities.PostPointsEntity;
+import controly.entity.PostPointsEntity;
 import controly.strategy.Discussao;
 import controly.strategy.Duvida;
-import controly.entities.PostEntity;
+import controly.entity.PostEntity;
 import controly.service.DiscussaoService;
 import controly.service.DuvidaService;
 import controly.service.PostagemService;

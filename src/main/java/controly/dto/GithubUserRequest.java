@@ -1,7 +1,7 @@
 package controly.dto;
 
 
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 
 import javax.validation.constraints.NotNull;
 

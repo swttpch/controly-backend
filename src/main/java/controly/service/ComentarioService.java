@@ -1,9 +1,9 @@
 package controly.service;
 
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.strategy.Postagem;
-import controly.entities.CommentEntity;
-import controly.entities.CommentPointsEntity;
+import controly.entity.CommentEntity;
+import controly.entity.CommentPointsEntity;
 import controly.repository.CommentRepository;
 import controly.repository.CommentPointsRepository;
 import controly.repository.PostRepository;

@@ -1,7 +1,5 @@
-package controly.entities;
+package controly.entity;
 import javax.persistence.*;
-
-import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 

@@ -1,10 +1,10 @@
 package controly.strategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import controly.entities.CommentEntity;
-import controly.entities.PostEntity;
-import controly.entities.TopicEntity;
-import controly.entities.UserEntity;
+import controly.entity.CommentEntity;
+import controly.entity.PostEntity;
+import controly.entity.TopicEntity;
+import controly.entity.UserEntity;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,6 +1,6 @@
 package controly.repository;
 
-import controly.entities.TopicHasFollowersEntity;
+import controly.entity.TopicHasFollowersEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

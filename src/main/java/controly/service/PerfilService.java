@@ -1,11 +1,11 @@
 package controly.service;
 
 import controly.dto.PerfilDTO;
-import controly.entities.UserEntity;
-import controly.entities.TopicEntity;
+import controly.entity.UserEntity;
+import controly.entity.TopicEntity;
 import controly.repository.TopicHasFollowersRepository;
-import controly.entities.TopicHasFollowersEntity;
-import controly.entities.PostEntity;
+import controly.entity.TopicHasFollowersEntity;
+import controly.entity.PostEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

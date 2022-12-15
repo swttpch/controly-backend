@@ -1,13 +1,9 @@
 package controly.controller;
 
 
-import controly.config.Constant;
 import controly.dto.UpdateUsersInfoRequest;
-import controly.dto.DataGithubPostRequest;
-import controly.dto.GithubUserRequest;
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.dto.CreateNewUserRequest;
-import controly.service.GithubService;
 import controly.service.UserService;
 import controly.dto.RecuperarSenhaForm;
 import controly.service.PasswordRecoveryService;

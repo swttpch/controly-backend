@@ -1,7 +1,7 @@
 package controly.service;
 
 import controly.dto.RecuperarSenhaForm;
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.exception.UsersEmailNotFould;
 import controly.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;

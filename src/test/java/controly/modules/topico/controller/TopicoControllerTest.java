@@ -2,7 +2,7 @@ package controly.modules.topico.controller;
 
 import controly.controller.TopicoController;
 import controly.dto.TopicoDTO;
-import controly.entities.TopicEntity;
+import controly.entity.TopicEntity;
 import controly.repository.TopicHasFollowersRepository;
 import controly.repository.TopicRepository;
 import org.junit.jupiter.api.DisplayName;

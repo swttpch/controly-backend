@@ -1,4 +1,4 @@
-package controly.entities;
+package controly.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

@@ -1,15 +1,12 @@
 package controly.service;
-
-
 import controly.dto.GithubUserRequest;
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.exception.UsersEmailNotFould;
 import controly.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.Optional;
 
 @Service

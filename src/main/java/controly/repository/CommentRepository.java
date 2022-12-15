@@ -1,6 +1,6 @@
 package controly.repository;
 
-import controly.entities.CommentEntity;
+import controly.entity.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

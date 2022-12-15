@@ -1,10 +1,10 @@
 package controly.dto;
 
-import controly.entities.CommentEntity;
-import controly.entities.UserEntity;
-import controly.entities.PostPointsEntity;
-import controly.entities.DoubtsAnswerEntity;
-import controly.entities.TopicEntity;
+import controly.entity.CommentEntity;
+import controly.entity.UserEntity;
+import controly.entity.PostPointsEntity;
+import controly.entity.DoubtsAnswerEntity;
+import controly.entity.TopicEntity;
 import lombok.Data;
 
 import java.time.LocalDateTime;

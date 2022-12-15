@@ -5,7 +5,7 @@ import controly.config.Constant;
 import controly.dto.DataGithubPostRequest;
 import controly.dto.GithubUserRequest;
 import controly.dto.LoginRequest;
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.service.AuthService;
 import controly.service.GithubService;
 import org.springframework.beans.factory.annotation.Autowired;

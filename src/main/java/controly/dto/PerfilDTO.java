@@ -1,9 +1,8 @@
 package controly.dto;
 
-import controly.entities.TopicEntity;
-import controly.entities.UserEntity;
-import controly.entities.PostEntity;
-import lombok.Data;
+import controly.entity.TopicEntity;
+import controly.entity.UserEntity;
+import controly.entity.PostEntity;
 
 import java.util.List;
 

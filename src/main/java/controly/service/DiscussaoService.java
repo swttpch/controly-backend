@@ -1,6 +1,6 @@
 package controly.service;
 
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.repository.PostRepository;
 import controly.repository.TopicRepository;
 import controly.repository.UserRepository;

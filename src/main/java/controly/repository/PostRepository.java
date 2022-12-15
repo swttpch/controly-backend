@@ -1,6 +1,6 @@
 package controly.repository;
 
-import controly.entities.PostEntity;
+import controly.entity.PostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

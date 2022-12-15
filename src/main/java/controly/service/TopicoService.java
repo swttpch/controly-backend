@@ -1,9 +1,9 @@
 package controly.service;
 
-import controly.entities.UserEntity;
+import controly.entity.UserEntity;
 import controly.dto.TopicoDTO;
-import controly.entities.TopicEntity;
-import controly.entities.TopicHasFollowersEntity;
+import controly.entity.TopicEntity;
+import controly.entity.TopicHasFollowersEntity;
 import controly.repository.TopicHasFollowersRepository;
 import controly.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;

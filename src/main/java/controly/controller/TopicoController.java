@@ -1,7 +1,7 @@
 package controly.controller;
 
 import controly.dto.TopicoDTO;
-import controly.entities.TopicEntity;
+import controly.entity.TopicEntity;
 import controly.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

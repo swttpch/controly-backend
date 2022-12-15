@@ -1,7 +1,7 @@
 package controly.repository;
 
-import controly.entities.PostPointsEntity;
-import controly.entities.PostEntity;
+import controly.entity.PostPointsEntity;
+import controly.entity.PostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
