@@ -1,7 +1,7 @@
 package controly.service;
 
 import controly.dto.UpdateUsersInfoRequest;
-import controly.dto.GitHubInformacoes;
+import controly.dto.GithubUserRequest;
 import controly.entities.UserEntity;
 import controly.dto.CreateNewUserRequest;
 import controly.exception.EmailAlreadyExistsException;
@@ -73,14 +73,14 @@ public class UserService {
     }
 
 
-    public ResponseEntity<UserEntity> autenticarGithub(GitHubInformacoes usuario) {
-        Optional<UserEntity> optionalUsuarioEntity = userRepository.findByIdGithub(usuario.getIdGithub());
-        if (optionalUsuarioEntity.isPresent()){
-            return ResponseEntity.status(200).body(optionalUsuarioEntity.get());
+    public UserEntity githubAuth(GithubUserRequest githubUser) {
+        Optional<UserEntity> userEntityOptional = userRepository.findByIdGithub(githubUser.getIdGithub());
+        if (userEntityOptional.isPresent()){
+            return userEntityOptional.get();
         }
-        UserEntity novoUsuario = usuario.converter();
-        userRepository.save(novoUsuario);
-        return ResponseEntity.status(201).body(novoUsuario);
+        UserEntity newUser = githubUser.convert();
+        userRepository.save(newUser);
+        return newUser;
     }
 
     public ResponseEntity<Void> verificaEmailExiste(String email) {

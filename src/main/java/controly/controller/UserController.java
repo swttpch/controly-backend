@@ -4,13 +4,13 @@ package controly.controller;
 import controly.config.Constant;
 import controly.dto.UpdateUsersInfoRequest;
 import controly.dto.DataGithubPostRequest;
-import controly.dto.GitHubInformacoes;
+import controly.dto.GithubUserRequest;
 import controly.entities.UserEntity;
 import controly.dto.CreateNewUserRequest;
 import controly.service.GithubService;
 import controly.service.UserService;
 import controly.dto.RecuperarSenhaForm;
-import controly.service.RecuperarSenhaService;
+import controly.service.PasswordRecoveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RecuperarSenhaService recuperarSenhaService;
+    private PasswordRecoveryService passwordRecoveryService;
     @Autowired
     private GithubService githubService;
 
@@ -70,22 +70,24 @@ public class UserController {
 
 
     @PostMapping("/recuperar-senha")
-    public ResponseEntity<?> recuperarSenha(@RequestBody RecuperarSenhaForm form) {
-        return recuperarSenhaService.recuperarSenha(form);
+    public ResponseEntity<?> passwordRecovery(@RequestBody RecuperarSenhaForm form) {
+        passwordRecoveryService.passwordRecovery(form);
+        return ResponseEntity.status(200).body("New password sended to users e-mail.");
     }
 
 
     @GetMapping("/github")
     public ResponseEntity<String> getGithubUser(@RequestParam String code) {
-        System.out.println(code);
         DataGithubPostRequest data = new DataGithubPostRequest(code);
         String response = githubService.consumeApi(Constant.GITHUB_AUTH_ACCESSTOKEN_URL, data);
         return ResponseEntity.status(200).body(response);
     }
 
     @PostMapping("/github")
-    public ResponseEntity<UserEntity> postGitHubUser(@RequestBody GitHubInformacoes usuario){
-        return userService.autenticarGithub(usuario);
+    public ResponseEntity<UserEntity> postGitHubUser(@RequestBody GithubUserRequest githubUser){
+        UserEntity user =  userService.githubAuth(githubUser);
+        if (user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
+        return ResponseEntity.status(200).body(user);
     }
 
 

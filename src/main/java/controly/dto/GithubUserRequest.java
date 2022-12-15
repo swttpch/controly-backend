@@ -2,17 +2,15 @@ package controly.dto;
 
 
 import controly.entities.UserEntity;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-public class GitHubInformacoes {
+public class GithubUserRequest {
 
     @NotNull
-    private String nome;
+    private String name;
     @NotNull
-    private String apelido;
+    private String nickname;
 
     @NotNull
     private Long idGithub;
@@ -23,31 +21,30 @@ public class GitHubInformacoes {
     private String email;
 
 
-    public UserEntity converter() {
-
-        UserEntity usuario = new UserEntity();
-        usuario.setName(nome);
-        usuario.setAvatar(avatar);
-        usuario.setNickname(apelido);
-        usuario.setIdGithub(idGithub);
-        usuario.setEmail(email);
-        return usuario;
+    public UserEntity convert() {
+        UserEntity user = new UserEntity();
+        user.setName(name);
+        user.setAvatar(avatar);
+        user.setNickname(nickname);
+        user.setIdGithub(idGithub);
+        user.setEmail(email);
+        return user;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getApelido() {
-        return apelido;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setApelido(String apelido) {
-        this.apelido = apelido;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public Long getIdGithub() {
