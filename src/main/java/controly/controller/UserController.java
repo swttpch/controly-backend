@@ -72,7 +72,7 @@ public class UserController {
     @PostMapping("/password-recovery")
     public ResponseEntity<?> passwordRecovery(@RequestBody RecuperarSenhaForm form) {
         passwordRecoveryService.passwordRecovery(form);
-        return ResponseEntity.status(200).body("New password sended to users e-mail.");
+        return ResponseEntity.status(200).body("New password sent to users e-mail.");
     }
 
 
