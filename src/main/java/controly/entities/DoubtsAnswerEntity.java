@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class DoubtsAnswerEntity {
     @OneToOne()
     @JoinColumn(name = "idAnswer", referencedColumnName = "idComment", table = "tbDoubtsAnswer")
@@ -29,5 +28,21 @@ public class DoubtsAnswerEntity {
     public DoubtsAnswerEntity setAnswer(CommentEntity answer){
         this.answer = answer;
         return this;
+    }
+
+    public CommentEntity getAnswer() {
+        return answer;
+    }
+
+    public boolean isSolved() {
+        return isSolved;
+    }
+
+    public LocalDateTime getSolvedIn() {
+        return solvedIn;
+    }
+
+    public void setSolvedIn(LocalDateTime solvedIn) {
+        this.solvedIn = solvedIn;
     }
 }

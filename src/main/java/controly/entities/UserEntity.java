@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="tbUser")
-@Data @NoArgsConstructor
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,6 +38,7 @@ public class UserEntity implements Serializable {
     @Column(name = "disabledIn")
     private LocalDateTime disabledIn;
 
+
     public UserEntity(String name, String nickname, String password, String email) {
         this.name = name;
         this.nickname = nickname;
@@ -47,17 +47,102 @@ public class UserEntity implements Serializable {
         this.isActive = true;
     }
 
+    public UserEntity() {
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Long getIdGithub() {
+        return idGithub;
+    }
+
+    public void setIdGithub(Long idGithub) {
+        this.idGithub = idGithub;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public LocalDateTime getDisabledIn() {
+        return disabledIn;
+    }
+
+    public void setDisabledIn(LocalDateTime disabledIn) {
+        this.disabledIn = disabledIn;
+    }
+
     public int disableUser() {
         if (!isActive) return 0;
-        setIsActive(false);
+        setActive(false);
         setDisabledIn(LocalDateTime.now());
         return 1;
     }
 
     public int enableUser() {
         if (isActive) return 0;
-        setIsActive(true);
+        setActive(true);
         setDisabledIn(null);
         return 1;
     }
+
+
 }

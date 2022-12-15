@@ -2,7 +2,7 @@ package controly.controller;
 
 
 import controly.config.Constant;
-import controly.dto.AtualizarUsuarioRequest;
+import controly.dto.UpdateUsersInfoRequest;
 import controly.dto.DataGithubPostRequest;
 import controly.dto.GitHubInformacoes;
 import controly.entities.UserEntity;
@@ -61,9 +61,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> atualizarUsuario(@PathVariable Long id,
-                                                   @RequestBody AtualizarUsuarioRequest form) {
-        return userService.atualizarUsuario(id, form);
+    public ResponseEntity<String> updateUsersInfo(@PathVariable Long id,
+                                                  @RequestBody @Valid UpdateUsersInfoRequest form) {
+        if(userService.updateUsersInfo(id, form)!= 1)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong.");
+        return ResponseEntity.status(200).body("User's data updated.");
     }
 
 

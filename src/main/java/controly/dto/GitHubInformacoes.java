@@ -7,8 +7,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
 public class GitHubInformacoes {
 
     @NotNull
@@ -34,5 +32,45 @@ public class GitHubInformacoes {
         usuario.setIdGithub(idGithub);
         usuario.setEmail(email);
         return usuario;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getApelido() {
+        return apelido;
+    }
+
+    public void setApelido(String apelido) {
+        this.apelido = apelido;
+    }
+
+    public Long getIdGithub() {
+        return idGithub;
+    }
+
+    public void setIdGithub(Long idGithub) {
+        this.idGithub = idGithub;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

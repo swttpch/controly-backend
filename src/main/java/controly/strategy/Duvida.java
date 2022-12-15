@@ -5,11 +5,9 @@ import controly.entities.CommentEntity;
 import controly.entities.PostEntity;
 import controly.entities.TopicEntity;
 import controly.entities.UserEntity;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@NoArgsConstructor
 public class Duvida extends Postagem {
     private String titulo;
     private String conteudo;
@@ -21,6 +19,9 @@ public class Duvida extends Postagem {
         this.conteudo = conteudo;
         this.idUsuario = idUsuario;
         this.idTopico = idTopico;
+    }
+
+    public Duvida() {
     }
 
     public String getTitulo() {

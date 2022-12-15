@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Getter
 public class CreateNewUserRequest {
 
     @NotBlank
@@ -30,5 +29,21 @@ public class CreateNewUserRequest {
         user.setAvatar("1");
         user.setNickname(nickname);
         return user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

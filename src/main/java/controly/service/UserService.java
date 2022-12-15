@@ -1,17 +1,16 @@
 package controly.service;
 
-import controly.dto.AtualizarUsuarioRequest;
+import controly.dto.UpdateUsersInfoRequest;
 import controly.dto.GitHubInformacoes;
 import controly.entities.UserEntity;
 import controly.dto.CreateNewUserRequest;
 import controly.exception.EmailAlreadyExistsException;
 import controly.exception.UsersIdNotFould;
+import controly.mapper.UserMapper;
 import controly.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,7 +21,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private UserMapper userMapper;
 
     @Transactional
     public UserEntity createNewUser(CreateNewUserRequest newUser) {
@@ -47,22 +47,12 @@ public class UserService {
         return user.disableUser();
     }
 
-    @Transactional
-    public ResponseEntity<String> atualizarUsuario(Long id, AtualizarUsuarioRequest form) {
-        UserEntity usuario = userRepository.findByIdUser(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
-        usuario.setAbout("");
 
-        if (!usuario.getName().equals(form.getNome()) && !form.getNome().isBlank())
-            usuario.setName(form.getNome());
-
-        if (!usuario.getNickname().equals(form.getApelido()) && !form.getApelido().isBlank())
-            usuario.setNickname(form.getApelido());
-
-        if (!usuario.getAbout().equals(form.getDescricao()) && !form.getDescricao().isBlank())
-            usuario.setAbout(form.getDescricao());
-
-        return ResponseEntity.status(200).build();
+    public int updateUsersInfo(Long id, UpdateUsersInfoRequest form) {
+        UserEntity user = this.getUserById(id);
+        userMapper.updateUserFromDto(form, user);
+        userRepository.save(user);
+        return 1;
     }
 
     @Transactional

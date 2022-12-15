@@ -18,7 +18,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "tbPost")
 @SecondaryTable(name= "tbDoubtsAnswer", pkJoinColumns = @PrimaryKeyJoinColumn(name = "idPost"))
-@Data
 public class PostEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +45,87 @@ public class PostEntity {
 
     @OneToMany(mappedBy = "post",cascade=CascadeType.ALL) @JsonIgnore
     private Set<PostPointsEntity> postPointEntities = new HashSet<>();
+
+    public Long getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(Long idPost) {
+        this.idPost = idPost;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public UserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserEntity owner) {
+        this.owner = owner;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public TopicEntity getTopic() {
+        return topic;
+    }
+
+    public void setTopic(TopicEntity topic) {
+        this.topic = topic;
+    }
+
+    public List<CommentEntity> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentEntity> comments) {
+        this.comments = comments;
+    }
+
+    public DoubtsAnswerEntity getDoubtsAnswerEntity() {
+        return doubtsAnswerEntity;
+    }
+
+    public void setDoubtsAnswerEntity(DoubtsAnswerEntity doubtsAnswerEntity) {
+        this.doubtsAnswerEntity = doubtsAnswerEntity;
+    }
+
+    public LocalDateTime getCreatedIn() {
+        return createdIn;
+    }
+
+    public void setCreatedIn(LocalDateTime createdIn) {
+        this.createdIn = createdIn;
+    }
+
+    @Nullable
+    public LocalDateTime getUpdatedIn() {
+        return updatedIn;
+    }
+
+    public void setUpdatedIn(@Nullable LocalDateTime updatedIn) {
+        this.updatedIn = updatedIn;
+    }
+
+    public Set<PostPointsEntity> getPostPointEntities() {
+        return postPointEntities;
+    }
+
+    public void setPostPointEntities(Set<PostPointsEntity> postPointEntities) {
+        this.postPointEntities = postPointEntities;
+    }
 
     @JsonProperty
     public int getPoints(){
