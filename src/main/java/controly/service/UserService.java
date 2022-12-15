@@ -83,11 +83,11 @@ public class UserService {
         return newUser;
     }
 
-    public ResponseEntity<Void> verificaEmailExiste(String email) {
-        Optional<UserEntity> usuarioEntity = userRepository.findByEmail(email);
-        if (usuarioEntity.isPresent()) {
-            return ResponseEntity.status(200).build();
+    public int verifyIfEmailExists(String email) {
+        Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            return 1;
         }
-        return  ResponseEntity.status(404).build();
+        return  0;
     }
 }

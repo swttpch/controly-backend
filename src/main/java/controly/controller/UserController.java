@@ -90,27 +90,8 @@ public class UserController {
         return ResponseEntity.status(200).body(user);
     }
 
-
-        @PutMapping("/atualizar/apelido-avatar/{idUsuario}")
-    public ResponseEntity<?> atualizarDadosUsuario(
-            @PathVariable Long idUsuario,
-            @RequestParam(required = false) String apelido,
-            @RequestParam(required = false) String avatar
-    ) {
-        if(apelido == null && avatar == null) {
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passe um avatar ou um apelido para ser atualizado");
-        }
-        if (apelido != null) {
-            userService.atualizarApelido(idUsuario, apelido);
-        }
-        if (avatar != null) {
-            userService.atualizarAvatar(idUsuario, avatar);
-        }
-        return getUserById(idUsuario);
-    }
-
     @GetMapping("/email/{email}")
-    public ResponseEntity<Void> verificaEmailExiste(@PathVariable String email){
-        return userService.verificaEmailExiste(email);
+    public ResponseEntity<Integer> verifyIfEmailExists(@PathVariable String email){
+        return ResponseEntity.status(200).body(userService.verifyIfEmailExists(email));
     }
 }
