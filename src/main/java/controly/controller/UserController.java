@@ -29,8 +29,7 @@ public class UserController {
     private UserService userService;
     @Autowired
     private PasswordRecoveryService passwordRecoveryService;
-    @Autowired
-    private GithubService githubService;
+
 
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
@@ -75,20 +74,6 @@ public class UserController {
         return ResponseEntity.status(200).body("New password sent to users e-mail.");
     }
 
-
-    @GetMapping("/github")
-    public ResponseEntity<String> getGithubUser(@RequestParam String code) {
-        DataGithubPostRequest data = new DataGithubPostRequest(code);
-        String response = githubService.consumeApi(Constant.GITHUB_AUTH_ACCESSTOKEN_URL, data);
-        return ResponseEntity.status(200).body(response);
-    }
-
-    @PostMapping("/github")
-    public ResponseEntity<UserEntity> postGitHubUser(@RequestBody GithubUserRequest githubUser){
-        UserEntity user =  userService.githubAuth(githubUser);
-        if (user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
-        return ResponseEntity.status(200).body(user);
-    }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<Integer> verifyIfEmailExists(@PathVariable String email){

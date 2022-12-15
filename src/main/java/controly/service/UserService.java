@@ -73,16 +73,6 @@ public class UserService {
     }
 
 
-    public UserEntity githubAuth(GithubUserRequest githubUser) {
-        Optional<UserEntity> userEntityOptional = userRepository.findByIdGithub(githubUser.getIdGithub());
-        if (userEntityOptional.isPresent()){
-            return userEntityOptional.get();
-        }
-        UserEntity newUser = githubUser.convert();
-        userRepository.save(newUser);
-        return newUser;
-    }
-
     public int verifyIfEmailExists(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
