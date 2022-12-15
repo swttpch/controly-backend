@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/usuarios")
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -69,7 +69,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/recuperar-senha")
+    @PostMapping("/password-recovery")
     public ResponseEntity<?> passwordRecovery(@RequestBody RecuperarSenhaForm form) {
         passwordRecoveryService.passwordRecovery(form);
         return ResponseEntity.status(200).body("New password sended to users e-mail.");
