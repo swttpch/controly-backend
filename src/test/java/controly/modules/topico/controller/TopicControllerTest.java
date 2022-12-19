@@ -1,7 +1,7 @@
 package controly.modules.topico.controller;
 
-import controly.controller.TopicoController;
-import controly.dto.TopicoDTO;
+import controly.controller.TopicController;
+import controly.dto.TopicDetailResponse;
 import controly.entity.TopicEntity;
 import controly.repository.TopicHasFollowersRepository;
 import controly.repository.TopicRepository;
@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class TopicoControllerTest {
+class TopicControllerTest {
 
     @Autowired
-    private TopicoController controller;
+    private TopicController controller;
 
     @MockBean
     private TopicRepository repository;
@@ -49,7 +49,7 @@ class TopicoControllerTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
-        ResponseEntity<TopicoDTO> topico = controller.getTopico(anyLong());
+        ResponseEntity<TopicDetailResponse> topico = controller.getTopico(anyLong());
 
         assertEquals(404, topico.getStatusCodeValue());
 
@@ -64,7 +64,7 @@ class TopicoControllerTest {
 
         when(hasSeguidoresRepository.countFollowersATopicHas(1L)).thenReturn(1);
 
-        ResponseEntity<List<TopicoDTO>> topicoDTO = controller.getTopicos();
+        ResponseEntity<List<TopicDetailResponse>> topicoDTO = controller.getAllTopics();
 
         assertEquals(200, topicoDTO.getStatusCodeValue());
     }
@@ -77,7 +77,7 @@ class TopicoControllerTest {
 
         when(hasSeguidoresRepository.countFollowersATopicHas(1L)).thenReturn(1);
 
-        ResponseEntity<List<TopicoDTO>> topicoDTO = controller.getTopicos();
+        ResponseEntity<List<TopicDetailResponse>> topicoDTO = controller.getAllTopics();
 
         assertEquals(204, topicoDTO.getStatusCodeValue());
     }

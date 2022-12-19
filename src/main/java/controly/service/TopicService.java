@@ -1,18 +1,20 @@
 package controly.service;
 
 import controly.entity.UserEntity;
-import controly.dto.TopicoDTO;
+import controly.dto.TopicDetailResponse;
 import controly.entity.TopicEntity;
 import controly.entity.TopicHasFollowersEntity;
+import controly.mapper.TopicMapper;
 import controly.repository.TopicHasFollowersRepository;
 import controly.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +22,7 @@ import static controly.config.Constant.IDNOTFOUND;
 
 @SuppressWarnings("ALL")
 @Service
-public class TopicoService {
+public class TopicService {
     @Autowired
     private TopicRepository topicRepository;
 
@@ -33,47 +35,32 @@ public class TopicoService {
     @Autowired
     private UserService userService;
 
-    public TopicoService() {
+    @Autowired
+    private TopicMapper topicMapper;
+
+    public TopicService() {
     }
 
-    public ResponseEntity<List<TopicoDTO>> getTopicos() {
-        List<TopicEntity> topicos = topicRepository.findAll();
-
-        if (topicos.isEmpty()) return ResponseEntity.status(204).build();
-
-        List<TopicoDTO> topicoDTOList = new ArrayList<>();
-
-
-        for (TopicEntity topico : topicos) {
-
-            TopicoDTO topicoDT = new TopicoDTO();
-
-            topicoDT.setIdTopico(topico.getIdTopic());
-            topicoDT.setNome(topico.getName());
-            topicoDT.setDescricao(topico.getAbout());
-            topicoDT.setSeguidores(topicHasFollowersRepository.countFollowersATopicHas(topico.getIdTopic()));
-
-            topicoDTOList.add(topicoDT);
-
-        }
-
-        return topicoDTOList.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(topicoDTOList);
+    public List<TopicEntity> getAllTopics() {
+        List<TopicEntity> topics = topicRepository.findAll();
+        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't fould any topics");
+        return topics;
     }
 
     @Transactional
-    public ResponseEntity<TopicoDTO> getTopicoById(Long id) {
+    public ResponseEntity<TopicDetailResponse> getTopicoById(Long id) {
         if (validation.existsTopico(id)){
             return ResponseEntity.status(404).build();
         }
         TopicEntity topico = topicRepository.findByIdTopic(id);
-        TopicoDTO topicoDTO = new TopicoDTO();
+        TopicDetailResponse topicDetailResponse = new TopicDetailResponse();
 
-        topicoDTO.setIdTopico(topico.getIdTopic());
-        topicoDTO.setNome(topico.getName());
-        topicoDTO.setDescricao(topico.getAbout());
-        topicoDTO.setSeguidores(topicHasFollowersRepository.countFollowersATopicHas(topico.getIdTopic()));
+        topicDetailResponse.setIdTopic(topico.getIdTopic());
+        topicDetailResponse.setName(topico.getName());
+        topicDetailResponse.setAbout(topico.getAbout());
+        topicDetailResponse.setCountFollowers(topicHasFollowersRepository.countFollowersATopicHas(topico.getIdTopic()));
 
-        return ResponseEntity.status(200).body(topicoDTO);
+        return ResponseEntity.status(200).body(topicDetailResponse);
     }
 
     public ResponseEntity<List<TopicHasFollowersEntity>> getTopicosByIdUser(Long idUser) {
@@ -136,9 +123,22 @@ public class TopicoService {
         }
     }
 
-    public ResponseEntity<Boolean> userFollowTopico(Long idTopico, Long idUsuario) {
+    public ResponseEntity<Boolean> userFollowTopic(Long idTopico, Long idUsuario) {
         Optional<TopicHasFollowersEntity> topicoHasSeguidores = topicHasFollowersRepository.userFollowsTopico(idTopico, idUsuario);
         if (topicoHasSeguidores.isPresent()) return ResponseEntity.status(200).body(true);
         return ResponseEntity.status(200).body(false);
+    }
+
+    public Integer getCountFollowersByTopic(Long idTopic){
+        return topicHasFollowersRepository.countFollowersATopicHas(idTopic);
+    }
+
+    public TopicDetailResponse getTopicDetailedFromTopicEntity(TopicEntity topicEntity){
+        TopicDetailResponse topicDetailResponse = new TopicDetailResponse();
+        topicMapper.getDtoFromTopic(topicEntity, topicDetailResponse);
+        topicDetailResponse.setCountFollowers(
+                getCountFollowersByTopic(topicDetailResponse.getIdTopic())
+        );
+        return topicDetailResponse;
     }
 }

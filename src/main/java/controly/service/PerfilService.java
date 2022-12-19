@@ -23,7 +23,7 @@ public class PerfilService {
     private UserService userService;
 
     @Autowired
-    private TopicoService topicoService;
+    private TopicService topicService;
 
     @Autowired
     private TopicHasFollowersRepository topicHasFollowersRepository;
