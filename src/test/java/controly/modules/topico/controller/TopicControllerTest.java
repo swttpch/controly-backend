@@ -49,7 +49,7 @@ class TopicControllerTest {
 
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
-        ResponseEntity<TopicDetailResponse> topico = controller.getTopico(anyLong());
+        ResponseEntity<TopicDetailResponse> topico = controller.getTopicById(anyLong());
 
         assertEquals(404, topico.getStatusCodeValue());
 

@@ -24,8 +24,9 @@ public class TopicController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TopicDetailResponse> getTopico(@PathVariable long id){
-        return topicService.getTopicoById(id);
+    public ResponseEntity<TopicDetailResponse> getTopicById(@PathVariable long id){
+        TopicDetailResponse topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(id));
+        return ResponseEntity.status(200).body(topic);
     }
 
     @GetMapping

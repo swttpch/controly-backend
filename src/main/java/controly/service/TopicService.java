@@ -4,6 +4,7 @@ import controly.entity.UserEntity;
 import controly.dto.TopicDetailResponse;
 import controly.entity.TopicEntity;
 import controly.entity.TopicHasFollowersEntity;
+import controly.exception.TopicIdNotFould;
 import controly.mapper.TopicMapper;
 import controly.repository.TopicHasFollowersRepository;
 import controly.repository.TopicRepository;
@@ -43,24 +44,14 @@ public class TopicService {
 
     public List<TopicEntity> getAllTopics() {
         List<TopicEntity> topics = topicRepository.findAll();
-        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't fould any topics");
+        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Didn't fould any topics");
         return topics;
     }
 
     @Transactional
-    public ResponseEntity<TopicDetailResponse> getTopicoById(Long id) {
-        if (validation.existsTopico(id)){
-            return ResponseEntity.status(404).build();
-        }
-        TopicEntity topico = topicRepository.findByIdTopic(id);
-        TopicDetailResponse topicDetailResponse = new TopicDetailResponse();
-
-        topicDetailResponse.setIdTopic(topico.getIdTopic());
-        topicDetailResponse.setName(topico.getName());
-        topicDetailResponse.setAbout(topico.getAbout());
-        topicDetailResponse.setCountFollowers(topicHasFollowersRepository.countFollowersATopicHas(topico.getIdTopic()));
-
-        return ResponseEntity.status(200).body(topicDetailResponse);
+    public TopicEntity getTopicById(Long id) {
+        TopicEntity topic = topicRepository.findById(id).orElseThrow(TopicIdNotFould::new);
+        return topic;
     }
 
     public ResponseEntity<List<TopicHasFollowersEntity>> getTopicosByIdUser(Long idUser) {
