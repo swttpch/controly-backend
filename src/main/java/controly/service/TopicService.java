@@ -54,20 +54,6 @@ public class TopicService {
         return topic;
     }
 
-    public ResponseEntity<List<TopicHasFollowersEntity>> getTopicosByIdUser(Long idUser) {
-        if (validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
-
-        List<TopicHasFollowersEntity> topicoEntityList = topicHasFollowersRepository.findByFollowerIdUser(idUser);
-
-        return topicoEntityList.isEmpty() ? ResponseEntity.status(204).build() : ResponseEntity.status(200).body(topicoEntityList);
-    }
-
-    @Transactional
-    public ResponseEntity<TopicEntity> postTopicos(@RequestBody TopicEntity topicEntity) {
-        topicRepository.save(topicEntity);
-        return ResponseEntity.status(201).body(topicEntity);
-    }
-
     @Transactional
     public boolean checkIfUserFollowTopic(Long idTopic, Long idUser) {
         TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);

@@ -50,11 +50,6 @@ public class TopicController {
         return ResponseEntity.status(200).body("Topic followed successfully.");
     }
 
-    @PostMapping
-    public ResponseEntity<TopicEntity> postTopicos(@RequestBody TopicEntity topicEntity) {
-        return topicService.postTopicos(topicEntity);
-    }
-
     @GetMapping("/{idTopic}/{idUser}")
     public ResponseEntity<Boolean> checkIfUserFollowsTopic(@PathVariable Long idTopic, @PathVariable Long idUser) {
         return ResponseEntity.status(200).body(topicService.checkIfUserFollowTopic(idTopic, idUser));
