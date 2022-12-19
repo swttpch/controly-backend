@@ -1,6 +1,8 @@
 package controly.repository;
 
+import controly.entity.TopicEntity;
 import controly.entity.TopicHasFollowersEntity;
+import controly.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,8 +18,8 @@ public interface TopicHasFollowersRepository extends JpaRepository<TopicHasFollo
     @Query("SELECT s FROM TopicHasFollowersEntity s WHERE s.topic.idTopic = :idTopic AND s.follower.idUser = :idUser")
     TopicHasFollowersEntity findByTopicIdTopicAndUserIdUser(Long idTopic, Long idUser);
 
-    @Query(value = "SELECT s FROM TopicHasFollowersEntity s WHERE s.topic.idTopic = :idTopic AND s.follower.idUser = :idUser")
-    Optional<TopicHasFollowersEntity> userFollowsTopico(Long idTopic, Long idUser);
+    @Query(value = "SELECT s FROM TopicHasFollowersEntity s WHERE s.topic = :topic AND s.follower = :user")
+    Optional<TopicHasFollowersEntity> userFollowsTopico(TopicEntity topic, UserEntity user);
 
     List<TopicHasFollowersEntity> findByFollowerIdUser(Long idUser);
 }

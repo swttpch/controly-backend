@@ -23,9 +23,9 @@ public class TopicController {
     public TopicController() {
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TopicDetailResponse> getTopicById(@PathVariable long id){
-        TopicDetailResponse topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(id));
+    @GetMapping("/{idTopic}")
+    public ResponseEntity<TopicDetailResponse> getTopicById(@PathVariable long idTopic){
+        TopicDetailResponse topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(idTopic));
         return ResponseEntity.status(200).body(topic);
     }
 
@@ -40,14 +40,14 @@ public class TopicController {
         return ResponseEntity.status(200).body(topicDetailResponseList);
     }
 
-    @PostMapping("/{idTopico}/{idUsuario}")
-    public ResponseEntity<?> followTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
-        return topicService.followTopico(idTopico, idUsuario);
-    }
-
-    @DeleteMapping("/{idTopico}/{idUsuario}")
-    public ResponseEntity<?> unfollowTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
-        return topicService.unfollowTopico(idTopico, idUsuario);
+    @PutMapping("/{idTopic}/{idUser}")
+    public ResponseEntity<?> followAndUnfollowTopic(@PathVariable Long idTopic, @PathVariable Long idUser) {
+        if (topicService.checkIfUserFollowTopic(idTopic, idUser)){
+            topicService.unfollowTopico(idTopic,idUser);
+            return ResponseEntity.status(200).body("Topic unfollowed successfully.");
+        }
+        topicService.followTopic(idTopic,idUser);
+        return ResponseEntity.status(200).body("Topic followed successfully.");
     }
 
     @PostMapping
@@ -55,8 +55,8 @@ public class TopicController {
         return topicService.postTopicos(topicEntity);
     }
 
-    @GetMapping("/{idTopico}/{idUsuario}")
-    public ResponseEntity<Boolean> userFollowTopico(@PathVariable Long idTopico, @PathVariable Long idUsuario) {
-        return topicService.userFollowTopic(idTopico, idUsuario);
+    @GetMapping("/{idTopic}/{idUser}")
+    public ResponseEntity<Boolean> checkIfUserFollowsTopic(@PathVariable Long idTopic, @PathVariable Long idUser) {
+        return ResponseEntity.status(200).body(topicService.checkIfUserFollowTopic(idTopic, idUser));
     }
 }

@@ -1,9 +1,9 @@
 package controly.service;
 
-import controly.entity.UserEntity;
 import controly.dto.TopicDetailResponse;
 import controly.entity.TopicEntity;
 import controly.entity.TopicHasFollowersEntity;
+import controly.entity.UserEntity;
 import controly.exception.TopicIdNotFould;
 import controly.mapper.TopicMapper;
 import controly.repository.TopicHasFollowersRepository;
@@ -69,55 +69,27 @@ public class TopicService {
     }
 
     @Transactional
-    public ResponseEntity<?> followTopico(Long idTopico, Long idUsuario) {
-        if (validation.existsTopico(idTopico) || validation.existsUsuario(idUsuario))
-            return ResponseEntity.status(404).body(IDNOTFOUND);
-
-        TopicHasFollowersEntity topicoHasSeguidores = topicHasFollowersRepository.findByTopicIdTopicAndUserIdUser(idTopico, idUsuario);
-
-        if (topicoHasSeguidores == null ) {
-            TopicEntity topico = topicRepository.findByIdTopic(idTopico);
-            UserEntity usuario = userService.getUserById(idUsuario);
-
-            topicoHasSeguidores = new TopicHasFollowersEntity();
-            topicoHasSeguidores.setTopic(topico);
-            topicoHasSeguidores.setFollower(usuario);
-
-            topicHasFollowersRepository.save(topicoHasSeguidores);
-
-            return ResponseEntity.status(201).body(String.format("Usuario de id %d comecou a seguir topico de id %d.", idTopico, idUsuario));
-
-        } else {
-
-            return ResponseEntity.status(404).body(String.format("Esse usuario já segue esse topico"));
-
-        }
-
-
+    public boolean checkIfUserFollowTopic(Long idTopic, Long idUser) {
+        TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
+        UserEntity user = userService.getUserById(idUser);
+        Optional<TopicHasFollowersEntity> topicHasFollowers = topicHasFollowersRepository.userFollowsTopico(topic,user);
+        return topicHasFollowers.isPresent();
     }
 
-    @Transactional
-    public ResponseEntity<?> unfollowTopico(Long idTopico, Long idUsuario) {
-        if (validation.existsTopico(idTopico) || validation.existsUsuario(idUsuario))
-            return ResponseEntity.status(404).body(IDNOTFOUND);
-
-        TopicHasFollowersEntity topicoHasSeguidores = topicHasFollowersRepository.findByTopicIdTopicAndUserIdUser(idTopico, idUsuario);
-
-        if (topicoHasSeguidores == null ) {
-            return ResponseEntity.status(404).body(String.format("Esse usuario não segue esse topico"));
-        } else {
-
-            topicHasFollowersRepository.deleteById(topicoHasSeguidores.getId());
-
-            return ResponseEntity.status(201).body(String.format("Usuario de id %d parou de seguir topico de id %d.", idTopico, idUsuario));
-
-        }
+    public void followTopic(Long idTopic, Long idUser){
+        TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
+        UserEntity user = userService.getUserById(idUser);
+        TopicHasFollowersEntity topicHasFollowers = new TopicHasFollowersEntity();
+        topicHasFollowersRepository.save(
+                topicHasFollowers.setFollower(user)
+                    .setTopic(topic)
+        );
     }
 
-    public ResponseEntity<Boolean> userFollowTopic(Long idTopico, Long idUsuario) {
-        Optional<TopicHasFollowersEntity> topicoHasSeguidores = topicHasFollowersRepository.userFollowsTopico(idTopico, idUsuario);
-        if (topicoHasSeguidores.isPresent()) return ResponseEntity.status(200).body(true);
-        return ResponseEntity.status(200).body(false);
+    public void unfollowTopico(Long idTopic, Long idUser){
+        TopicHasFollowersEntity topicHasFollowers = topicHasFollowersRepository
+                .findByTopicIdTopicAndUserIdUser(idTopic, idUser);
+        topicHasFollowersRepository.delete(topicHasFollowers);
     }
 
     public Integer getCountFollowersByTopic(Long idTopic){

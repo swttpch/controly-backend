@@ -36,15 +36,17 @@ public class TopicHasFollowersEntity {
         return follower;
     }
 
-    public void setFollower(UserEntity follower) {
+    public TopicHasFollowersEntity setFollower(UserEntity follower) {
         this.follower = follower;
+        return this;
     }
 
     public TopicEntity getTopic() {
         return topic;
     }
 
-    public void setTopic(TopicEntity topic) {
+    public TopicHasFollowersEntity setTopic(TopicEntity topic) {
         this.topic = topic;
+        return this;
     }
 }
