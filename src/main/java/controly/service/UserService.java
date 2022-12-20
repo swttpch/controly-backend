@@ -53,12 +53,6 @@ public class UserService {
         return 1;
     }
 
-    public UserEntity login(String email, String senha) {
-        Optional<UserEntity> userOptional = userRepository.findByEmailAndPassword(email, senha);
-        return userOptional.orElse(null);
-    }
-
-
     public int verifyIfEmailExists(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         return optionalUser.isPresent() ? 1 : 0;

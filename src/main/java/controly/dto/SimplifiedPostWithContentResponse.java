@@ -2,34 +2,19 @@ package controly.dto;
 
 import controly.entity.PostEntity;
 
-public class SimplifiedPostResponse {
+public class SimplifiedPostWithContentResponse {
     private Long idPost;
     private String title;
+    private String content;
     private SimplifiedUserResponse owner;
     private SimplifiedTopicResponse topic;
     private boolean isDoubt;
     private int points;
 
-    public SimplifiedPostResponse(PostEntity post,
+    public SimplifiedPostWithContentResponse(PostEntity post,
                                   SimplifiedTopicResponse topic,
                                   SimplifiedUserResponse user) {
         this.convert(post, topic, user);
-    }
-
-    public SimplifiedTopicResponse getTopic() {
-        return topic;
-    }
-
-    public void setTopic(SimplifiedTopicResponse topic) {
-        this.topic = topic;
-    }
-
-    public boolean isDoubt() {
-        return isDoubt;
-    }
-
-    public void setDoubt(boolean doubt) {
-        isDoubt = doubt;
     }
 
     public Long getIdPost() {
@@ -48,12 +33,36 @@ public class SimplifiedPostResponse {
         this.title = title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public SimplifiedUserResponse getOwner() {
         return owner;
     }
 
     public void setOwner(SimplifiedUserResponse owner) {
         this.owner = owner;
+    }
+
+    public SimplifiedTopicResponse getTopic() {
+        return topic;
+    }
+
+    public void setTopic(SimplifiedTopicResponse topic) {
+        this.topic = topic;
+    }
+
+    public boolean isDoubt() {
+        return isDoubt;
+    }
+
+    public void setDoubt(boolean doubt) {
+        isDoubt = doubt;
     }
 
     public int getPoints() {
@@ -64,7 +73,7 @@ public class SimplifiedPostResponse {
         this.points = points;
     }
 
-    public SimplifiedPostResponse convert(PostEntity post,
+    public SimplifiedPostWithContentResponse convert(PostEntity post,
                                           SimplifiedTopicResponse topic,
                                           SimplifiedUserResponse user){
         setTitle(post.getTitle());
@@ -73,6 +82,7 @@ public class SimplifiedPostResponse {
         setDoubt(post.isDoubt());
         setTopic(topic);
         setIdPost(post.getIdPost());
+        setContent(post.getContent());
         return this;
     }
 }

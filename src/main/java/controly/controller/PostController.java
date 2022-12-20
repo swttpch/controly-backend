@@ -1,5 +1,7 @@
 package controly.controller;
 
+import controly.dto.CreatePostRequest;
+import controly.dto.SimplifiedPostWithContentResponse;
 import controly.strategy.Comentario;
 import controly.entity.CommentEntity;
 import controly.dto.PostagemDTO;
@@ -16,12 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/postagens")
-public class PostagemController {
+public class PostController {
     @Autowired
     private DiscussaoService discussaoService;
     @Autowired
@@ -33,13 +36,19 @@ public class PostagemController {
     @Autowired
     private Postar postar;
 
-    public PostagemController() {
+    public PostController() {
     }
 
     @PostMapping("/discussao")
     public ResponseEntity<?> cadastrarDiscussao(@RequestBody Discussao post) {
         postar.setPostagem(discussaoService);
         return postar.postar(post);
+    }
+
+    @PostMapping
+    public ResponseEntity<SimplifiedPostWithContentResponse> createPost(@RequestBody @Valid CreatePostRequest newPost) {
+        SimplifiedPostWithContentResponse post = postService.createPost(newPost);
+        return ResponseEntity.status(200).body(post);
     }
 
     @GetMapping("/all")

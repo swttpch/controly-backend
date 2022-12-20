@@ -7,6 +7,7 @@ import controly.entity.TopicEntity;
 import controly.entity.UserEntity;
 
 public class Discussao extends Postagem {
+
     private String titulo;
     private String conteudo;
     private Long idUsuario;

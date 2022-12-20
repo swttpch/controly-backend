@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class GithubService {
     private final RestTemplate restTemplate;
-@Autowired
+    @Autowired
     public GithubService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }

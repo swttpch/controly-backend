@@ -1,10 +1,10 @@
 package controly.service;
 
-import controly.dto.SimplifiedPostResponse;
+import controly.dto.*;
+import controly.entity.TopicEntity;
 import controly.entity.UserEntity;
 import controly.mapper.PostMapper;
 import controly.repository.UserRepository;
-import controly.dto.PostagemDTO;
 import controly.entity.PostPointsEntity;
 import controly.entity.PostEntity;
 import controly.repository.PostPointsRepository;
@@ -136,16 +136,16 @@ public class PostService {
 
     public SimplifiedPostResponse getSimplifiedPost(PostEntity post){
         if (post == null) return null;
-        SimplifiedPostResponse simplifiedPost = new SimplifiedPostResponse();
-        simplifiedPost.setTitle(post.getTitle());
-        simplifiedPost.setOwner(
-                userService.getSimplifiedUser(post.getOwner())
-        );
-        simplifiedPost.setPoints(post.getPoints());
-        simplifiedPost.setDoubt(post.isDoubt());
-        simplifiedPost.setTopic(topicService.getSimplifiedTopic(post.getTopic()));
-        simplifiedPost.setIdPost(post.getIdPost());
-        return simplifiedPost;
+        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
+        return new SimplifiedPostResponse(post, topic, user);
+    }
+
+    public SimplifiedPostWithContentResponse getSimplifiedWithContentPost(PostEntity post){
+        if (post == null) return null;
+        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
+        return new SimplifiedPostWithContentResponse(post, topic, user);
     }
 
     public PostEntity getPostMostRatedByUserId(Long idUser){
@@ -153,5 +153,13 @@ public class PostService {
         if (posts.isEmpty()) return null;
         return posts.stream()
                 .max((post1, post2) -> Integer.compare(post1.getPoints(), post2.getPoints())).get();
+    }
+    @Transactional
+    public SimplifiedPostWithContentResponse createPost(CreatePostRequest newPost) {
+        UserEntity user = userService.getUserById(newPost.getIdUser());
+        TopicEntity topic = topicService.getTopicById(newPost.getIdTopic());
+        PostEntity post = newPost.convert(topic, user);
+        postRepository.save(post);
+        return this.getSimplifiedWithContentPost(post);
     }
 }

@@ -1,5 +1,7 @@
 package controly.dto;
 
+import controly.entity.PostEntity;
+
 public class SimplifiedTopicResponse {
     private Long idTopic;
     private String name;
