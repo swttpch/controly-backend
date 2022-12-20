@@ -1,6 +1,6 @@
 package controly.controller;
 
-import controly.dto.PerfilDTO;
+import controly.dto.UserProfileResponse;
 import controly.service.PerfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,8 @@ public class PerfilController {
 
     public PerfilController() {
     }
-
-
     @GetMapping("/{id}")
-    public ResponseEntity<PerfilDTO> getPerfilById(@PathVariable long id) {
+    public ResponseEntity<UserProfileResponse> getPerfilById(@PathVariable long id) {
         return perfilService.getPerfilById(id);
     }
 }

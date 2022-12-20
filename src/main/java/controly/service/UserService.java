@@ -53,29 +53,14 @@ public class UserService {
         return 1;
     }
 
-    @Transactional
-    public void atualizarApelido(Long idUsuario, String novoApelido) {
-        UserEntity usuario = getUserById(idUsuario);
-        usuario.setNickname(novoApelido);
-    }
-
-    @Transactional
-    public void atualizarAvatar(Long idUsuario, String novoAvatar) {
-        UserEntity usuario = getUserById(idUsuario);
-        usuario.setAvatar(novoAvatar);
-    }
-
     public UserEntity login(String email, String senha) {
-        Optional<UserEntity> usuarioPromisse = userRepository.findByEmailAndPassword(email, senha);
-        return usuarioPromisse.orElse(null);
+        Optional<UserEntity> userOptional = userRepository.findByEmailAndPassword(email, senha);
+        return userOptional.orElse(null);
     }
 
 
     public int verifyIfEmailExists(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isPresent()) {
-            return 1;
-        }
-        return  0;
+        return optionalUser.isPresent() ? 1 : 0;
     }
 }

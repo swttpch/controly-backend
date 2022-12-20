@@ -1,6 +1,6 @@
 package controly.service;
 
-import controly.dto.PerfilDTO;
+import controly.dto.UserProfileResponse;
 import controly.entity.UserEntity;
 import controly.entity.TopicEntity;
 import controly.repository.TopicHasFollowersRepository;
@@ -37,7 +37,7 @@ public class PerfilService {
     public PerfilService() {
     }
 
-    public ResponseEntity<PerfilDTO> getPerfilById(Long id){
+    public ResponseEntity<UserProfileResponse> getPerfilById(Long id){
         if (validation.existsUsuario(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado");
         }
@@ -52,15 +52,15 @@ public class PerfilService {
                 .map(topico -> topico.getTopic())
                 .collect(Collectors.toList());
 
-        PerfilDTO perfilDTO = new PerfilDTO();
+        UserProfileResponse userProfileResponse = new UserProfileResponse();
 
-        perfilDTO.setUsuario(usuario);
-        perfilDTO.setPostagens(postEntityList);
-        perfilDTO.setTopicos_seguidos(topicosSeguidos);
-        if (perfilDTO.getPostagens() == null) return ResponseEntity.status(200).body(perfilDTO);
-        if (perfilDTO.getPostagens().size() == 0) return ResponseEntity.status(200).body(perfilDTO);
+        userProfileResponse.setUser(usuario);
+        userProfileResponse.setPosts(postEntityList);
+        userProfileResponse.setFollowedTopics(topicosSeguidos);
+        if (userProfileResponse.getPosts() == null) return ResponseEntity.status(200).body(userProfileResponse);
+        if (userProfileResponse.getPosts().size() == 0) return ResponseEntity.status(200).body(userProfileResponse);
         PostEntity postagemMaiorPontuacao = postEntityList.stream().max(Comparator.comparing(PostEntity::getPoints)).orElse(null);
-        perfilDTO.setPostagemMaiorPontuacao(postagemMaiorPontuacao);
-        return ResponseEntity.status(200).body(perfilDTO);
+        userProfileResponse.setMostRatedPost(postagemMaiorPontuacao);
+        return ResponseEntity.status(200).body(userProfileResponse);
     }
 }
