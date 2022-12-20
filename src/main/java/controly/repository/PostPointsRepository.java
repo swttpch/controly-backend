@@ -21,5 +21,6 @@ public interface PostPointsRepository extends JpaRepository<PostPointsEntity, Lo
 
     @Query
     Optional<PostPointsEntity> findByPostIdPostAndUserIdUser(Long idPost, Long idUser);
+
 }
 

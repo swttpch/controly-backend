@@ -1,8 +1,7 @@
 package controly.service;
 
-import controly.dto.UpdateUsersInfoRequest;
+import controly.dto.*;
 import controly.entity.UserEntity;
-import controly.dto.CreateNewUserRequest;
 import controly.exception.EmailAlreadyExistsException;
 import controly.exception.UsersIdNotFould;
 import controly.mapper.UserMapper;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -62,5 +62,11 @@ public class UserService {
     public int verifyIfEmailExists(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         return optionalUser.isPresent() ? 1 : 0;
+    }
+
+    public SimplifiedUserResponse getSimplifiedUser(UserEntity user){
+        SimplifiedUserResponse simplifiedUser = new SimplifiedUserResponse();
+        userMapper.getDtoFromUser(user, simplifiedUser);
+        return simplifiedUser;
     }
 }

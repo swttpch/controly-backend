@@ -142,4 +142,8 @@ public class PostEntity {
         doubtsAnswerEntity = new DoubtsAnswerEntity().setSolved(false);
         return this;
     }
+
+    public boolean isDoubt(){
+        return doubtsAnswerEntity != null;
+    }
 }

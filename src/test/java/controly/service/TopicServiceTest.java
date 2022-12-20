@@ -32,9 +32,4 @@ class TopicServiceTest {
     void getTopicsById_passingATopicIdThatNotExists(){
         assertThrows(TopicIdNotFould.class, ()-> topicService.getTopicById(11L));
     }
-    @Test
-    @DisplayName("getTopicById passing a topic id that does not exists")
-    void getTopicsById_passingATopicIdThatExists(){
-        assertEquals(TopicEntity.class, topicService.getTopicById(10L).getClass());
-    }
 }

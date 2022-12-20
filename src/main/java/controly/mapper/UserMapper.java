@@ -1,5 +1,6 @@
 package controly.mapper;
 
+import controly.dto.SimplifiedUserResponse;
 import controly.dto.UpdateUsersInfoRequest;
 import controly.entity.UserEntity;
 import org.mapstruct.BeanMapping;
@@ -12,4 +13,6 @@ public interface UserMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserFromDto(UpdateUsersInfoRequest dto, @MappingTarget UserEntity entity);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void getDtoFromUser(UserEntity entity, @MappingTarget SimplifiedUserResponse dto);
 }

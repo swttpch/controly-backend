@@ -1,5 +1,6 @@
 package controly.mapper;
 
+import controly.dto.SimplifiedTopicResponse;
 import controly.dto.TopicDetailResponse;
 import controly.dto.UpdateUsersInfoRequest;
 import controly.entity.TopicEntity;

@@ -1,5 +1,6 @@
 package controly.service;
 
+import controly.dto.SimplifiedTopicResponse;
 import controly.dto.TopicDetailResponse;
 import controly.entity.TopicEntity;
 import controly.entity.TopicHasFollowersEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static controly.config.Constant.IDNOTFOUND;
 
@@ -89,5 +91,18 @@ public class TopicService {
                 getCountFollowersByTopic(topicDetailResponse.getIdTopic())
         );
         return topicDetailResponse;
+    }
+
+    public SimplifiedTopicResponse getSimplifiedTopic(TopicEntity topic){
+        if (topic == null) return null;
+        SimplifiedTopicResponse simplifiedTopic = new SimplifiedTopicResponse();
+        simplifiedTopic.setIdTopic(topic.getIdTopic());
+        simplifiedTopic.setName(topic.getName());
+        return simplifiedTopic;
+    }
+
+    public List<TopicEntity> getAllTopicsByUser(Long idUser){
+        return  topicHasFollowersRepository.findByFollowerIdUser(idUser)
+                        .stream().map(topic-> topic.getTopic()).collect(Collectors.toList());
     }
 }

@@ -8,40 +8,40 @@ import java.util.List;
 
 public class UserProfileResponse {
 
-    private UserEntity user;
-    private List<PostEntity> posts;
-    private List<TopicEntity> followedTopics;
-    private PostEntity mostRatedPost;
+    private SimplifiedUserResponse user;
+    private List<SimplifiedPostResponse> posts;
+    private List<SimplifiedTopicResponse> followedTopics;
+    private SimplifiedPostResponse mostRatedPost;
 
-    public UserEntity getUser() {
+    public SimplifiedUserResponse getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(SimplifiedUserResponse user) {
         this.user = user;
     }
 
-    public List<PostEntity> getPosts() {
+    public List<SimplifiedPostResponse> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<PostEntity> posts) {
+    public void setPosts(List<SimplifiedPostResponse> posts) {
         this.posts = posts;
     }
 
-    public List<TopicEntity> getFollowedTopics() {
+    public List<SimplifiedTopicResponse> getFollowedTopics() {
         return followedTopics;
     }
 
-    public void setFollowedTopics(List<TopicEntity> followedTopics) {
+    public void setFollowedTopics(List<SimplifiedTopicResponse> followedTopics) {
         this.followedTopics = followedTopics;
     }
 
-    public PostEntity getMostRatedPost() {
+    public SimplifiedPostResponse getMostRatedPost() {
         return mostRatedPost;
     }
 
-    public void setMostRatedPost(PostEntity mostRatedPost) {
+    public void setMostRatedPost(SimplifiedPostResponse mostRatedPost) {
         this.mostRatedPost = mostRatedPost;
     }
 }

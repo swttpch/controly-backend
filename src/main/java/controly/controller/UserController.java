@@ -2,8 +2,10 @@ package controly.controller;
 
 
 import controly.dto.UpdateUsersInfoRequest;
+import controly.dto.UserProfileResponse;
 import controly.entity.UserEntity;
 import controly.dto.CreateNewUserRequest;
+import controly.service.ProfileService;
 import controly.service.UserService;
 import controly.dto.RecuperarSenhaForm;
 import controly.service.PasswordRecoveryService;
@@ -25,7 +27,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private PasswordRecoveryService passwordRecoveryService;
-
+    @Autowired
+    private ProfileService profileService;
 
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
@@ -74,5 +77,11 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<Integer> verifyIfEmailExists(@PathVariable String email){
         return ResponseEntity.status(200).body(userService.verifyIfEmailExists(email));
+    }
+
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<UserProfileResponse> getProfileByUserId(@PathVariable long id) {
+        UserProfileResponse user = profileService.getUserProfile(id);
+        return ResponseEntity.status(200).body(user);
     }
 }
