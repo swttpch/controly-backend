@@ -32,7 +32,7 @@ public class TopicController {
     @GetMapping
     public ResponseEntity<List<TopicDetailResponse>> getAllTopics(){
         List<TopicEntity> topics = topicService.getAllTopics();
-        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't fould any topics");
+        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't found any topics");
         List<TopicDetailResponse> topicDetailResponseList =
                 topics.stream()
                         .map(topic-> topicService.getTopicDetailedFromTopicEntity(topic))

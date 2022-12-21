@@ -99,7 +99,7 @@ public class PostController {
     }
 
     @GetMapping("/comment/like/{idComment}/{idUser}")
-    public ResponseEntity<Boolean> checkIfCommenthasLikeByUser(@PathVariable Long idComment, @PathVariable Long idUser){
+    public ResponseEntity<Boolean> checkIfCommentHasLikeByUser(@PathVariable Long idComment, @PathVariable Long idUser){
         return ResponseEntity.status(200).body(commentService.checkIfCommentHasLikeByUser(idComment, idUser));
     }
 
