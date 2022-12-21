@@ -100,9 +100,7 @@ public class CommentService {
     public List<SimplifiedCommentResponse> getAllCommentsFromPost(Long idPostagem) {
         PostEntity post = postService.getPostById(idPostagem);
         List<CommentEntity> commentEntities = commentRepository.findByPost(post);
-        List<SimplifiedCommentResponse> simplifiedComments =
-                commentEntities.stream()
-                        .map(this::getSimplifiedComment).collect(Collectors.toList());
-        return simplifiedComments;
+        return commentEntities.stream()
+                .map(this::getSimplifiedComment).collect(Collectors.toList());
     }
 }
