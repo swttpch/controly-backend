@@ -11,17 +11,13 @@ import controly.repository.TopicHasFollowersRepository;
 import controly.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static controly.config.Constant.IDNOTFOUND;
 
 @SuppressWarnings("ALL")
 @Service
@@ -60,7 +56,7 @@ public class TopicService {
     public boolean checkIfUserFollowTopic(Long idTopic, Long idUser) {
         TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
         UserEntity user = userService.getUserById(idUser);
-        Optional<TopicHasFollowersEntity> topicHasFollowers = topicHasFollowersRepository.userFollowsTopico(topic,user);
+        Optional<TopicHasFollowersEntity> topicHasFollowers = topicHasFollowersRepository.userFollowsTopic(topic,user);
         return topicHasFollowers.isPresent();
     }
 

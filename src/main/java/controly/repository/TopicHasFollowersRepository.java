@@ -19,7 +19,7 @@ public interface TopicHasFollowersRepository extends JpaRepository<TopicHasFollo
     TopicHasFollowersEntity findByTopicIdTopicAndUserIdUser(Long idTopic, Long idUser);
 
     @Query(value = "SELECT s FROM TopicHasFollowersEntity s WHERE s.topic = :topic AND s.follower = :user")
-    Optional<TopicHasFollowersEntity> userFollowsTopico(TopicEntity topic, UserEntity user);
+    Optional<TopicHasFollowersEntity> userFollowsTopic(TopicEntity topic, UserEntity user);
 
     List<TopicHasFollowersEntity> findByFollowerIdUser(Long idUser);
 }
