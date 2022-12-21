@@ -77,22 +77,14 @@ public class PostService {
         return getPostDetailedDtoCommun(post, comments);
     }
 
-    public void savePointForPost(PostEntity post, UserEntity user, int point){
-        PostPointsEntity points = new PostPointsEntity();
-        points.setPost(post)
-                .setUser(user)
-                .setPoints(point);
-        postPointsRepository.save(points);
-    }
-
     public void processSetPointForPost(Long idPost, Long idUser, int point){
         UserEntity user = userService.getUserById(idUser);
         PostEntity post = getPostById(idPost);
-        if (postPointsRepository.existByPostAndUser(idPost, idUser).isEmpty()){
-            savePointForPost(post, user, point);
-            return;
-        }
-        postPointsRepository.setPointsFor(idPost, idUser, point);
+        PostPointsEntity points = postPointsRepository.existByPostAndUser(idPost, idUser).orElse(new PostPointsEntity());
+        points.setPoints(point);
+        points.setUser(user);
+        points.setPost(post);
+        postPointsRepository.save(points);
     }
     @Transactional
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {

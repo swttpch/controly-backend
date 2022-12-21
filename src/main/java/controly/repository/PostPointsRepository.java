@@ -17,8 +17,6 @@ public interface PostPointsRepository extends JpaRepository<PostPointsEntity, Lo
 
     @Query(value = "UPDATE PostPointsEntity p SET p.points = ?3 WHERE p.post.idPost = ?1 AND p.user.idUser = ?2")
     void setPointsFor(Long idPost, Long idUser, int point);
-
-
     @Query
     Optional<PostPointsEntity> findByPostIdPostAndUserIdUser(Long idPost, Long idUser);
 
