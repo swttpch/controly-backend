@@ -4,42 +4,30 @@ import controly.dto.*;
 import controly.entity.TopicEntity;
 import controly.entity.UserEntity;
 import controly.exception.PostIdNotFould;
-import controly.mapper.PostMapper;
-import controly.repository.UserRepository;
 import controly.entity.PostPointsEntity;
 import controly.entity.PostEntity;
 import controly.repository.PostPointsRepository;
 import controly.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class PostService {
     @Autowired
-    private ValidationService validation;
-    @Autowired
     private PostRepository postRepository;
     @Autowired
     private PostPointsRepository postPointsRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
 
     @Autowired
     private TopicService topicService;
-
-    @Autowired
-    private PostMapper postMapper;
 
     public PostService() {
     }
@@ -56,7 +44,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostDetailedResponse getPostDetailedDtoCommun(PostEntity post, List<SimplifiedCommentResponse> comments){
+    public PostDetailedResponse getPostDetailedDtoCommon(PostEntity post, List<SimplifiedCommentResponse> comments){
         SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
         SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
         return new PostDetailedResponse(post, topic, user, comments);
@@ -74,7 +62,7 @@ public class PostService {
         PostEntity post = getPostById(id);
         if (post.isDoubt())
             return getPostDetailedDtoDoubt(post, comments);
-        return getPostDetailedDtoCommun(post, comments);
+        return getPostDetailedDtoCommon(post, comments);
     }
 
     public void processSetPointForPost(Long idPost, Long idUser, int point){
@@ -87,32 +75,14 @@ public class PostService {
         postPointsRepository.save(points);
     }
     @Transactional
-    public int deletePost(Long idPostagem) {
-        PostEntity postagem = getPostById(idPostagem);
-        postRepository.delete(postagem);
+    public int deletePost(Long idPost) {
+        PostEntity post = getPostById(idPost);
+        postRepository.delete(post);
         return 1;
-    }
-
-    @Transactional
-    public ResponseEntity<List<PostEntity>> getPostagemByIdUser(Long idUser){
-        if (validation.existsUsuario(idUser)) return ResponseEntity.status(404).build();
-
-        List<PostEntity> postEntityList = postRepository.findByOwnerIdUser(idUser);
-
-        return postEntityList.isEmpty()
-                ? ResponseEntity.status(204).build()
-                : ResponseEntity.status(200).body(postEntityList);
     }
 
     public List<PostEntity> getPostByUserId(Long idUser){
         return postRepository.findByOwnerIdUser(idUser);
-    }
-
-    @Transactional
-    public ResponseEntity<PostPointsEntity> findPontuacaoPostagem(Long postagem, Long usuario, int pontuacao){
-        PostPointsEntity postPointsEntity = postPointsRepository.findByPostIdPostAndUserIdUser(postagem, usuario).get();
-        postPointsEntity.setPoints(pontuacao);
-        return  ResponseEntity.status(200).body(postPointsEntity);
     }
 
     public SimplifiedPostResponse getSimplifiedPost(PostEntity post){
@@ -133,7 +103,7 @@ public class PostService {
         List<PostEntity> posts = postRepository.findByOwnerIdUser(idUser);
         if (posts.isEmpty()) return null;
         return posts.stream()
-                .max((post1, post2) -> Integer.compare(post1.getPoints(), post2.getPoints())).get();
+                .max(Comparator.comparingInt(PostEntity::getPoints)).get();
     }
     @Transactional
     public SimplifiedPostWithContentResponse createPost(CreatePostRequest newPost) {
