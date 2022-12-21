@@ -6,11 +6,9 @@ import controly.strategy.Comentario;
 import controly.entity.CommentEntity;
 import controly.dto.PostagemDTO;
 import controly.entity.PostPointsEntity;
-import controly.strategy.Discussao;
-import controly.strategy.Duvida;
 import controly.entity.PostEntity;
 import controly.service.DiscussaoService;
-import controly.service.DuvidaService;
+import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.ComentarioService;
 import controly.strategy.Postar;
@@ -30,7 +28,7 @@ public class PostController {
     @Autowired
     private ComentarioService comentarioService;
     @Autowired
-    private DuvidaService duvidaService;
+    private DoubtService doubtService;
     @Autowired
     private PostService postService;
     @Autowired
@@ -39,15 +37,14 @@ public class PostController {
     public PostController() {
     }
 
-    @PostMapping("/discussao")
-    public ResponseEntity<?> cadastrarDiscussao(@RequestBody Discussao post) {
-        postar.setPostagem(discussaoService);
-        return postar.postar(post);
-    }
-
     @PostMapping
     public ResponseEntity<SimplifiedPostWithContentResponse> createPost(@RequestBody @Valid CreatePostRequest newPost) {
         SimplifiedPostWithContentResponse post = postService.createPost(newPost);
+        return ResponseEntity.status(200).body(post);
+    }
+    @PostMapping("/doubt")
+    public ResponseEntity<SimplifiedPostWithContentResponse> createDoubt(@RequestBody @Valid CreatePostRequest newPost) {
+        SimplifiedPostWithContentResponse post = doubtService.createPost(newPost);
         return ResponseEntity.status(200).body(post);
     }
 
@@ -62,15 +59,9 @@ public class PostController {
         return postService.pegarPostagemPeloId(idPostagem);
     }
 
-    @PostMapping("/duvida")
-    public ResponseEntity<?> cadastrarDuvida(@RequestBody Duvida post){
-        postar.setPostagem(duvidaService);
-        return postar.postar(post);
-    }
-
     @PutMapping("/duvida/{idDuvida}/{idComentario}")
     public ResponseEntity<String> atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario){
-        return duvidaService.definirRespostaDaPostagem(idDuvida, idComentario);
+        return doubtService.definirRespostaDaPostagem(idDuvida, idComentario);
     }
 
     @PostMapping("/comentario")

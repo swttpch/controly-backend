@@ -156,10 +156,14 @@ public class PostService {
     }
     @Transactional
     public SimplifiedPostWithContentResponse createPost(CreatePostRequest newPost) {
-        UserEntity user = userService.getUserById(newPost.getIdUser());
-        TopicEntity topic = topicService.getTopicById(newPost.getIdTopic());
-        PostEntity post = newPost.convert(topic, user);
+        PostEntity post = convertDtoToPost(newPost);
         postRepository.save(post);
         return this.getSimplifiedWithContentPost(post);
+    }
+
+    public PostEntity convertDtoToPost(CreatePostRequest newPost){
+        UserEntity user = userService.getUserById(newPost.getIdUser());
+        TopicEntity topic = topicService.getTopicById(newPost.getIdTopic());
+        return newPost.convert(topic, user);
     }
 }
