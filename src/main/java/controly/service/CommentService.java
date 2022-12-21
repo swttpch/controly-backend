@@ -3,14 +3,11 @@ package controly.service;
 import controly.dto.*;
 import controly.entity.PostEntity;
 import controly.entity.UserEntity;
-import controly.strategy.Postagem;
 import controly.entity.CommentEntity;
 import controly.entity.CommentPointsEntity;
 import controly.repository.CommentRepository;
 import controly.repository.CommentPointsRepository;
-import controly.repository.PostRepository;
 import controly.repository.UserRepository;
-import controly.strategy.Ipostagem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static controly.config.Constant.IDNOTFOUND;
 
@@ -99,14 +97,12 @@ public class CommentService {
         }
     }
 
-    public ResponseEntity<List<CommentEntity>> getAllCommentsFromPost(Long idPostagem) {
-        if (
-                validation.existsPostagem(idPostagem)
-        ) return ResponseEntity.status(404).build();
-        List<CommentEntity> comentarios = commentRepository.findByPostIdPost(idPostagem);
-        if (comentarios.isEmpty()){
-            return ResponseEntity.status(204).build();
-        }
-        return ResponseEntity.status(200).body(comentarios);
+    public List<SimplifiedCommentResponse> getAllCommentsFromPost(Long idPostagem) {
+        PostEntity post = postService.getPostById(idPostagem);
+        List<CommentEntity> commentEntities = commentRepository.findByPost(post);
+        List<SimplifiedCommentResponse> simplifiedComments =
+                commentEntities.stream()
+                        .map(this::getSimplifiedComment).collect(Collectors.toList());
+        return simplifiedComments;
     }
 }

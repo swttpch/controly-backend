@@ -1,15 +1,12 @@
 package controly.controller;
 
 import controly.dto.*;
-import controly.strategy.Comentario;
 import controly.entity.CommentEntity;
 import controly.entity.PostPointsEntity;
 import controly.entity.PostEntity;
-import controly.service.DiscussaoService;
 import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
-import controly.strategy.Postar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +16,14 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/postagens")
+@RequestMapping("/posts")
 public class PostController {
-    @Autowired
-    private DiscussaoService discussaoService;
     @Autowired
     private CommentService commentService;
     @Autowired
     private DoubtService doubtService;
     @Autowired
     private PostService postService;
-    @Autowired
-    private Postar postar;
 
     public PostController() {
     }
@@ -52,7 +45,7 @@ public class PostController {
         return ResponseEntity.status(200).body(comment);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<PostagemDTO>> pegarTodasDiscussoes(){
         return postService.todasPostagens();
     }
@@ -68,9 +61,11 @@ public class PostController {
         return doubtService.definirRespostaDaPostagem(idDuvida, idComentario);
     }
 
-    @GetMapping("/comentario/{idPostagem}")
-    public ResponseEntity<List<CommentEntity>> getAllCommentsFromPost(@PathVariable Long idPostagem){
-        return commentService.getAllCommentsFromPost(idPostagem);
+    @GetMapping("/comment/{idPost}")
+    public ResponseEntity<List<SimplifiedCommentResponse>> getAllCommentsFromPost(@PathVariable Long idPost){
+        List<SimplifiedCommentResponse> comments = commentService.getAllCommentsFromPost(idPost);
+        if (comments.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(comments);
     }
 
     @DeleteMapping("/comentario/{idComentario}")
