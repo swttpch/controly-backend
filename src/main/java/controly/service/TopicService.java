@@ -29,9 +29,6 @@ public class TopicService {
     private TopicHasFollowersRepository topicHasFollowersRepository;
 
     @Autowired
-    private ValidationService validation;
-
-    @Autowired
     private UserService userService;
 
     @Autowired

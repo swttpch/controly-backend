@@ -14,10 +14,10 @@ public class AuthService {
     @Autowired
     UserRepository userRepository;
 
-    public UserEntity login(String email, String senha) {
+    public UserEntity login(String email, String password) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(UsersEmailNotFould::new);
-        if (!user.getPassword().equals(senha))
+        if (!user.getPassword().equals(password))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Wrong password.");
         return user;
     }

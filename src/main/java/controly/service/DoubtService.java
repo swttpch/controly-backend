@@ -22,9 +22,9 @@ public class DoubtService {
     public DoubtService() {
     }
     @Transactional
-    public void setDoubtsAnswer(Long idPostagem, Long idComentario){
-        PostEntity post = postService.getPostById(idPostagem);
-        CommentEntity comment = commentService.getCommentById(idComentario);
+    public void setDoubtsAnswer(Long idPost, Long idComment){
+        PostEntity post = postService.getPostById(idPost);
+        CommentEntity comment = commentService.getCommentById(idComment);
         post.setAnswer(comment);
     }
 

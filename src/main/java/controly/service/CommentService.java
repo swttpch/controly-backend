@@ -76,7 +76,7 @@ public class CommentService {
 
     public int unlikeComment(CommentEntity comment, UserEntity user){
         CommentPointsEntity like = commentPointsRepository.existByCommentAndUser(comment, user)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Like not fould"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Like not found"));
         commentPointsRepository.delete(like);
         return 1;
     }
@@ -87,8 +87,8 @@ public class CommentService {
         return commentPointsRepository.existByCommentAndUser(comment, user).isPresent();
     }
 
-    public List<SimplifiedCommentResponse> getAllCommentsFromPost(Long idPostagem) {
-        PostEntity post = postService.getPostById(idPostagem);
+    public List<SimplifiedCommentResponse> getAllCommentsFromPost(Long idPost) {
+        PostEntity post = postService.getPostById(idPost);
         List<CommentEntity> commentEntities = commentRepository.findByPost(post);
         return commentEntities.stream()
                 .map(this::getSimplifiedComment).collect(Collectors.toList());
