@@ -46,8 +46,10 @@ public class PostController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<PostagemDTO>> pegarTodasDiscussoes(){
-        return postService.todasPostagens();
+    public ResponseEntity<List<SimplifiedPostWithContentResponse>> getAllPosts(){
+        List<SimplifiedPostWithContentResponse> posts = postService.getAllPosts();
+        if (posts == null) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(posts);
     }
 
 

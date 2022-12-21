@@ -51,32 +51,12 @@ public class PostService {
         return postRepository.findById(idPost).orElseThrow(PostIdNotFould::new);
     }
 
-    @Transactional
-    public ResponseEntity<List<PostagemDTO>> todasPostagens() {
-
-        List<PostEntity> postagens = postRepository.findAll();
-
-        if (postagens.isEmpty()) return ResponseEntity.status(204).build();
-
-        List<PostagemDTO> postagemDTOlist = new ArrayList<>();
-
-        for (PostEntity postagem : postagens) {
-
-            PostagemDTO postagemDT = new PostagemDTO();
-
-            postagemDT.setIdPostagem(postagem.getIdPost());
-            postagemDT.setTitulo(postagem.getTitle());
-            postagemDT.setConteudo(postagem.getContent());
-            postagemDT.setTopico(postagem.getTopic());
-            postagemDT.setPontuacaoPostagem(postagem.getPoints());
-
-            postagemDT.setDono(postagem.getOwner());
-            postagemDTOlist.add(postagemDT);
-
-        }
-
-        return ResponseEntity.status(200).body(postagemDTOlist);
-
+    public List<SimplifiedPostWithContentResponse> getAllPosts() {
+        List<PostEntity> postEntityList = postRepository.findAll();
+        if (postEntityList.isEmpty()) return null;
+        return postEntityList.stream()
+                .map(this::getSimplifiedWithContentPost)
+                .collect(Collectors.toList());
     }
 
     public PostDetailedResponse getPostDetailedDtoCommun(PostEntity post, List<SimplifiedCommentResponse> comments){
