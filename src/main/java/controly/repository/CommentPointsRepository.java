@@ -12,14 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentPointsRepository extends JpaRepository<CommentPointsEntity, Long> {
-    Optional<List<CommentPointsEntity>> findByComment(CommentEntity comment);
-
     @Query(value = "SELECT m FROM CommentPointsEntity m WHERE m.comment = ?1 AND m.user = ?2")
     Optional<CommentPointsEntity> existByCommentAndUser(CommentEntity comment, UserEntity user);
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM CommentPointsEntity WHERE comment.idComment = :idComment and user.idUser = :idUser")
-    void deleteByComment_idComment(Long idComment, Long idUser);
 
 }

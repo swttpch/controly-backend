@@ -57,9 +57,10 @@ public class PostController {
         return postService.pegarPostagemPeloId(idPostagem);
     }
 
-    @PutMapping("/duvida/{idDuvida}/{idComentario}")
-    public ResponseEntity<String> atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario) {
-        return doubtService.definirRespostaDaPostagem(idDuvida, idComentario);
+    @PutMapping("/doubt/{idDoubt}/{idComment}")
+    public ResponseEntity<String> setDoubtsAnswer(@PathVariable Long idDoubt, @PathVariable Long idComment) {
+        doubtService.setDoubtsAnswer(idDoubt, idComment);
+        return ResponseEntity.status(200).build();
     }
 
     @GetMapping("/comment/{idPost}")
