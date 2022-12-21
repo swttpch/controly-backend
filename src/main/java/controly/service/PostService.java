@@ -87,14 +87,10 @@ public class PostService {
         postPointsRepository.save(points);
     }
     @Transactional
-    public ResponseEntity<String> excluirPostagem(Long idPostagem) {
-        if (validation.existsPostagem(idPostagem)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
-        }
-        PostEntity postagem = postRepository.findByIdPost(idPostagem);
-        //postagemRepository.delete(postagem);
-        int result = postRepository.deleteByIdPost(idPostagem);
-        return ResponseEntity.status(200).body("Postagem de ID "+idPostagem+" excluida. nº: " + result);
+    public int deletePost(Long idPostagem) {
+        PostEntity postagem = getPostById(idPostagem);
+        postRepository.delete(postagem);
+        return 1;
     }
 
     @Transactional

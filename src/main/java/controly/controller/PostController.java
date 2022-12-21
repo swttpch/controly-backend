@@ -103,8 +103,9 @@ public class PostController {
         return ResponseEntity.status(200).body(commentService.checkIfCommentHasLikeByUser(idComment, idUser));
     }
 
-    @DeleteMapping("{idPostagem}")
-    public ResponseEntity<String> deletePostagem(@PathVariable Long idPostagem) {
-        return postService.excluirPostagem(idPostagem);
+    @DeleteMapping("{idPost}")
+    public ResponseEntity<?> deletePost(@PathVariable Long idPost) {
+        if(postService.deletePost(idPost) != 1) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong");
+        return ResponseEntity.status(200).build();
     }
 }
