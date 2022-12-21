@@ -40,16 +40,8 @@ public class CommentEntity implements Serializable {
         return likes.size();
     }
 
-    public void deleteLike(Long idUsuario){
-        likes.removeIf(commentPointsEntity -> Objects.equals(commentPointsEntity.getUser().getIdUser(), idUsuario));
-    }
-
     public Long getIdComment() {
         return idComment;
-    }
-
-    public void setIdComment(Long idComment) {
-        this.idComment = idComment;
     }
 
     public String getContent() {
@@ -83,10 +75,6 @@ public class CommentEntity implements Serializable {
 
     public void setPost(PostEntity post) {
         this.post = post;
-    }
-
-    public void setLikes(Set<CommentPointsEntity> likes) {
-        this.likes = likes;
     }
 
     public UserEntity getOwner() {

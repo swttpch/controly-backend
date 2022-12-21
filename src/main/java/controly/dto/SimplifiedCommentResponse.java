@@ -10,6 +10,15 @@ public class SimplifiedCommentResponse {
     private Long idPost;
     private SimplifiedUserResponse owner;
     private String content;
+private int likes;
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
 
     private LocalDateTime createdIn;
 
@@ -64,6 +73,7 @@ public class SimplifiedCommentResponse {
         setCreatedIn(comment.getCreatedIn());
         setOwner(user);
         setIdPost(comment.getPost().getIdPost());
+        setLikes(comment.getLikes());
         return this;
     }
 
