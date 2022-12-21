@@ -1,7 +1,6 @@
 package controly.controller;
 
 import controly.dto.*;
-import controly.entity.PostPointsEntity;
 import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
@@ -80,14 +79,16 @@ public class PostController {
         return ResponseEntity.status(200).body("Comment deleted successfully");
     }
 
-    @PutMapping("/postagem/subir/{idPostagem}/{idUsuario}")
-    public ResponseEntity<String> subirPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
-        return postService.setPontuacaoPostagem(idPostagem, idUsuario, 1);
+    @PutMapping("/rise/{idPost}/{idUser}")
+    public ResponseEntity<String> risePost(@PathVariable Long idPost, @PathVariable Long idUser){
+        postService.processSetPointForPost(idPost, idUser, 1);
+        return ResponseEntity.status(200).body(String.format("Point %d set to post with id %d.", 1, idPost));
     }
 
-    @PutMapping("/postagem/descer/{idPostagem}/{idUsuario}")
-    public ResponseEntity<String> descerPostagem(@PathVariable Long idPostagem, @PathVariable Long idUsuario){
-        return postService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
+    @PutMapping("/down/{idPost}/{idUser}")
+    public ResponseEntity<String> downPost(@PathVariable Long idPost, @PathVariable Long idUser){
+        postService.processSetPointForPost(idPost, idUser, -1);
+        return ResponseEntity.status(200).body(String.format("PPoint %d set to post with id %d.", -1, idPost));
     }
 
     @PutMapping("/comment/like/{idComment}/{idUser}")
@@ -105,10 +106,5 @@ public class PostController {
     @DeleteMapping("{idPostagem}")
     public ResponseEntity<String> deletePostagem(@PathVariable Long idPostagem) {
         return postService.excluirPostagem(idPostagem);
-    }
-
-    @PutMapping("teste/{postagem}/{usuario}/{ponto}")
-    public ResponseEntity<PostPointsEntity> findPontuacaoPostagem(@PathVariable Long postagem, @PathVariable Long usuario, @PathVariable int ponto){
-        return postService.findPontuacaoPostagem(postagem, usuario,ponto);
     }
 }

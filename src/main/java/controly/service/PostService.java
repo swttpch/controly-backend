@@ -17,11 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static controly.config.Constant.IDNOTFOUND;
 
 @Service
 public class PostService {
@@ -80,24 +77,22 @@ public class PostService {
         return getPostDetailedDtoCommun(post, comments);
     }
 
-    public ResponseEntity<String> setPontuacaoPostagem(Long postagem, Long usuario, int ponto){
-        UserEntity userEntity = userRepository.findByIdUser(usuario).orElseThrow();
-        if (
-            validation.existsPostagem(postagem) ||
-                    validation.existsUsuario(usuario)
-        ) return ResponseEntity.status(404).body(IDNOTFOUND);
+    public void savePointForPost(PostEntity post, UserEntity user, int point){
+        PostPointsEntity points = new PostPointsEntity();
+        points.setPost(post)
+                .setUser(user)
+                .setPoints(point);
+        postPointsRepository.save(points);
+    }
 
-        if (!validation.existsPontuacaoWithPostagemAndUsuario(postagem, usuario)){
-            postPointsRepository.save(
-                    new PostPointsEntity()
-                            .setPost(postRepository.findByIdPost(postagem))
-                            .setUser(userEntity)
-                            .setPoints(ponto)
-            );
-        } else {
-            postPointsRepository.setPointsFor(postagem, usuario, ponto);
+    public void processSetPointForPost(Long idPost, Long idUser, int point){
+        UserEntity user = userService.getUserById(idUser);
+        PostEntity post = getPostById(idPost);
+        if (postPointsRepository.existByPostAndUser(idPost, idUser).isEmpty()){
+            savePointForPost(post, user, point);
+            return;
         }
-        return ResponseEntity.status(200).body(String.format("Pontuação %d atribuida a postagem de ID %d.", ponto, postagem));
+        postPointsRepository.setPointsFor(idPost, idUser, point);
     }
     @Transactional
     public ResponseEntity<String> excluirPostagem(Long idPostagem) {
