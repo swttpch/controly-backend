@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static controly.config.Constant.IDNOTFOUND;
 
@@ -78,13 +79,25 @@ public class PostService {
 
     }
 
+    public PostDetailedResponse getPostDetailedDtoCommun(PostEntity post, List<SimplifiedCommentResponse> comments){
+        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
+        return new PostDetailedResponse(post, topic, user, comments);
+    }
+
+    public PostDetailedResponse getPostDetailedDtoDoubt(PostEntity post, List<SimplifiedCommentResponse> comments){
+        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
+        DoubtsAnswerResponse answer = new DoubtsAnswerResponse(post.getDoubtsAnswerEntity());
+        return new PostDetailedResponse(post, topic, user, comments, answer);
+    }
+
     @Transactional
-    public ResponseEntity<PostEntity> pegarPostagemPeloId(Long id){
-        if (validation.existsPostagem(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Postagem não encontrada");
-        }
-        PostEntity postagem = postRepository.findByIdPost(id);
-        return ResponseEntity.status(200).body(postagem);
+    public PostDetailedResponse processGetPostByID(Long id, List<SimplifiedCommentResponse> comments){
+        PostEntity post = getPostById(id);
+        if (post.isDoubt())
+            return getPostDetailedDtoDoubt(post, comments);
+        return getPostDetailedDtoCommun(post, comments);
     }
 
     public ResponseEntity<String> setPontuacaoPostagem(Long postagem, Long usuario, int ponto){

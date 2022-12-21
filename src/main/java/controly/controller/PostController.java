@@ -2,7 +2,6 @@ package controly.controller;
 
 import controly.dto.*;
 import controly.entity.PostPointsEntity;
-import controly.entity.PostEntity;
 import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
@@ -52,9 +51,11 @@ public class PostController {
     }
 
 
-    @GetMapping("{idPostagem}")
-    public ResponseEntity<PostEntity> pegarPostagemPeloId(@PathVariable Long idPostagem){
-        return postService.pegarPostagemPeloId(idPostagem);
+    @GetMapping("/{idPost}")
+    public ResponseEntity<PostDetailedResponse> getPostById(@PathVariable Long idPost){
+        List<SimplifiedCommentResponse> comments = commentService.getAllCommentsFromPost(idPost);
+        PostDetailedResponse post = postService.processGetPostByID(idPost, comments);
+        return ResponseEntity.status(200).body(post);
     }
 
     @PutMapping("/doubt/{idDoubt}/{idComment}")
