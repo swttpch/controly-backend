@@ -5,12 +5,14 @@ import controly.entity.PostEntity;
 import controly.entity.UserEntity;
 import controly.entity.CommentEntity;
 import controly.entity.CommentPointsEntity;
+import controly.exception.CommentIdNotFould;
 import controly.repository.CommentRepository;
 import controly.repository.CommentPointsRepository;
-import controly.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 
@@ -23,9 +25,6 @@ import static controly.config.Constant.IDNOTFOUND;
 public class CommentService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private CommentRepository commentRepository;
     @Autowired
     private ValidationService validation;
@@ -34,11 +33,14 @@ public class CommentService {
 
     @Autowired
     private PostService postService;
-
     @Autowired
     private UserService userService;
 
     public CommentService() {
+    }
+
+    public CommentEntity getCommentById(Long idComment){
+        return commentRepository.findById(idComment).orElseThrow(CommentIdNotFould::new);
     }
 
     public SimplifiedCommentResponse getSimplifiedComment(CommentEntity comment){
@@ -54,47 +56,39 @@ public class CommentService {
         return getSimplifiedComment(comment);
     }
 
-    public ResponseEntity<String> excluirPostagem(Long idComentario) {
-        if (validation.existsComentario(idComentario))
-            return ResponseEntity.status(404).body(IDNOTFOUND);
-
-        commentRepository.delete(
-                commentRepository.findByIdComment(idComentario)
-        );
-        return ResponseEntity.status(200).body("Comentário excluido.");
-    }
-    @Transactional
-    public ResponseEntity<String> setPontuacaoComentario(Long comentario, Long usuario){
-        if (
-                validation.existsComentario(comentario) ||
-                        validation.existsUsuario(usuario)
-        ) return ResponseEntity.status(404).body(IDNOTFOUND);
-        CommentEntity comentario1 = commentRepository.findByIdComment(comentario);
-        UserEntity userEntity = userRepository.findByIdUser(usuario).orElseThrow();
-        if (!commentPointsRepository.existByCommentAndUser(comentario, usuario).isPresent()){
-            commentPointsRepository.save(
-                    new CommentPointsEntity()
-                            .setComment(comentario1)
-                            .setUser(userEntity)
-            );
-            return ResponseEntity.status(200).body("Curtida criada");
-        } else {
-            commentPointsRepository.deleteByComment_idComment(comentario,usuario);
-            return ResponseEntity.status(200).body("Curtida excluida");
-        }
+    public int deleteComment(Long idComment) {
+        CommentEntity comment = getCommentById(idComment);
+        commentRepository.delete(comment);
+        return 1;
     }
 
-    public ResponseEntity<Boolean> existsCurtida(Long comentario, Long usuario){
-        if (
-                validation.existsComentario(comentario) ||
-                        validation.existsUsuario(usuario)
-        ) return ResponseEntity.status(404).build();
-        if (!commentPointsRepository.existByCommentAndUser(comentario, usuario).isPresent()){
+    public int processLikeComment(Long idComment, Long idUser){
+        CommentEntity comment = getCommentById(idComment);
+        UserEntity user = userService.getUserById(idUser);
+        if (checkIfCommentHasLikeByUser(idComment, idUser))
+            return unlikeComment(comment, user);
+        return likeComment(comment,user);
+    }
 
-            return ResponseEntity.status(200).body(false);
-        } else {
-            return ResponseEntity.status(200).body(true);
-        }
+    public int likeComment(CommentEntity comment, UserEntity user){
+        CommentPointsEntity like = new CommentPointsEntity();
+        like.setComment(comment);
+        like.setUser(user);
+        commentPointsRepository.save(like);
+        return 0;
+    }
+
+    public int unlikeComment(CommentEntity comment, UserEntity user){
+        CommentPointsEntity like = commentPointsRepository.existByCommentAndUser(comment, user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Like not fould"));
+        commentPointsRepository.delete(like);
+        return 1;
+    }
+
+    public boolean checkIfCommentHasLikeByUser(Long idComment, Long idUser){
+        CommentEntity comment = getCommentById(idComment);
+        UserEntity user = userService.getUserById(idUser);
+        return commentPointsRepository.existByCommentAndUser(comment, user).isPresent();
     }
 
     public List<SimplifiedCommentResponse> getAllCommentsFromPost(Long idPostagem) {

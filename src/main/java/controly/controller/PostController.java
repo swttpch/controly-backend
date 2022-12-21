@@ -1,15 +1,16 @@
 package controly.controller;
 
 import controly.dto.*;
-import controly.entity.CommentEntity;
 import controly.entity.PostPointsEntity;
 import controly.entity.PostEntity;
 import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -68,9 +69,11 @@ public class PostController {
         return ResponseEntity.status(200).body(comments);
     }
 
-    @DeleteMapping("/comentario/{idComentario}")
-    public ResponseEntity<String> deleteComentario(@PathVariable Long idComentario){
-        return commentService.excluirPostagem(idComentario);
+    @DeleteMapping("/comment/{idComment}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long idComment){
+        if (commentService.deleteComment(idComment) != 1)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong");
+        return ResponseEntity.status(200).body("Comment deleted successfully");
     }
 
     @PutMapping("/postagem/subir/{idPostagem}/{idUsuario}")
@@ -83,14 +86,16 @@ public class PostController {
         return postService.setPontuacaoPostagem(idPostagem, idUsuario, -1);
     }
 
-    @PutMapping("/comentario/curtir/{idComentario}/{idUsuario}")
-    public ResponseEntity<String> curtirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return commentService.setPontuacaoComentario(idComentario, idUsuario);
+    @PutMapping("/comment/like/{idComment}/{idUser}")
+    public ResponseEntity<String> likeComment(@PathVariable Long idComment, @PathVariable Long idUser){
+        if (commentService.processLikeComment(idComment, idUser) == 1)
+            return ResponseEntity.status(200).body("Comment unliked successfully");
+        return ResponseEntity.status(200).body("Comment liked successfully");
     }
 
-    @GetMapping("/comentario/curtir/{idComentario}/{idUsuario}")
-    public ResponseEntity<Boolean> existsCurtida(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return commentService.existsCurtida(idComentario, idUsuario);
+    @GetMapping("/comment/like/{idComment}/{idUser}")
+    public ResponseEntity<Boolean> checkIfCommenthasLikeByUser(@PathVariable Long idComment, @PathVariable Long idUser){
+        return ResponseEntity.status(200).body(commentService.checkIfCommentHasLikeByUser(idComment, idUser));
     }
 
     @DeleteMapping("{idPostagem}")
