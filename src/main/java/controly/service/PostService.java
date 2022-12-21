@@ -3,6 +3,7 @@ package controly.service;
 import controly.dto.*;
 import controly.entity.TopicEntity;
 import controly.entity.UserEntity;
+import controly.exception.PostIdNotFould;
 import controly.mapper.PostMapper;
 import controly.repository.UserRepository;
 import controly.entity.PostPointsEntity;
@@ -43,6 +44,10 @@ public class PostService {
     private PostMapper postMapper;
 
     public PostService() {
+    }
+
+    public PostEntity getPostById(Long idPost){
+        return postRepository.findById(idPost).orElseThrow(PostIdNotFould::new);
     }
 
     @Transactional

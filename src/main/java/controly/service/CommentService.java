@@ -1,5 +1,7 @@
 package controly.service;
 
+import controly.dto.*;
+import controly.entity.PostEntity;
 import controly.entity.UserEntity;
 import controly.strategy.Postagem;
 import controly.entity.CommentEntity;
@@ -20,9 +22,7 @@ import java.util.List;
 import static controly.config.Constant.IDNOTFOUND;
 
 @Service
-public class ComentarioService implements Ipostagem {
-    @Autowired
-    private PostRepository postRepository;
+public class CommentService {
 
     @Autowired
     private UserRepository userRepository;
@@ -34,21 +34,26 @@ public class ComentarioService implements Ipostagem {
     @Autowired
     private CommentPointsRepository commentPointsRepository;
 
-    public ComentarioService() {
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private UserService userService;
+
+    public CommentService() {
     }
 
-    @Override
-    public ResponseEntity<String> enviarPostagem(Postagem post) {
-        UserEntity userEntity = userRepository.findByIdUser(post.getIdUsuario()).orElseThrow();
-        if (validation.existsUsuario(post.getIdUsuario()) || validation.existsPostagem(post.getIdPostagem()))
-            return ResponseEntity.status(404).body(IDNOTFOUND);
-        commentRepository.save(
-                post.converterComentario(
-                        postRepository.findByIdPost(post.getIdPostagem()),
-                        userEntity
-                )
-        );
-        return ResponseEntity.status(201).body("Comentario postado.");
+    public SimplifiedCommentResponse getSimplifiedComment(CommentEntity comment){
+        if (comment==null) return null;
+        SimplifiedUserResponse user = userService.getSimplifiedUser(comment.getOwner());
+        return new SimplifiedCommentResponse(comment, user);
+    }
+    @Transactional
+    public SimplifiedCommentResponse createPost(CreateCommentRequest newPost) {
+        PostEntity post = postService.getPostById(newPost.getIdPost());
+        UserEntity user = userService.getUserById(newPost.getIdUser());
+        CommentEntity comment = commentRepository.save(newPost.convert(post,user));
+        return getSimplifiedComment(comment);
     }
 
     public ResponseEntity<String> excluirPostagem(Long idComentario) {

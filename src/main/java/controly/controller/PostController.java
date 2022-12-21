@@ -1,16 +1,14 @@
 package controly.controller;
 
-import controly.dto.CreatePostRequest;
-import controly.dto.SimplifiedPostWithContentResponse;
+import controly.dto.*;
 import controly.strategy.Comentario;
 import controly.entity.CommentEntity;
-import controly.dto.PostagemDTO;
 import controly.entity.PostPointsEntity;
 import controly.entity.PostEntity;
 import controly.service.DiscussaoService;
 import controly.service.DoubtService;
 import controly.service.PostService;
-import controly.service.ComentarioService;
+import controly.service.CommentService;
 import controly.strategy.Postar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +24,7 @@ public class PostController {
     @Autowired
     private DiscussaoService discussaoService;
     @Autowired
-    private ComentarioService comentarioService;
+    private CommentService commentService;
     @Autowired
     private DoubtService doubtService;
     @Autowired
@@ -48,6 +46,12 @@ public class PostController {
         return ResponseEntity.status(200).body(post);
     }
 
+    @PostMapping("/comment")
+    public ResponseEntity<SimplifiedCommentResponse> createComment(@RequestBody @Valid CreateCommentRequest newComment) {
+        SimplifiedCommentResponse comment = commentService.createPost(newComment);
+        return ResponseEntity.status(200).body(comment);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<PostagemDTO>> pegarTodasDiscussoes(){
         return postService.todasPostagens();
@@ -60,24 +64,18 @@ public class PostController {
     }
 
     @PutMapping("/duvida/{idDuvida}/{idComentario}")
-    public ResponseEntity<String> atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario){
+    public ResponseEntity<String> atribuirRespostaADuvida(@PathVariable Long idDuvida, @PathVariable Long idComentario) {
         return doubtService.definirRespostaDaPostagem(idDuvida, idComentario);
-    }
-
-    @PostMapping("/comentario")
-    public ResponseEntity<?> cadastrarComentario(@RequestBody Comentario post) {
-        postar.setPostagem(comentarioService);
-        return postar.postar(post);
     }
 
     @GetMapping("/comentario/{idPostagem}")
     public ResponseEntity<List<CommentEntity>> getAllCommentsFromPost(@PathVariable Long idPostagem){
-        return comentarioService.getAllCommentsFromPost(idPostagem);
+        return commentService.getAllCommentsFromPost(idPostagem);
     }
 
     @DeleteMapping("/comentario/{idComentario}")
     public ResponseEntity<String> deleteComentario(@PathVariable Long idComentario){
-        return comentarioService.excluirPostagem(idComentario);
+        return commentService.excluirPostagem(idComentario);
     }
 
     @PutMapping("/postagem/subir/{idPostagem}/{idUsuario}")
@@ -92,12 +90,12 @@ public class PostController {
 
     @PutMapping("/comentario/curtir/{idComentario}/{idUsuario}")
     public ResponseEntity<String> curtirComentario(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return comentarioService.setPontuacaoComentario(idComentario, idUsuario);
+        return commentService.setPontuacaoComentario(idComentario, idUsuario);
     }
 
     @GetMapping("/comentario/curtir/{idComentario}/{idUsuario}")
     public ResponseEntity<Boolean> existsCurtida(@PathVariable Long idComentario, @PathVariable Long idUsuario){
-        return comentarioService.existsCurtida(idComentario, idUsuario);
+        return commentService.existsCurtida(idComentario, idUsuario);
     }
 
     @DeleteMapping("{idPostagem}")
