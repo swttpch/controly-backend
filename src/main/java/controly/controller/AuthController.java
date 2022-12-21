@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping()
     public ResponseEntity<UserEntity> login(@RequestBody LoginRequest login){
-        UserEntity user = authService.login(login.getEmail(), login.getSenha());
+        UserEntity user = authService.login(login.getEmail(), login.getPassword());
         if (user==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
         return ResponseEntity.status(200).body(user);
     }

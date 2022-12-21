@@ -1,6 +1,6 @@
 package controly.service;
 
-import controly.dto.RecuperarSenhaForm;
+import controly.dto.PasswordRecoveryRequest;
 import controly.entity.UserEntity;
 import controly.exception.UsersEmailNotFould;
 import controly.util.PasswordGenerator;
@@ -29,7 +29,7 @@ public class PasswordRecoveryService {
     }
 
     @Transactional
-    public void passwordRecovery(RecuperarSenhaForm userToRecover){
+    public void passwordRecovery(PasswordRecoveryRequest userToRecover){
         UserEntity user = userRepository.findByEmail(userToRecover.getEmail())
                 .orElseThrow(UsersEmailNotFould::new);
         user.setPassword(passwordGenerator.generate());

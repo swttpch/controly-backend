@@ -7,7 +7,7 @@ import controly.entity.UserEntity;
 import controly.dto.CreateNewUserRequest;
 import controly.service.ProfileService;
 import controly.service.UserService;
-import controly.dto.RecuperarSenhaForm;
+import controly.dto.PasswordRecoveryRequest;
 import controly.service.PasswordRecoveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,7 +68,7 @@ public class UserController {
 
 
     @PostMapping("/password-recovery")
-    public ResponseEntity<?> passwordRecovery(@RequestBody RecuperarSenhaForm form) {
+    public ResponseEntity<?> passwordRecovery(@RequestBody PasswordRecoveryRequest form) {
         passwordRecoveryService.passwordRecovery(form);
         return ResponseEntity.status(200).body("New password sent to users e-mail.");
     }

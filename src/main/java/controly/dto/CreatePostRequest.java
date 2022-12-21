@@ -48,12 +48,12 @@ public class CreatePostRequest {
         this.idTopic = idTopic;
     }
 
-    public PostEntity convert(TopicEntity topico, UserEntity usuario){
+    public PostEntity convert(TopicEntity topic, UserEntity user){
         PostEntity post = new PostEntity();
         post.setTitle(title);
         post.setContent(content);
-        post.setOwner(usuario);
-        post.setTopic(topico);
+        post.setOwner(user);
+        post.setTopic(topic);
         return post;
     }
 }
