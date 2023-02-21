@@ -12,9 +12,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/topics")
+@CrossOrigin(origins = "*")
 public class TopicController {
 
     @Autowired

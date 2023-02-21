@@ -19,13 +19,14 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
+
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
+    @Autowired  
     private PasswordRecoveryService passwordRecoveryService;
     @Autowired
     private ProfileService profileService;
