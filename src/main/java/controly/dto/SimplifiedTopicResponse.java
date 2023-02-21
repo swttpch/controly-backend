@@ -5,6 +5,15 @@ import controly.entity.PostEntity;
 public class SimplifiedTopicResponse {
     private Long idTopic;
     private String name;
+    private String svg;
+
+    public String getSvg() {
+        return svg;
+    }
+
+    public void setSvg(String svg) {
+        this.svg = svg;
+    }
 
     public Long getIdTopic() {
         return idTopic;

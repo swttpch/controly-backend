@@ -2,6 +2,8 @@ package controly.dto;
 
 import controly.entity.TopicEntity;
 
+import java.time.LocalDate;
+
 public class TopicDetailResponse {
 
     private Long idTopic = new TopicEntity().getIdTopic();
@@ -11,6 +13,26 @@ public class TopicDetailResponse {
     private String about = new TopicEntity().getAbout();
 
     private Integer countFollowers;
+
+    private String svg;
+
+    private LocalDate createdAt;
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getSvg() {
+        return svg;
+    }
+
+    public void setSvg(String svg) {
+        this.svg = svg;
+    }
 
     public Long getIdTopic() {
         return idTopic;
