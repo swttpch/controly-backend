@@ -11,12 +11,11 @@ public class TopicDetailResponse {
     private String name = new TopicEntity().getName();
 
     private String about = new TopicEntity().getAbout();
+    private LocalDate createdAt = new TopicEntity().getCreatedAt();
+    private String svg = new TopicEntity().getSvg();
 
     private Integer countFollowers;
 
-    private String svg;
-
-    private LocalDate createdAt;
 
     public LocalDate getCreatedAt() {
         return createdAt;
