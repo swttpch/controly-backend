@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,11 +24,16 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    private  final SecureRandom secureRandom = new SecureRandom(); //threadsafe
+    private  final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
+
     @Transactional
     public UserEntity createNewUser(CreateNewUserRequest newUser) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(newUser.getEmail());
         if (optionalUser.isPresent()) throw new EmailAlreadyExistsException();
-        return userRepository.save(newUser.convert());
+        UserEntity user = newUser.convert();
+        user.setToken(generateNewToken());
+        return userRepository.save(user);
     }
 
     public UserEntity getUserById(Long id) {
@@ -62,5 +69,11 @@ public class UserService {
         SimplifiedUserResponse simplifiedUser = new SimplifiedUserResponse();
         userMapper.getDtoFromUser(user, simplifiedUser);
         return simplifiedUser;
+    }
+
+    public String generateNewToken() {
+        byte[] randomBytes = new byte[15];
+        secureRandom.nextBytes(randomBytes);
+        return base64Encoder.encodeToString(randomBytes);
     }
 }

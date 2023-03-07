@@ -36,6 +36,7 @@ public class UserEntity implements Serializable {
     @Column(name = "disabledIn")
     private LocalDateTime disabledIn;
 
+    private String token;
 
     public UserEntity(String name, String nickname, String password, String email) {
         this.name = name;
@@ -45,8 +46,18 @@ public class UserEntity implements Serializable {
         this.isActive = true;
     }
 
+
     public UserEntity() {
     }
+@JsonIgnore
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
 
     public Long getIdUser() {
         return idUser;
