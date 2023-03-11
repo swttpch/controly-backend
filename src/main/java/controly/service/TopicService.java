@@ -101,4 +101,11 @@ public class TopicService {
         return  topicHasFollowersRepository.findByFollowerIdUser(idUser)
                         .stream().map(topic-> topic.getTopic()).collect(Collectors.toList());
     }
+
+    public List<SimplifiedTopicResponse> getTopicsUserFollows(Long idUser) {
+        return  topicHasFollowersRepository.findByFollowerIdUser(idUser)
+                .stream()
+                .map(topic-> getSimplifiedTopic(topic.getTopic()))
+                .collect(Collectors.toList());
+    }
 }

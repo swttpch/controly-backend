@@ -31,8 +31,15 @@ public class AuthController {
         return ResponseEntity.status(200).body(user.getToken());
     }
 
-    @GetMapping("/{token}")
-    public ResponseEntity<UserEntity> getUser(@PathVariable String token){
+    @PostMapping("/login")
+    public ResponseEntity<UserEntity> login2(@RequestBody LoginRequest login){
+        UserEntity user = authService.login(login.getEmail(), login.getPassword());
+        if (user==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
+        return ResponseEntity.status(200).body(user);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<UserEntity> getUser(@RequestParam String token){
         UserEntity user = authService.getUser(token);
         if (user==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
         return ResponseEntity.status(200).body(user);

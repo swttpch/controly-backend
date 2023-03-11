@@ -1,5 +1,6 @@
 package controly.controller;
 
+import controly.dto.SimplifiedTopicResponse;
 import controly.dto.TopicDetailResponse;
 import controly.entity.TopicEntity;
 import controly.service.TopicService;
@@ -54,5 +55,12 @@ public class TopicController {
     @GetMapping("/{idTopic}/{idUser}")
     public ResponseEntity<Boolean> checkIfUserFollowsTopic(@PathVariable Long idTopic, @PathVariable Long idUser) {
         return ResponseEntity.status(200).body(topicService.checkIfUserFollowTopic(idTopic, idUser));
+    }
+
+    @GetMapping("/user/{idUser}")
+    public ResponseEntity<List<SimplifiedTopicResponse>> getTopicsByUser(@PathVariable Long idUser){
+        List<SimplifiedTopicResponse> topics = topicService.getTopicsUserFollows(idUser);
+        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't found any topics");
+        return ResponseEntity.status(200).body(topics);
     }
 }
