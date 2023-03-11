@@ -31,4 +31,9 @@ public class AuthService {
         userRepository.save(newUser);
         return newUser;
     }
+
+    public UserEntity getUser(String token){
+        return userRepository.findByToken(token)
+                .orElseThrow(UsersEmailNotFould::new);
+    }
 }
