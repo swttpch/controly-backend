@@ -40,6 +40,9 @@ public class DoubtsAnswerResponse {
     }
 
     public DoubtsAnswerResponse convert(DoubtsAnswerEntity doubtsAnswer){
+        if (doubtsAnswer.getAnswer() == null) {
+            return this;
+        }
         setIdAnswer(doubtsAnswer.getAnswer().getIdComment());
         setSolved(doubtsAnswer.isSolved());
         setSolvedIn(doubtsAnswer.getSolvedIn());
