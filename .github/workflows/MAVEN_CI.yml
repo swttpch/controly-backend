@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        maven: [ '3.8.7', '3.9.0' ]
+        maven: [ '3.9.0' ]
     steps:
     
     - uses: actions/checkout@v3
@@ -37,5 +37,9 @@ jobs:
       
     - name: step 5 - Run tests with Maven
       run: mvn -B test --file pom.xml
-      
+
+  push:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Push
 
