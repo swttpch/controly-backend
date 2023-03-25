@@ -62,6 +62,5 @@ jobs:
           with:
             context: .
             push: true
-            tags: ${{ github.event.repository.name }}
-            labels: ${{ steps.meta.outputs.labels }}
+
 
