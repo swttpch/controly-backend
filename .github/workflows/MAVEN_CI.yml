@@ -38,8 +38,5 @@ jobs:
     - name: step 5 - Run tests with Maven
       run: mvn -B test --file pom.xml
 
-  push:
-    runs-on: ubuntu-22.04
-    steps:
-    - name: Push
+
 
