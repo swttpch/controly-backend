@@ -44,6 +44,9 @@ jobs:
       steps:
         - name: Check out the repo
           uses: actions/checkout@v3
+          
+        - uses: tenhaus/get-release-or-tag@v2
+          id: tag
 
         - name: Login to DockerHub
           uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -62,7 +65,7 @@ jobs:
           with:
             context: .
             push: true
-            tags: codelabz/repository:backend
+            tags: codelabz/repository:backend-${{ steps.tag.outputs.tag }}
             labels: ${{ steps.meta.outputs.labels }}
       
 
