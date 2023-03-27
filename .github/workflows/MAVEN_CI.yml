@@ -65,7 +65,7 @@ jobs:
           with:
             context: .
             push: true
-            tags: codelabz/repository:backend-${{ steps.tag.outputs.tag }}
+            tags: codelabz/repository:backend-${{ steps.tag.outputs.sha }}
             labels: ${{ steps.meta.outputs.labels }}
       
 
