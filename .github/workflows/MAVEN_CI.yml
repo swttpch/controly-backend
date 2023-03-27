@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "develop" ]
 
 jobs:
 
@@ -52,6 +52,12 @@ jobs:
         - name: Set outputs
           id: vars
           run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          
+        - name: Extract branch name
+          shell: bash
+          run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+          id: extract_branch
+
 
         - name: Extract metadata (tags, labels) for Docker
           id: meta
@@ -64,7 +70,7 @@ jobs:
           with:
             context: .
             push: true
-            tags: codelabz/repository:backend-${{ steps.vars.outputs.sha_short }}
+            tags: codelabz/repository:backend-${{ steps.extract_branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
             labels: ${{ steps.meta.outputs.labels }}
       
 
