@@ -44,6 +44,12 @@ jobs:
       steps:
         - name: Check out the repo
           uses: actions/checkout@v3
+        
+        - name: Generate Build number
+          id: buildnumber
+          uses: einaregilsson/build-number@v3
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Login to DockerHub
           uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -62,7 +68,7 @@ jobs:
           with:
             context: .
             push: true
-            tags: ${{ steps.meta.outputs.tags }}
+            tags: codelabz/repository:backend-${{ steps.buildnumber.output.build_number }}
             labels: ${{ steps.meta.outputs.labels }}
 
 
