@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build_and_test:
+  test:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -37,6 +37,7 @@ jobs:
       run: mvn -B test --file pom.xml
     
   push_to_registry:
+      needs: test
       name: Push Docker image to Docker Hub
       runs-on: ubuntu-latest
       steps:
