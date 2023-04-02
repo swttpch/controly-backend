@@ -93,4 +93,9 @@ public class CommentService {
         return commentEntities.stream()
                 .map(this::getSimplifiedComment).collect(Collectors.toList());
     }
+
+    public SimplifiedCommentResponse getSingleComment(Long idComment){
+        CommentEntity comment = getCommentById(idComment);
+        return getSimplifiedComment(comment);
+    }
 }

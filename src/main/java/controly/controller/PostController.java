@@ -1,6 +1,8 @@
 package controly.controller;
 
 import controly.dto.*;
+import controly.entity.PostEntity;
+import controly.entity.UserEntity;
 import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
@@ -73,6 +75,12 @@ public class PostController {
         return ResponseEntity.status(200).body(comments);
     }
 
+    @GetMapping(value = "/comment/single/{idComment}")
+    public ResponseEntity<SimplifiedCommentResponse> getSingleComment(@PathVariable Long idComment){
+        SimplifiedCommentResponse comment = commentService.getSingleComment(idComment);
+        return ResponseEntity.status(200).body(comment);
+    }
+
     @DeleteMapping("/comment/{idComment}")
     public ResponseEntity<String> deleteComment(@PathVariable Long idComment){
         if (commentService.deleteComment(idComment) != 1)
@@ -93,10 +101,10 @@ public class PostController {
     }
 
     @PutMapping("/comment/like/{idComment}/{idUser}")
-    public ResponseEntity<String> likeComment(@PathVariable Long idComment, @PathVariable Long idUser){
+    public ResponseEntity<Boolean> likeComment(@PathVariable Long idComment, @PathVariable Long idUser){
         if (commentService.processLikeComment(idComment, idUser) == 1)
-            return ResponseEntity.status(200).body("Comment unliked successfully");
-        return ResponseEntity.status(200).body("Comment liked successfully");
+            return ResponseEntity.status(200).body(false);
+        return ResponseEntity.status(200).body(true);
     }
 
     @GetMapping("/comment/like/{idComment}/{idUser}")
@@ -108,5 +116,10 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable Long idPost) {
         if(postService.deletePost(idPost) != 1) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong");
         return ResponseEntity.status(200).build();
+    }
+
+    @GetMapping("/{idPost}/points/{idUser}")
+    public ResponseEntity<Integer> getUserPointsInPost(@PathVariable Long idPost, @PathVariable Long idUser){
+        return ResponseEntity.status(200).body(postService.getUserPointsInPost(idPost, idUser));
     }
 }
