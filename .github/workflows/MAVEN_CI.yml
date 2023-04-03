@@ -2,13 +2,11 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+    branches: [ "master", "develop" ]
 
 jobs:
 
-  build_and_test:
+  test:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -37,9 +35,44 @@ jobs:
       
     - name: step 5 - Run tests with Maven
       run: mvn -B test --file pom.xml
+    
+  push_to_registry:
+      needs: test
+      name: Push Docker image to Docker Hub
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out the repo
+          uses: actions/checkout@v3
 
-  push:
-    runs-on: ubuntu-22.04
-    steps:
-    - name: Push
+        - name: Login to DockerHub
+          uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+        
+        - name: Set outputs
+          id: vars
+          run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          
+        - name: Extract branch name
+          shell: bash
+          run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+          id: extract_branch
+
+
+        - name: Extract metadata (tags, labels) for Docker
+          id: meta
+          uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+          with:
+            images: codelabz/repository
+
+        - name: Build and push the Docker image
+          uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+          with:
+            context: .
+            push: true
+            tags: codelabz/repository:backend-${{ steps.extract_branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
+            labels: ${{ steps.meta.outputs.labels }}
+      
+
 

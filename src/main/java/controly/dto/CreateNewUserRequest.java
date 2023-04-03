@@ -11,7 +11,7 @@ public class CreateNewUserRequest {
 
     @NotBlank
     private String name;
-    @NotBlank
+
     private String nickname;
     @NotNull
     @Size(min=8)
