@@ -109,7 +109,8 @@ jobs:
             echo $OLD_IMAGE
             NEW_IMAGE=$(echo "codelabz/repository:backend-$BRANCH_TAG-$COMMIT_TAG1")
             echo $NEW_IMAGE
-            sed -i 's|$OLD_IMAGE|$NEW_IMAGE|g' k8s/templates/backend-deployment.yaml
+            sed -i "s|$OLD_IMAGE|$NEW_IMAGE|g" k8s/templates/backend-deployment.yaml
+            cat k8s/templates/backend-deployment.yaml
             
             git add .
             git commit -m "Update Manifest"
