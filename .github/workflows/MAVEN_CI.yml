@@ -103,7 +103,9 @@ jobs:
 
             git checkout main
 
-            touch new-file.sh
+            OLD_IMAGE=$(cat k8s/templates/backend-deployment.yaml | grep "image:" | sed 's/ //g' | cut -d':' -f2-3)
+            NEW_IMAGE=$(codelabz/repository:backend-${{ steps.extract_branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }})
+            sed -i 's|$OLD_IMAGE|$NEW_IMAGE|g' k8s/templates/backend-deployment.yaml
             
             git add .
             git commit -m "Update Manifest"
