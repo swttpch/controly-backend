@@ -104,7 +104,9 @@ jobs:
             git checkout main
 
             OLD_IMAGE=$(cat k8s/templates/backend-deployment.yaml | grep "image:" | sed 's/ //g' | cut -d':' -f2-3)
+            echo $OLD_IMAGE
             NEW_IMAGE=$(codelabz/repository:backend-${{ steps.extract_branch.outputs.branch }}-${{ steps.vars.outputs.sha_short }})
+            echo $NEW_IMAGE
             sed -i 's|$OLD_IMAGE|$NEW_IMAGE|g' k8s/templates/backend-deployment.yaml
             
             git add .
