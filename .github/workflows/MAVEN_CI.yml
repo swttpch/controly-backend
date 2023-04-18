@@ -92,7 +92,7 @@ jobs:
             
         - name: Set Image
           env:
-            GITHUB_TOKEN: ${{ secrets.ROBOT_TOKEN }}
+            ROBOT_TOKEN: ${{ secrets.ROBOT_TOKEN }}
           run: |
 
             git clone https://CodelabzRobot:$ROBOT_TOKEN@github.com/codelabzproject/devops
