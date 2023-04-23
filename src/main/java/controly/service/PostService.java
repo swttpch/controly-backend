@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -116,5 +117,16 @@ public class PostService {
         UserEntity user = userService.getUserById(newPost.getIdUser());
         TopicEntity topic = topicService.getTopicById(newPost.getIdTopic());
         return newPost.convert(topic, user);
+    }
+
+    public Integer getUserPointsInPost(Long idPost, Long idUser){
+        PostEntity post = getPostById(idPost);
+        UserEntity user = userService.getUserById(idUser);
+        Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(idPost, idUser);
+        return points.map(PostPointsEntity::getPoints).orElse(0);
+    }
+
+    public List<PostEntity> getTopicoForPost(Long idTopic){
+        return postRepository.findByTopicIdTopic(idTopic);
     }
 }

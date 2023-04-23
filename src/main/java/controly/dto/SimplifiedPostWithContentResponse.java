@@ -2,19 +2,32 @@ package controly.dto;
 
 import controly.entity.PostEntity;
 
+import java.time.LocalDateTime;
+
 public class SimplifiedPostWithContentResponse {
     private Long idPost;
     private String title;
     private String content;
+    private int comments;
     private SimplifiedUserResponse owner;
     private SimplifiedTopicResponse topic;
     private boolean isDoubt;
     private int points;
 
+    private LocalDateTime createdIn;
+
     public SimplifiedPostWithContentResponse(PostEntity post,
                                   SimplifiedTopicResponse topic,
                                   SimplifiedUserResponse user) {
         this.convert(post, topic, user);
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
     }
 
     public Long getIdPost() {
@@ -73,14 +86,29 @@ public class SimplifiedPostWithContentResponse {
         this.points = points;
     }
 
+    public LocalDateTime getCreatedIn() {
+        return createdIn;
+    }
+
+    public void setCreatedIn(LocalDateTime createdIn) {
+        this.createdIn = createdIn;
+    }
+
     public SimplifiedPostWithContentResponse convert(PostEntity post,
-                                          SimplifiedTopicResponse topic,
-                                          SimplifiedUserResponse user){
+                                                     SimplifiedTopicResponse topic,
+                                                     SimplifiedUserResponse user){
         setTitle(post.getTitle());
         setOwner(user);
         setPoints(post.getPoints());
         setDoubt(post.isDoubt());
         setTopic(topic);
+        if(post.getComments() == null) {
+            setComments(0);
+        }
+        else{
+            setComments(post.getComments().size());
+        }
+        setCreatedIn(post.getCreatedIn());
         setIdPost(post.getIdPost());
         setContent(post.getContent());
         return this;
