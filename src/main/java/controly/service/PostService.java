@@ -125,4 +125,8 @@ public class PostService {
         Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(idPost, idUser);
         return points.map(PostPointsEntity::getPoints).orElse(0);
     }
+
+    public List<PostEntity> getTopicoForPost(Long idTopic){
+        return postRepository.findByTopicIdTopic(idTopic);
+    }
 }

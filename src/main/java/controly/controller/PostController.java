@@ -2,7 +2,6 @@ package controly.controller;
 
 import controly.dto.*;
 import controly.entity.PostEntity;
-import controly.entity.UserEntity;
 import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
@@ -121,5 +120,15 @@ public class PostController {
     @GetMapping("/{idPost}/points/{idUser}")
     public ResponseEntity<Integer> getUserPointsInPost(@PathVariable Long idPost, @PathVariable Long idUser){
         return ResponseEntity.status(200).body(postService.getUserPointsInPost(idPost, idUser));
+    }
+
+    @GetMapping("/pesquisa/{idTopic}")
+    public ResponseEntity searchFieldTopico(@PathVariable Long idTopic){
+        List<PostEntity> postagem = postService.getTopicoForPost(idTopic);
+
+        if (postagem.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Topico não disponivel");
+
+        return ResponseEntity.status(HttpStatus.OK).body(postagem);
     }
 }
