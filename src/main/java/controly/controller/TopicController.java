@@ -61,7 +61,6 @@ public class TopicController {
     @GetMapping("/user/{idUser}")
     public ResponseEntity<List<SimplifiedTopicResponse>> getTopicsByUser(@PathVariable Long idUser){
         List<SimplifiedTopicResponse> topics = topicService.getTopicsUserFollows(idUser);
-        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't found any topics");
         return ResponseEntity.status(200).body(topics);
     }
 }
