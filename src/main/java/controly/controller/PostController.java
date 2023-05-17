@@ -6,6 +6,7 @@ import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,17 @@ public class PostController {
     public ResponseEntity<List<SimplifiedPostWithContentResponse>> getAllPosts(){
         List<SimplifiedPostWithContentResponse> posts = postService.getAllPosts();
         if (posts == null) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(posts);
+    }
+
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<PostEntity>> getAllPostsPageable(
+            @RequestParam(defaultValue = "1") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "content") String sortBy
+    ){
+        Page<PostEntity> posts = postService.getAllPostsPageable(pageNo, pageSize, sortBy);
+        //if (posts == null) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(posts);
     }
 
@@ -130,5 +142,10 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Topico não disponivel");
 
         return ResponseEntity.status(HttpStatus.OK).body(postagem);
+    }
+
+    @GetMapping("/pesquisa/{idTopic}/pageable")
+    public ResponseEntity searchFieldTopicPageable(@PathVariable Long idTopic){
+        
     }
 }

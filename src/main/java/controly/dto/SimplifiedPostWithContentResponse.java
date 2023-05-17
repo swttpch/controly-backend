@@ -111,6 +111,7 @@ public class SimplifiedPostWithContentResponse {
         setCreatedIn(post.getCreatedIn());
         setIdPost(post.getIdPost());
         setContent(post.getContent());
+        setCreatedIn(post.getCreatedIn());
         return this;
     }
 }

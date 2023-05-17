@@ -9,6 +9,10 @@ import controly.entity.PostEntity;
 import controly.repository.PostPointsRepository;
 import controly.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -128,5 +132,12 @@ public class PostService {
 
     public List<PostEntity> getTopicoForPost(Long idTopic){
         return postRepository.findByTopicIdTopic(idTopic);
+    }
+
+    public Page<PostEntity> getAllPostsPageable(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<PostEntity> postEntityPage = postRepository.findAll(pageable);
+        if (!postEntityPage.hasContent()) return null;
+        return postEntityPage;
     }
 }
