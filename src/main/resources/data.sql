@@ -1,11 +1,80 @@
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('ADMINISTRADOR', 'adm', 'adm@teste.com', '12345678', 1, true);
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('MODERADOR', 'mod', 'mod@teste.com', '12345678', 1, true);
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('USUARIO', 'usr', 'usr@teste.com', '12345678', 1, true);
-insert into tb_user (name, nickname, email, password, avatar, is_active) values ('Donilo', 'Don616', 'donilo.pontes@bandtec.com.br', '12345678', 5, true);
+insert into tb_user (name, nickname, email, password, avatar, is_active) values ('Donilo', 'Don616', 'contato.pontes@bandtec.com.br', '12345678', 5, true);
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('Hanna', 'H4nn4', 'hanna.santos@bandtec.com.br', '12345678', 4, true);
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('Letícia', 'Let1ci4', 'leticia.costa@bandtec.com.br', '12345678', 3, true);
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('Igor', '1g0r', 'igor.gsouza@bandtec.com.br', '12345678', 7, true);
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('Matheus', 'M4th3us', 'matheus.cantero@bandtec.com.br', '12345678', 10, true);
 insert into tb_user (name, nickname, email, password, avatar, is_active) values ('Lucas', 'Lacerda', 'lucas.lacerda@bandtec.com.br', '12345678', 8, true);
 
+insert into tb_topic (name, about, created_at, svg) values ('topico1', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds', '2022-10-22', '1');
+insert into tb_topic (name, about, created_at, svg) values ('topico2', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds', '2022-10-22', '2');
+insert into tb_topic (name, about, created_at, svg) values ('topico3', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds', '2022-10-22', '3');
 
+insert into tb_post ( title, content, id_user, id_topic) values ('Discussao1', 'content da postagem1', 1 , 3);
+insert into tb_post ( title, content, id_user, id_topic) values ('Discussao2', 'content da postagem1', 2 , 2);
+insert into tb_post ( title, content, id_user, id_topic) values ('Como posso resolver este bug no java?', 'Como posso resolver est', 4 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('Não consigo aprender REACT', 'xxxxxxxxxxxxxx', 5 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('Me ajude com o Git!', 'xxxxxxxxxxxxxx', 6 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('O que é nullpointerexception?', 'xxxxxxxxxxxxxx', 7 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('Como faz para fazer delete sem where?', 'xxxxxxxxxxxxxx', 8 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('O que é memória RAM?', 'xxxxxxxxxxxxxx', 9 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('Duvidas com Laravel', 'cxxxxxxxxxxxxxx', 2 , 1);
+insert into tb_post (title, content, id_user, id_topic) values ('Não estou entendendo este código', 'xxxxxxxxxxxxxx', 8 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('Quanto ganha um engenheiro DevOps?', 'xxxxxxxxxxxxxx', 7 , 1);
+insert into tb_post (title, content, id_user, id_topic) values ('Qual cor melhor pra esta tela?', 'xxxxxxxxxxxxxx', 5 , 1);
+insert into tb_post ( title, content, id_user, id_topic) values ('Onde posso estudar?', 'xxxxxxxxxxxxxx', 4 , 1);
+
+insert into tb_post_points (id_post, id_user, points) values (1, 1, -1);
+insert into tb_post_points (id_post, id_user, points) values (1, 2, 1);
+insert into tb_post_points (id_post, id_user, points) values (1, 3, -1);
+insert into tb_post_points (id_post, id_user, points) values (2, 1, 1);
+insert into tb_post_points (id_post, id_user, points) values (2, 2, 1);
+insert into tb_post_points (id_post, id_user, points) values (2, 3, -1);
+insert into tb_post_points (id_post, id_user, points) values (3, 1, 1);
+insert into tb_post_points (id_post, id_user, points) values (3, 2, 1);
+insert into tb_post_points (id_post, id_user, points) values (3, 3, 1);
+
+insert into tb_topic_has_followers (id_user, id_topic) values (1, 1);
+insert into tb_topic_has_followers (id_user, id_topic) values (1, 2);
+insert into tb_topic_has_followers (id_user, id_topic) values (1, 3);
+insert into tb_topic_has_followers (id_user, id_topic) values (2, 1);
+insert into tb_topic_has_followers (id_user, id_topic) values (2, 2);
+insert into tb_topic_has_followers (id_user, id_topic) values (3, 1);
+
+insert into tb_comment (content, id_user, id_post) values ('Comentário1 na postagem1', 1, 1);
+insert into tb_comment (content, id_user, id_post) values ('Comentário2 na postagem1', 2, 1);
+insert into tb_comment (content, id_user, id_post) values ('Comentário3 na postagem1', 3, 1);
+insert into tb_comment (content, id_user, id_post) values ('Comentário1 na postagem2', 1, 2);
+insert into tb_comment (content, id_user, id_post) values ('Comentário2 na postagem2', 2, 2);
+insert into tb_comment (content, id_user, id_post) values ('Comentário1 na postagem3', 1, 3);
+insert into tb_comment (content, id_user, id_post) values ('Comentário2 na postagem3', 2, 3);
+insert into tb_comment (content, id_user, id_post) values ('Comentário3 na postagem3', 3, 3);
+insert into tb_comment (content, id_user, id_post) values ('Comentário4 na postagem3', 3, 3);
+
+--insert into tb_comment_points(id_comment, id_user) values (1, 1,);
+--insert into tb_comment_points(id_comment, id_user) values (1, 2, );
+--insert into tb_comment_points(id_comment, id_user) values (1, 3, );
+--insert into tb_comment_points(id_comment, id_user) values (2, 1,);
+--insert into tb_comment_points(id_comment, id_user) values (2, 2,);
+--insert into tb_comment_points(id_comment, id_user) values (2, 3, );
+--insert into tb_comment_points(id_comment, id_user) values (3, 1,);
+--insert into tb_comment_points(id_comment, id_user) values (3, 2, );
+--insert into tb_comment_points(id_comment, id_user) values (3, 3, );
+--insert into tb_comment_points(id_comment, id_user) values (4, 1, );
+--insert into tb_comment_points(id_comment, id_user) values (4, 2,);
+--insert into tb_comment_points(id_comment, id_user) values (4, 3,);
+--insert into tb_comment_points(id_comment, id_user) values (5, 1,);
+--insert into tb_comment_points(id_comment, id_user) values (5, 2, );
+--insert into tb_comment_points(id_comment, id_user) values (5, 3,);
+--insert into tb_comment_points(id_comment, id_user) values (6, 1, );
+--insert into tb_comment_points(id_comment, id_user) values (6, 2,);
+--insert into tb_comment_points(id_comment, id_user) values (6, 3, );
+--insert into tb_comment_points(id_comment, id_user) values (7, 1,);
+--insert into tb_comment_points(id_comment, id_user) values (7, 2, );
+--insert into tb_comment_points(id_comment, id_user) values (7, 3,);
+--insert into tb_comment_points(id_comment, id_user) values (8, 1,);
+--insert into tb_comment_points(id_comment, id_user) values (8, 2,);
+
+--insert into tb_resposta_duvida (resolvido, resolvido_em, id_resposta, id_post) values (1, '2022-10-22', 8,);
