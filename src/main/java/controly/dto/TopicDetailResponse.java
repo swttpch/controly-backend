@@ -14,6 +14,8 @@ public class TopicDetailResponse {
     private LocalDate createdAt = new TopicEntity().getCreatedAt();
     private String svg = new TopicEntity().getSvg();
 
+    private String png = new TopicEntity().getPng();
+
     private Integer countFollowers;
 
 
@@ -47,6 +49,15 @@ public class TopicDetailResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public String getPng() {
+        return png;
+    }
+
+    public void setPng(String png) {
+        this.png = png;
     }
 
     public String getAbout() {

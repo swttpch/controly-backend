@@ -23,6 +23,9 @@ public class TopicEntity {
     @NotNull
     private String svg;
 
+    @NotNull
+    private String png;
+
     public LocalDate getCreatedAt() {
         return createdAt;
     }
@@ -61,5 +64,13 @@ public class TopicEntity {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getPng() {
+        return png;
+    }
+
+    public void setPng(String png) {
+        this.png = png;
     }
 }

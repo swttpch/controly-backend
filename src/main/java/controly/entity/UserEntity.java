@@ -22,6 +22,8 @@ public class UserEntity implements Serializable {
 
     private String avatar;
 
+    private String avatarPNG;
+
     @JsonIgnore
     private String password;
 
@@ -89,6 +91,14 @@ public class UserEntity implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getAvatarPNG() {
+        return avatarPNG;
+    }
+
+    public void setAvatarPNG(String avatarPNG) {
+        this.avatarPNG = avatarPNG;
     }
 
     public String getPassword() {

@@ -10,6 +10,10 @@ import controly.mapper.TopicMapper;
 import controly.repository.TopicHasFollowersRepository;
 import controly.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,9 +42,10 @@ public class TopicService {
     public TopicService() {
     }
 
-    public List<TopicEntity> getAllTopics() {
-        List<TopicEntity> topics = topicRepository.findAll();
-        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Didn't fould any topics");
+    public Page<TopicEntity> getAllTopics(Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Page<TopicEntity> topics = topicRepository.findAll(pageable);
+        if (!topics.hasContent()) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Didn't fould any topics");
         return topics;
     }
 
