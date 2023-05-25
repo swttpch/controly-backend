@@ -6,6 +6,8 @@ public class SimplifiedUserResponse {
     private String nickname;
     private String avatar;
 
+    private String avatarPNG;
+
     private String about;
 
     public String getAbout() {
@@ -46,5 +48,13 @@ public class SimplifiedUserResponse {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getAvatarPNG() {
+        return avatarPNG;
+    }
+
+    public void setAvatarPNG(String avatarPNG) {
+        this.avatarPNG = avatarPNG;
     }
 }

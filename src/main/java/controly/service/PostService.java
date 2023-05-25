@@ -79,6 +79,31 @@ public class PostService {
         points.setPost(post);
         postPointsRepository.save(points);
     }
+
+    public PostPointResponse processSetPointForPostBool(Long idPost, Long idUser){
+
+        PostPointResponse postPointResponse = new PostPointResponse();
+        UserEntity user = userService.getUserById(idUser);
+        PostEntity post = getPostById(idPost);
+        postPointResponse.setPost(post);
+        postPointResponse.setUser(user);
+
+        Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(idPost, idUser);
+
+        if(points.isPresent()){
+            postPointsRepository.delete(points.get());
+            postPointResponse.setPoint(false);
+            return postPointResponse;
+        } else {
+            PostPointsEntity newPoint = new PostPointsEntity();
+            newPoint.setPoints(1);
+            newPoint.setUser(user);
+            newPoint.setPost(post);
+            postPointsRepository.save(newPoint);
+            postPointResponse.setPoint(true);
+            return postPointResponse;
+        }
+    }
     @Transactional
     public int deletePost(Long idPost) {
         PostEntity post = getPostById(idPost);

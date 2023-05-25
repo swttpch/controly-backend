@@ -100,9 +100,9 @@ public class PostController {
     }
 
     @PutMapping("/rise/{idPost}/{idUser}")
-    public ResponseEntity<String> risePost(@PathVariable Long idPost, @PathVariable Long idUser){
-        postService.processSetPointForPost(idPost, idUser, 1);
-        return ResponseEntity.status(200).body(String.format("Point %d set to post with id %d.", 1, idPost));
+    public ResponseEntity<PostPointResponse> risePost(@PathVariable Long idPost, @PathVariable Long idUser){
+        PostPointResponse response = postService.processSetPointForPostBool(idPost, idUser);
+        return ResponseEntity.status(200).body(response);
     }
 
     @PutMapping("/down/{idPost}/{idUser}")
@@ -146,6 +146,6 @@ public class PostController {
 
     @GetMapping("/pesquisa/{idTopic}/pageable")
     public ResponseEntity searchFieldTopicPageable(@PathVariable Long idTopic){
-        
+        return null;
     }
 }

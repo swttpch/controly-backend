@@ -12,6 +12,8 @@ public class UpdateUsersInfoRequest {
 
     private String avatar;
 
+    private String avatarPNG;
+
     private String email;
 
     public String getName() {
@@ -32,6 +34,10 @@ public class UpdateUsersInfoRequest {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    public String getAvatarPNG() {
+        return avatarPNG;
     }
 
     public String getEmail() {
