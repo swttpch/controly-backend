@@ -5,6 +5,7 @@ import controly.dto.TopicDetailResponse;
 import controly.entity.TopicEntity;
 import controly.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,9 @@ public class TopicController {
     public TopicController() {
     }
 
+    //@PostMapping
+    //public ResponseEntity<>
+
     @GetMapping("/{idTopic}")
     public ResponseEntity<TopicDetailResponse> getTopicById(@PathVariable long idTopic){
         TopicDetailResponse topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(idTopic));
@@ -33,14 +37,20 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TopicDetailResponse>> getAllTopics(){
-        List<TopicEntity> topics = topicService.getAllTopics();
-        if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't found any topics");
-        List<TopicDetailResponse> topicDetailResponseList =
-                topics.stream()
-                        .map(topic-> topicService.getTopicDetailedFromTopicEntity(topic))
-                        .collect(Collectors.toList());
-        return ResponseEntity.status(200).body(topicDetailResponseList);
+    public ResponseEntity<Page<TopicEntity>> getAllTopics(
+            @RequestParam(defaultValue = "1") Integer pageNo,
+            @RequestParam(defaultValue = "1") Integer pageSize,
+            @RequestParam(defaultValue = "name") String sortBy){
+
+        Page<TopicEntity> topics = topicService.getAllTopics(pageNo, pageSize, sortBy);
+        //if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't found any topics");
+
+        //List<TopicDetailResponse> topicDetailResponseList =
+        //        topics.stream()
+        //                .map(topic-> topicService.getTopicDetailedFromTopicEntity(topic))
+        //                .collect(Collectors.toList());
+        //return ResponseEntity.status(200).body(topicDetailResponseList);
+        return ResponseEntity.status(200).body(topics);
     }
 
     @PutMapping("/{idTopic}/{idUser}")

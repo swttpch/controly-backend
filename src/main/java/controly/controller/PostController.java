@@ -6,6 +6,7 @@ import controly.service.DoubtService;
 import controly.service.PostService;
 import controly.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +54,17 @@ public class PostController {
         return ResponseEntity.status(200).body(posts);
     }
 
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<PostEntity>> getAllPostsPageable(
+            @RequestParam(defaultValue = "1") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "content") String sortBy
+    ){
+        Page<PostEntity> posts = postService.getAllPostsPageable(pageNo, pageSize, sortBy);
+        //if (posts == null) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(posts);
+    }
+
 
     @GetMapping("/{idPost}")
     public ResponseEntity<PostDetailedResponse> getPostById(@PathVariable Long idPost){
@@ -88,9 +100,9 @@ public class PostController {
     }
 
     @PutMapping("/rise/{idPost}/{idUser}")
-    public ResponseEntity<String> risePost(@PathVariable Long idPost, @PathVariable Long idUser){
-        postService.processSetPointForPost(idPost, idUser, 1);
-        return ResponseEntity.status(200).body(String.format("Point %d set to post with id %d.", 1, idPost));
+    public ResponseEntity<PostPointResponse> risePost(@PathVariable Long idPost, @PathVariable Long idUser){
+        PostPointResponse response = postService.processSetPointForPostBool(idPost, idUser);
+        return ResponseEntity.status(200).body(response);
     }
 
     @PutMapping("/down/{idPost}/{idUser}")
@@ -130,5 +142,10 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Topico não disponivel");
 
         return ResponseEntity.status(HttpStatus.OK).body(postagem);
+    }
+
+    @GetMapping("/pesquisa/{idTopic}/pageable")
+    public ResponseEntity searchFieldTopicPageable(@PathVariable Long idTopic){
+        return null;
     }
 }

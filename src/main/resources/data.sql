@@ -1,3 +1,4 @@
+
 --insert into tb_user (name, nickname, email, password, avatar, is_active) values ('ADMINISTRADOR', 'adm', 'adm@teste.com', '12345678', 1, true);
 --insert into tb_user (name, nickname, email, password, avatar, is_active) values ('MODERADOR', 'mod', 'mod@teste.com', '12345678', 1, true);
 --insert into tb_user (name, nickname, email, password, avatar, is_active) values ('USUARIO', 'usr', 'usr@teste.com', '12345678', 1, true);
@@ -53,6 +54,7 @@
 --insert into tb_comment (content, id_user, id_post) values ('Comentário3 na postagem3', 3, 3);
 --insert into tb_comment (content, id_user, id_post) values ('Comentário4 na postagem3', 3, 3);
 
+
 --insert into tb_comment_points(id_comment, id_user) values (1, 1,);
 --insert into tb_comment_points(id_comment, id_user) values (1, 2, );
 --insert into tb_comment_points(id_comment, id_user) values (1, 3, );
@@ -77,4 +79,3 @@
 --insert into tb_comment_points(id_comment, id_user) values (8, 1,);
 --insert into tb_comment_points(id_comment, id_user) values (8, 2,);
 
---insert into tb_resposta_duvida (resolvido, resolvido_em, id_resposta, id_post) values (1, '2022-10-22', 8,);
