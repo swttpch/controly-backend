@@ -25,6 +25,7 @@ public class GithubUserRequest {
         UserEntity user = new UserEntity();
         user.setName(name);
         user.setAvatar(avatar);
+        user.setAvatarPng(avatar);
         user.setNickname(nickname);
         user.setIdGithub(idGithub);
         user.setEmail(email);

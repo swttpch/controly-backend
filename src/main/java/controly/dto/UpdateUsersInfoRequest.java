@@ -12,7 +12,7 @@ public class UpdateUsersInfoRequest {
 
     private String avatar;
 
-    private String avatarPNG;
+    private String avatarPng;
 
     private String email;
 
@@ -36,8 +36,8 @@ public class UpdateUsersInfoRequest {
         return avatar;
     }
 
-    public String getAvatarPNG() {
-        return avatarPNG;
+    public String getAvatarPng() {
+        return avatarPng;
     }
 
     public String getEmail() {
