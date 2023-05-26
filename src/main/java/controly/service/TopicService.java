@@ -42,7 +42,7 @@ public class TopicService {
     public TopicService() {
     }
 
-    public Page<TopicEntity> getAllTopics(Integer pageNo, Integer pageSize, String sortBy) {
+    public Page<TopicEntity> getAllTopicsPageable(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<TopicEntity> topics = topicRepository.findAll(pageable);
         if (!topics.hasContent()) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Didn't fould any topics");
@@ -113,5 +113,12 @@ public class TopicService {
                 .stream()
                 .map(topic-> getSimplifiedTopic(topic.getTopic()))
                 .collect(Collectors.toList());
+    }
+
+    public List<TopicEntity> getAllTopics() {
+
+        List<TopicEntity> list = topicRepository.findAll();
+        return list;
+
     }
 }

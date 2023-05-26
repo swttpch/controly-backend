@@ -90,11 +90,11 @@ public class PostService {
 
 
         Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(idPost, idUser);
-        Long total = postPointsRepository.count();
+        Long total = postPointsRepository.countByIdPost();
 
         if(points.isPresent()){
             postPointsRepository.delete(points.get());
-            postPointResponse.setPoint(false);
+            postPointResponse.setUserHasVoted(false);
             postPointResponse.setPostPointTotal(total-1);
             return postPointResponse;
         } else {
@@ -103,7 +103,7 @@ public class PostService {
             newPoint.setUser(user);
             newPoint.setPost(post);
             postPointsRepository.save(newPoint);
-            postPointResponse.setPoint(true);
+            postPointResponse.setUserHasVoted(true);
             postPointResponse.setPostPointTotal(total+1);
             return postPointResponse;
         }

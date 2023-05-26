@@ -2,18 +2,18 @@ package controly.dto;
 
 public class PostPointResponse {
 
-    private Boolean point;
+    private Boolean userHasVoted;
     private Long postPointTotal;
 
 
     public PostPointResponse(){}
 
-    public Boolean getPoint() {
-        return point;
+    public Boolean getUserHasVoted() {
+        return userHasVoted;
     }
 
-    public void setPoint(Boolean point) {
-        this.point = point;
+    public void setUserHasVoted(Boolean userHasVoted) {
+        this.userHasVoted = userHasVoted;
     }
 
     public Long getPostPointTotal() {
