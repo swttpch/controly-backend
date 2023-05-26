@@ -89,12 +89,12 @@ jobs:
 
             git checkout main
 
-            OLD_IMAGE=$(cat k8s/templates/backend-deployment.yaml | grep "image:" | sed 's/ //g' | cut -d':' -f2-3)
+            OLD_IMAGE=$(cat k8s/templates/backend.yaml | grep "image:" | sed 's/ //g' | cut -d':' -f2-3)
             echo $OLD_IMAGE
             NEW_IMAGE=$(echo "codelabz/repository:backend-$BRANCH_TAG-$COMMIT_TAG1")
             echo $NEW_IMAGE
-            sed -i "s|$OLD_IMAGE|$NEW_IMAGE|g" k8s/templates/backend-deployment.yaml
-            cat k8s/templates/backend-deployment.yaml
+            sed -i "s|$OLD_IMAGE|$NEW_IMAGE|g" k8s/templates/backend.yaml
+            cat k8s/templates/backend.yaml
             
             git add .
             git commit -m "Update Manifest"
