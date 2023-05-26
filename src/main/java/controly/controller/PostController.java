@@ -105,6 +105,7 @@ public class PostController {
         return ResponseEntity.status(200).body(response);
     }
 
+    @Deprecated
     @PutMapping("/down/{idPost}/{idUser}")
     public ResponseEntity<String> downPost(@PathVariable Long idPost, @PathVariable Long idUser){
         postService.processSetPointForPost(idPost, idUser, -1);

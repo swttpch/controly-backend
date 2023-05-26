@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
@@ -70,6 +71,7 @@ public class PostService {
         return getPostDetailedDtoCommon(post, comments);
     }
 
+    @Deprecated
     public void processSetPointForPost(Long idPost, Long idUser, int point){
         UserEntity user = userService.getUserById(idUser);
         PostEntity post = getPostById(idPost);
@@ -85,14 +87,15 @@ public class PostService {
         PostPointResponse postPointResponse = new PostPointResponse();
         UserEntity user = userService.getUserById(idUser);
         PostEntity post = getPostById(idPost);
-        postPointResponse.setPost(post);
-        postPointResponse.setUser(user);
+
 
         Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(idPost, idUser);
+        Long total = postPointsRepository.count();
 
         if(points.isPresent()){
             postPointsRepository.delete(points.get());
             postPointResponse.setPoint(false);
+            postPointResponse.setPostPointTotal(total-1);
             return postPointResponse;
         } else {
             PostPointsEntity newPoint = new PostPointsEntity();
@@ -101,6 +104,7 @@ public class PostService {
             newPoint.setPost(post);
             postPointsRepository.save(newPoint);
             postPointResponse.setPoint(true);
+            postPointResponse.setPostPointTotal(total+1);
             return postPointResponse;
         }
     }
