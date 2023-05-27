@@ -6,7 +6,7 @@ public class SimplifiedUserResponse {
     private String nickname;
     private String avatar;
 
-    private String avatarPNG;
+    private String avatarPng;
 
     private String about;
 
@@ -50,11 +50,11 @@ public class SimplifiedUserResponse {
         this.avatar = avatar;
     }
 
-    public String getAvatarPNG() {
-        return avatarPNG;
+    public String getAvatarPng() {
+        return avatarPng;
     }
 
-    public void setAvatarPNG(String avatarPNG) {
-        this.avatarPNG = avatarPNG;
+    public void setAvatarPng(String avatarPng) {
+        this.avatarPng = avatarPng;
     }
 }

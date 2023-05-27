@@ -37,12 +37,21 @@ public class TopicController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<TopicEntity>> getAllTopics(
+    public ResponseEntity<List<TopicEntity>> getAllTopics(){
+        List<TopicEntity> list = topicService.getAllTopics();
+        if(list.isEmpty()){
+            return ResponseEntity.status(204).body(list);
+        }
+        return ResponseEntity.status(200).body(list);
+    }
+
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<TopicEntity>> getAllTopicsPageable(
             @RequestParam(defaultValue = "1") Integer pageNo,
             @RequestParam(defaultValue = "1") Integer pageSize,
             @RequestParam(defaultValue = "name") String sortBy){
 
-        Page<TopicEntity> topics = topicService.getAllTopics(pageNo, pageSize, sortBy);
+        Page<TopicEntity> topics = topicService.getAllTopicsPageable(pageNo, pageSize, sortBy);
         //if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't found any topics");
 
         //List<TopicDetailResponse> topicDetailResponseList =

@@ -67,7 +67,13 @@ public class UserService {
 
     public SimplifiedUserResponse getSimplifiedUser(UserEntity user){
         SimplifiedUserResponse simplifiedUser = new SimplifiedUserResponse();
-        userMapper.getDtoFromUser(user, simplifiedUser);
+        simplifiedUser.setIdUser(user.getIdUser());
+        simplifiedUser.setNickname(user.getNickname());
+        simplifiedUser.setName(user.getName());
+        simplifiedUser.setAbout(user.getAbout());
+        simplifiedUser.setAvatar(user.getAvatar());
+        simplifiedUser.setAvatarPng(user.getAvatarPng());
+//        userMapper.getDtoFromUser(user, simplifiedUser);
         return simplifiedUser;
     }
 

@@ -26,6 +26,7 @@ public class CreateNewUserRequest {
         user.setPassword(password);
         user.setName(name);
         user.setAvatar("1");
+        user.setAvatarPng("https://raw.githubusercontent.com/codelabzproject/public/main/img/avatar1.png");
         user.setNickname(nickname);
         return user;
     }

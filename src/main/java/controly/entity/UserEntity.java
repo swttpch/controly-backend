@@ -22,7 +22,7 @@ public class UserEntity implements Serializable {
 
     private String avatar;
 
-    private String avatarPNG;
+    private String avatarPng;
 
     @JsonIgnore
     private String password;
@@ -93,12 +93,12 @@ public class UserEntity implements Serializable {
         this.avatar = avatar;
     }
 
-    public String getAvatarPNG() {
-        return avatarPNG;
+    public String getAvatarPng() {
+        return this.avatarPng;
     }
 
-    public void setAvatarPNG(String avatarPNG) {
-        this.avatarPNG = avatarPNG;
+    public void setAvatarPng(String avatarPng) {
+        this.avatarPng = avatarPng;
     }
 
     public String getPassword() {
