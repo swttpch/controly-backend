@@ -1,8 +1,12 @@
 package controly.dto;
 
 import controly.entity.PostEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SimplifiedPostResponse {
+
+
     private Long idPost;
     private String title;
     private SimplifiedUserResponse owner;

@@ -2,11 +2,15 @@ package controly.dto;
 
 import controly.entity.CommentEntity;
 import controly.entity.DoubtsAnswerEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 public class DoubtsAnswerResponse {
+
+
     private Long idAnswer;
     private boolean isSolved;
     private LocalDateTime solvedIn;

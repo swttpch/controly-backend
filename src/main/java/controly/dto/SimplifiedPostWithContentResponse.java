@@ -1,10 +1,14 @@
 package controly.dto;
 
 import controly.entity.PostEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
 public class SimplifiedPostWithContentResponse {
+
+
     private Long idPost;
     private String title;
     private String content;
@@ -13,6 +17,7 @@ public class SimplifiedPostWithContentResponse {
     private SimplifiedTopicResponse topic;
     private boolean isDoubt;
     private int points;
+    private boolean userHasVoted;
 
     private LocalDateTime createdIn;
 
@@ -21,6 +26,8 @@ public class SimplifiedPostWithContentResponse {
                                   SimplifiedUserResponse user) {
         this.convert(post, topic, user);
     }
+
+    public SimplifiedPostWithContentResponse(){}
 
     public int getComments() {
         return comments;
@@ -92,6 +99,14 @@ public class SimplifiedPostWithContentResponse {
 
     public void setCreatedIn(LocalDateTime createdIn) {
         this.createdIn = createdIn;
+    }
+
+    public boolean isUserHasVoted() {
+        return userHasVoted;
+    }
+
+    public void setUserHasVoted(boolean userHasVoted) {
+        this.userHasVoted = userHasVoted;
     }
 
     public SimplifiedPostWithContentResponse convert(PostEntity post,

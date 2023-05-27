@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -15,6 +17,8 @@ import java.util.Set;
 
 @Entity @Table(name = "tbComment") @NoArgsConstructor @AllArgsConstructor
 public class CommentEntity implements Serializable {
+
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "idComment")

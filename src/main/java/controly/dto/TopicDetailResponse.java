@@ -1,10 +1,14 @@
 package controly.dto;
 
 import controly.entity.TopicEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 
 public class TopicDetailResponse {
+
+
 
     private Long idTopic = new TopicEntity().getIdTopic();
 

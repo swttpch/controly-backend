@@ -2,6 +2,7 @@ package controly.controller;
 
 
 import controly.config.Constant;
+import controly.config.LoggerConfig;
 import controly.dto.DataGithubPostRequest;
 import controly.dto.GithubUserRequest;
 import controly.dto.LoginRequest;
@@ -15,10 +16,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
+
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 public class AuthController {
+
+
     @Autowired
     private AuthService authService;
     @Autowired
@@ -26,6 +31,7 @@ public class AuthController {
 
     @PostMapping()
     public ResponseEntity<String> login(@RequestBody LoginRequest login){
+        LoggerConfig.getLogger().info("Teste de Log!!!");
         UserEntity user = authService.login(login.getEmail(), login.getPassword());
         if (user==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
         return ResponseEntity.status(200).body(user.getToken());

@@ -1,10 +1,14 @@
 package controly.entity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tbCommentPoints")
 public class CommentPointsEntity {
+
     @EmbeddedId
     final private CommentPointsId id = new CommentPointsId();
 

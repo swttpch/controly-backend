@@ -1,5 +1,6 @@
 package controly.service;
 
+import controly.config.LoggerConfig;
 import controly.dto.*;
 import controly.entity.TopicEntity;
 import controly.entity.UserEntity;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +50,33 @@ public class PostService {
         return postEntityList.stream()
                 .map(this::getSimplifiedWithContentPost)
                 .collect(Collectors.toList());
+    }
+
+    public List<SimplifiedPostWithContentResponse> getAllPosts(Long idUser) {
+        LoggerConfig.getLogger().info("Inside getAllPosts whith idUser");
+        List<PostEntity> postEntityList = postRepository.findAll();
+        List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
+        for(int i = 0; i < postEntityList.size(); i++){
+
+            PostPointResponse postPointResponse = this.processSetPointForPostBool(postEntityList.get(i).getIdPost(),idUser);
+            SimplifiedPostWithContentResponse response = new SimplifiedPostWithContentResponse();
+            response.setIdPost(postEntityList.get(i).getIdPost());
+            response.setComments(postEntityList.get(i).getComments().size());
+            response.setCreatedIn(postEntityList.get(i).getCreatedIn());
+            response.setContent(postEntityList.get(i).getContent());
+            response.setTitle(postEntityList.get(i).getTitle());
+            response.setOwner(new SimplifiedUserResponse().convert(postEntityList.get(i).getOwner()));
+            response.setDoubt(postEntityList.get(i).isDoubt());
+            response.setUserHasVoted(postPointResponse.getUserHasVoted());
+            response.setPoints(Math.toIntExact(postPointResponse.getPostPointTotal()));
+            response.setTopic(new SimplifiedTopicResponse().convert(postEntityList.get(i).getTopic()));
+
+            newList.add(response);
+
+        }
+
+
+        return newList;
     }
 
     public PostDetailedResponse getPostDetailedDtoCommon(PostEntity post, List<SimplifiedCommentResponse> comments){

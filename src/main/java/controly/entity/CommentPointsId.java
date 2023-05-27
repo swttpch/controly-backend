@@ -2,6 +2,8 @@ package controly.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -11,6 +13,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentPointsId implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private Long idComment;

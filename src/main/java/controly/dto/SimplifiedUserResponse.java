@@ -1,6 +1,12 @@
 package controly.dto;
 
+import controly.entity.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SimplifiedUserResponse {
+
+
     private Long idUser;
     private String name;
     private String nickname;
@@ -56,5 +62,17 @@ public class SimplifiedUserResponse {
 
     public void setAvatarPng(String avatarPng) {
         this.avatarPng = avatarPng;
+    }
+
+    public SimplifiedUserResponse convert(UserEntity userEntity){
+        SimplifiedUserResponse simplifiedUserResponse = new SimplifiedUserResponse();
+        simplifiedUserResponse.setAbout(userEntity.getAbout());
+        simplifiedUserResponse.setAvatar(userEntity.getAvatar());
+        simplifiedUserResponse.setIdUser(userEntity.getIdUser());
+        simplifiedUserResponse.setName(userEntity.getName());
+        simplifiedUserResponse.setNickname(userEntity.getNickname());
+        simplifiedUserResponse.setAvatarPng(userEntity.getAvatarPng());
+
+        return simplifiedUserResponse;
     }
 }

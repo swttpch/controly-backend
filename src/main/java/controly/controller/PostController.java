@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,6 +21,7 @@ import java.util.List;
 @RequestMapping("/posts")
 @CrossOrigin(origins = "*")
 public class PostController {
+
     @Autowired
     private CommentService commentService;
     @Autowired
@@ -48,8 +50,14 @@ public class PostController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<SimplifiedPostWithContentResponse>> getAllPosts(){
-        List<SimplifiedPostWithContentResponse> posts = postService.getAllPosts();
+    public ResponseEntity<List<SimplifiedPostWithContentResponse>> getAllPosts(@RequestParam(required = false) Long idUser){
+        List<SimplifiedPostWithContentResponse> posts = new ArrayList<>();
+        if(idUser==null){
+           posts = postService.getAllPosts();
+        } else {
+            posts = postService.getAllPosts(idUser);
+        }
+
         if (posts == null) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(posts);
     }

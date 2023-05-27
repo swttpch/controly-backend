@@ -1,8 +1,13 @@
 package controly.dto;
 
 import controly.entity.PostEntity;
+import controly.entity.TopicEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SimplifiedTopicResponse {
+
+
     private Long idTopic;
     private String name;
     private String svg;
@@ -29,5 +34,13 @@ public class SimplifiedTopicResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public SimplifiedTopicResponse convert(TopicEntity topicEntity){
+        SimplifiedTopicResponse simplifiedTopicResponse = new SimplifiedTopicResponse();
+        simplifiedTopicResponse.setIdTopic(topicEntity.getIdTopic());
+        simplifiedTopicResponse.setName(topicEntity.getName());
+        simplifiedTopicResponse.setSvg(topicEntity.getSvg());
+        return simplifiedTopicResponse;
     }
 }

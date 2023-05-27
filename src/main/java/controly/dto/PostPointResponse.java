@@ -1,6 +1,11 @@
 package controly.dto;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PostPointResponse {
+
+
 
     private Boolean userHasVoted;
     private Long postPointTotal;

@@ -3,10 +3,14 @@ package controly.dto;
 import controly.entity.PostEntity;
 import controly.entity.TopicEntity;
 import controly.entity.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 
 public class CreatePostRequest {
+
+
     @NotNull
     private String title;
     @NotNull

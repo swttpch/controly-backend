@@ -3,10 +3,14 @@ package controly.dto;
 import controly.entity.TopicEntity;
 import controly.entity.UserEntity;
 import controly.entity.PostEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class UserProfileResponse {
+
+
 
     private SimplifiedUserResponse user;
     private List<SimplifiedPostResponse> posts;

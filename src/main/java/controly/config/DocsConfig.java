@@ -1,6 +1,8 @@
 package controly.config;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ import java.io.IOException;
 @RestController
 @Configuration
 public class DocsConfig {
+
 
 
     @Hidden

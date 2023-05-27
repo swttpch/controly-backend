@@ -1,6 +1,8 @@
 package controly.config;
 
+
 public class Constant {
+
     public static final String IDNOTFOUND = "Id not fould.";
     public static final String GITHUB_AUTH_ACCESSTOKEN_URL = "https://github.com/login/oauth/access_token";
     public static final String CLIENT_ID = "47ef8a50aecc707614f3";

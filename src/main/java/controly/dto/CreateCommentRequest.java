@@ -3,11 +3,15 @@ package controly.dto;
 import controly.entity.CommentEntity;
 import controly.entity.PostEntity;
 import controly.entity.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class CreateCommentRequest {
+
+
     @NotNull
     private String content;
     @NotNull

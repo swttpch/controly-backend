@@ -9,6 +9,8 @@ import controly.service.ProfileService;
 import controly.service.UserService;
 import controly.dto.PasswordRecoveryRequest;
 import controly.service.PasswordRecoveryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import java.util.List;
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
 public class UserController {
+
     @Autowired
     private UserService userService;
     @Autowired  
