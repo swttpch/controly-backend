@@ -90,7 +90,7 @@ public class PostService {
 
 
         Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(idPost, idUser);
-        Long total = postPointsRepository.countByIdPost();
+        Long total = postPointsRepository.countByPost_IdPost(idPost);
 
         if(points.isPresent()){
             postPointsRepository.delete(points.get());

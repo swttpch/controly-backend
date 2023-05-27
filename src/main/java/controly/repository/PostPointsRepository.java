@@ -9,6 +9,6 @@ public interface PostPointsRepository extends JpaRepository<PostPointsEntity, Lo
     @Query(value = "SELECT m FROM PostPointsEntity m WHERE m.post.idPost = ?1 AND m.user.idUser = ?2")
     Optional<PostPointsEntity> existByPostAndUser(Long idPost, Long idUser);
 
-    Long countByIdPost();
+    Long countByPost_IdPost(Long idPost);
 }
 

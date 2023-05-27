@@ -7,11 +7,11 @@
 --insert into tb_user (name, nickname, email, password, avatar, is_active, avatar_png) values ('Igor', '1g0r', 'igor.gsouza@bandtec.com.br', '12345678', '7', true, '1');
 --insert into tb_user (name, nickname, email, password, avatar, is_active, avatar_png) values ('Matheus', 'M4th3us', 'matheus.cantero@bandtec.com.br', '12345678', '10', true, '1');
 --insert into tb_user (name, nickname, email, password, avatar, is_active, avatar_png) values ('Lucas', 'Lacerda', 'lucas.lacerda@bandtec.com.br', '12345678', '8', true, '1');
-
+--
 --insert into tb_topic (name, about, created_at, svg, png) values ('topico1', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds', '2022-10-22', '1', '1');
 --insert into tb_topic (name, about, created_at, svg, png) values ('topico2', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds', '2022-10-22', '2', '2');
 --insert into tb_topic (name, about, created_at, svg, png) values ('topico3', 'Lorem inpsom ajasa sdiasnx icjmxxjsa sddiownds', '2022-10-22', '3', '3');
-
+--
 --insert into tb_post ( title, content, id_user, id_topic) values ('Discussao1', 'content da postagem1', 1 , 3);
 --insert into tb_post ( title, content, id_user, id_topic) values ('Discussao2', 'content da postagem1', 2 , 2);
 --insert into tb_post ( title, content, id_user, id_topic) values ('Como posso resolver este bug no java?', 'Como posso resolver est', 4 , 1);
@@ -28,10 +28,8 @@
 
 --insert into tb_post_points (id_post, id_user, points) values (1, 1, -1);
 --insert into tb_post_points (id_post, id_user, points) values (1, 2, 1);
---insert into tb_post_points (id_post, id_user, points) values (1, 3, -1);
 --insert into tb_post_points (id_post, id_user, points) values (2, 1, 1);
 --insert into tb_post_points (id_post, id_user, points) values (2, 2, 1);
---insert into tb_post_points (id_post, id_user, points) values (2, 3, -1);
 --insert into tb_post_points (id_post, id_user, points) values (3, 1, 1);
 --insert into tb_post_points (id_post, id_user, points) values (3, 2, 1);
 --insert into tb_post_points (id_post, id_user, points) values (3, 3, 1);
