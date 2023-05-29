@@ -39,7 +39,7 @@ public class TopicController {
         return ResponseEntity.status(200).body(topic);
     }
 
-    @Cacheable("topic")
+    @Cacheable(cacheNames="topics")
     @GetMapping
     public ResponseEntity<List<TopicEntity>> getAllTopics(){
         List<TopicEntity> list = topicService.getAllTopics();
@@ -49,7 +49,7 @@ public class TopicController {
         return ResponseEntity.status(200).body(list);
     }
 
-    @Cacheable("topicPageable")
+    @Cacheable(cacheNames="topicsPageable")
     @GetMapping("/pageable")
     public ResponseEntity<Page<TopicEntity>> getAllTopicsPageable(
             @RequestParam(defaultValue = "1") Integer pageNo,
