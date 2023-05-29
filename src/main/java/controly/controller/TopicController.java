@@ -7,6 +7,7 @@ import controly.service.TopicService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,7 @@ public class TopicController {
         return ResponseEntity.status(200).body(topic);
     }
 
+    @Cacheable("topic")
     @GetMapping
     public ResponseEntity<List<TopicEntity>> getAllTopics(){
         List<TopicEntity> list = topicService.getAllTopics();
@@ -47,6 +49,7 @@ public class TopicController {
         return ResponseEntity.status(200).body(list);
     }
 
+    @Cacheable("topicPageable")
     @GetMapping("/pageable")
     public ResponseEntity<Page<TopicEntity>> getAllTopicsPageable(
             @RequestParam(defaultValue = "1") Integer pageNo,
