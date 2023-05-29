@@ -45,20 +45,13 @@ public class PostService {
     }
 
     public List<SimplifiedPostWithContentResponse> getAllPosts() {
-        List<PostEntity> postEntityList = postRepository.findAll();
-        if (postEntityList.isEmpty()) return null;
-        return postEntityList.stream()
-                .map(this::getSimplifiedWithContentPost)
-                .collect(Collectors.toList());
-    }
-
-    public List<SimplifiedPostWithContentResponse> getAllPosts(Long idUser) {
-        LoggerConfig.getLogger().info("Inside getAllPosts whith idUser");
+        LoggerConfig.getLogger().info("Inside getAllPosts");
         List<PostEntity> postEntityList = postRepository.findAll();
         List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
-        for(int i = 0; i < postEntityList.size(); i++){
 
-            PostPointResponse postPointResponse = this.processSetPointForPostBool(postEntityList.get(i).getIdPost(),idUser);
+        for(int i = 0; i < postEntityList.size(); i++) {
+
+            PostPointResponse postPointResponse = new PostPointResponse();
             SimplifiedPostWithContentResponse response = new SimplifiedPostWithContentResponse();
             response.setIdPost(postEntityList.get(i).getIdPost());
             response.setComments(postEntityList.get(i).getComments().size());
@@ -67,9 +60,53 @@ public class PostService {
             response.setTitle(postEntityList.get(i).getTitle());
             response.setOwner(new SimplifiedUserResponse().convert(postEntityList.get(i).getOwner()));
             response.setDoubt(postEntityList.get(i).isDoubt());
-            response.setUserHasVoted(postPointResponse.getUserHasVoted());
-            response.setPoints(Math.toIntExact(postPointResponse.getPostPointTotal()));
             response.setTopic(new SimplifiedTopicResponse().convert(postEntityList.get(i).getTopic()));
+            Long total = postPointsRepository.countByPost_IdPost(postEntityList.get(i).getIdPost());
+
+            if (total != null) {
+                response.setPoints(Math.toIntExact(total));
+            } else {
+                response.setPoints(0);
+            }
+            response.setUserHasVoted(false);
+
+
+            newList.add(response);
+        }
+        return newList;
+    }
+
+    public List<SimplifiedPostWithContentResponse> getAllPosts(Long idUser) {
+        LoggerConfig.getLogger().info("Inside getAllPosts whith idUser: "+idUser);
+        List<PostEntity> postEntityList = postRepository.findAll();
+        List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
+
+        for(int i = 0; i < postEntityList.size(); i++){
+
+            PostPointResponse postPointResponse = new PostPointResponse();
+            SimplifiedPostWithContentResponse response = new SimplifiedPostWithContentResponse();
+            Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(postEntityList.get(i).getIdPost(), idUser);
+            response.setIdPost(postEntityList.get(i).getIdPost());
+            response.setComments(postEntityList.get(i).getComments().size());
+            response.setCreatedIn(postEntityList.get(i).getCreatedIn());
+            response.setContent(postEntityList.get(i).getContent());
+            response.setTitle(postEntityList.get(i).getTitle());
+            response.setOwner(new SimplifiedUserResponse().convert(postEntityList.get(i).getOwner()));
+            response.setDoubt(postEntityList.get(i).isDoubt());
+            response.setTopic(new SimplifiedTopicResponse().convert(postEntityList.get(i).getTopic()));
+            Long total = postPointsRepository.countByPost_IdPost(postEntityList.get(i).getIdPost());
+
+            if(total!=null){
+                response.setPoints(Math.toIntExact(total));
+            } else {
+                response.setPoints(0);
+            }
+            if(points.isPresent()){
+                response.setUserHasVoted(true);
+            } else {
+                response.setUserHasVoted(false);
+            }
+
 
             newList.add(response);
 
