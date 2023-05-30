@@ -4,7 +4,7 @@ import codelabz.entity.PostEntity;
 
 import java.time.LocalDateTime;
 
-public class SimplifiedPostWithContentResponse {
+public class SimplifiedPostWithContentResponse implements Comparable<SimplifiedPostWithContentResponse> {
 
 
     private Long idPost;
@@ -126,5 +126,10 @@ public class SimplifiedPostWithContentResponse {
         setContent(post.getContent());
         setCreatedIn(post.getCreatedIn());
         return this;
+    }
+
+    @Override
+    public int compareTo(SimplifiedPostWithContentResponse o) {
+        return Integer.compare(o.points,this.points);
     }
 }

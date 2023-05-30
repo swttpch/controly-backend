@@ -17,10 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PostService {
@@ -42,7 +39,7 @@ public class PostService {
         return postRepository.findById(idPost).orElseThrow(PostIdNotFould::new);
     }
 
-    public List<SimplifiedPostWithContentResponse> getAllPosts() {
+    public List<SimplifiedPostWithContentResponse> getAllPosts(Boolean sort) {
         LoggerConfig.getLogger().info("Inside getAllPosts");
         List<PostEntity> postEntityList = postRepository.findAll();
         List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
@@ -71,10 +68,10 @@ public class PostService {
 
             newList.add(response);
         }
-        return newList;
+        return this.sortPosts(newList,sort);
     }
 
-    public List<SimplifiedPostWithContentResponse> getAllPosts(Long idUser) {
+    public List<SimplifiedPostWithContentResponse> getAllPosts(Long idUser, Boolean sort) {
         LoggerConfig.getLogger().info("Inside getAllPosts whith idUser: "+idUser);
         List<PostEntity> postEntityList = postRepository.findAll();
         List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
@@ -111,7 +108,7 @@ public class PostService {
         }
 
 
-        return newList;
+        return this.sortPosts(newList,sort);
     }
 
     public PostDetailedResponse getPostDetailedDtoCommon(PostEntity post, List<SimplifiedCommentResponse> comments){
@@ -232,5 +229,16 @@ public class PostService {
         Page<PostEntity> postEntityPage = postRepository.findAll(pageable);
         if (!postEntityPage.hasContent()) return null;
         return postEntityPage;
+    }
+
+    private List<SimplifiedPostWithContentResponse> sortPosts(List<SimplifiedPostWithContentResponse> lista,
+                                                             Boolean sort){
+        if(sort){
+            Collections.sort(lista);
+            return lista;
+        } else {
+            return lista;
+        }
+
     }
 }

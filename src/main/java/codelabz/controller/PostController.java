@@ -51,12 +51,13 @@ public class PostController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<SimplifiedPostWithContentResponse>> getAllPosts(@RequestParam(required = false) Long idUser){
+    public ResponseEntity<List<SimplifiedPostWithContentResponse>> getAllPosts(@RequestParam(required = false) Long idUser,
+                                                                               @RequestParam(required = false, defaultValue = "false") Boolean sort){
         List<SimplifiedPostWithContentResponse> posts = new ArrayList<>();
         if(idUser==null){
-           posts = postService.getAllPosts();
+           posts = postService.getAllPosts(sort);
         } else {
-            posts = postService.getAllPosts(idUser);
+            posts = postService.getAllPosts(idUser,sort);
         }
 
         if (posts == null) return ResponseEntity.status(204).build();
