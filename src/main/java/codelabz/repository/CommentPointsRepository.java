@@ -12,4 +12,9 @@ public interface CommentPointsRepository extends JpaRepository<CommentPointsEnti
     Optional<CommentPointsEntity> existByCommentAndUser(CommentEntity comment, UserEntity user);
 
 
+    Integer countByCommentAndUser(CommentEntity comment, UserEntity user);
+
+    Integer countByComment(CommentEntity comment);
+
+
 }
