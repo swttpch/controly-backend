@@ -86,6 +86,7 @@ public class TopicService {
         TopicDetailResponse topicDetailResponse = new TopicDetailResponse();
         topicMapper.getDtoFromTopic(topicEntity, topicDetailResponse);
         topicDetailResponse.setSvg(topicEntity.getSvg());
+        topicDetailResponse.setPng(topicEntity.getPng());
         topicDetailResponse.setCreatedAt(topicEntity.getCreatedAt());
         topicDetailResponse.setCountFollowers(
                 getCountFollowersByTopic(topicDetailResponse.getIdTopic())
@@ -99,6 +100,7 @@ public class TopicService {
         simplifiedTopic.setIdTopic(topic.getIdTopic());
         simplifiedTopic.setName(topic.getName());
         simplifiedTopic.setSvg(topic.getSvg());
+        simplifiedTopic.setPng(topic.getPng());
         return simplifiedTopic;
     }
 
