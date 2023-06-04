@@ -8,6 +8,7 @@ public class SimplifiedTopicResponse {
     private Long idTopic;
     private String name;
     private String svg;
+    private String png;
 
     public String getSvg() {
         return svg;
@@ -15,6 +16,14 @@ public class SimplifiedTopicResponse {
 
     public void setSvg(String svg) {
         this.svg = svg;
+    }
+
+    public String getPng() {
+        return png;
+    }
+
+    public void setPng(String png) {
+        this.png = png;
     }
 
     public Long getIdTopic() {
@@ -38,6 +47,7 @@ public class SimplifiedTopicResponse {
         simplifiedTopicResponse.setIdTopic(topicEntity.getIdTopic());
         simplifiedTopicResponse.setName(topicEntity.getName());
         simplifiedTopicResponse.setSvg(topicEntity.getSvg());
+        simplifiedTopicResponse.setPng(topicEntity.getPng());
         return simplifiedTopicResponse;
     }
 }
