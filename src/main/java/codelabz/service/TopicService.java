@@ -59,7 +59,7 @@ public class TopicService {
     public boolean checkIfUserFollowTopic(Long idTopic, Long idUser) {
         TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
         UserEntity user = userService.getUserById(idUser);
-        Optional<TopicHasFollowersEntity> topicHasFollowers = topicHasFollowersRepository.userFollowsTopic(topic,user);
+        Optional<TopicHasFollowersEntity> topicHasFollowers = topicHasFollowersRepository.userFollowsTopic(topic, user);
         return topicHasFollowers.isPresent();
     }
 
@@ -110,7 +110,7 @@ public class TopicService {
         return topicHasFollowersRepository.countFollowersATopicHas(idTopic);
     }
 
-    public TopicDetailResponse getTopicDetailedFromTopicEntity(TopicEntity topicEntity) {
+    public TopicDetailResponse getTopicDetailedFromTopicEntity(TopicEntity topicEntity, Long idUser) {
         TopicDetailResponse topicDetailResponse = new TopicDetailResponse();
         topicMapper.getDtoFromTopic(topicEntity, topicDetailResponse);
         topicDetailResponse.setSvg(topicEntity.getSvg());
@@ -119,6 +119,10 @@ public class TopicService {
         topicDetailResponse.setCountFollowers(
                 getCountFollowersByTopic(topicDetailResponse.getIdTopic())
         );
+        if (idUser != null)
+            topicDetailResponse.setUserHasFollowed(
+                    checkIfUserFollowTopic(topicDetailResponse.getIdTopic(), idUser)
+            );
         return topicDetailResponse;
     }
 

@@ -28,9 +28,9 @@ public class TopicController {
     //@PostMapping
     //public ResponseEntity<>
 
-    @GetMapping("/{idTopic}")
-    public ResponseEntity<TopicDetailResponse> getTopicById(@PathVariable long idTopic) {
-        TopicDetailResponse topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(idTopic));
+    @GetMapping("/{idTopic}/{idUser}")
+    public ResponseEntity<TopicDetailResponse> getTopicById(@PathVariable long idTopic, @PathVariable Long idUser) {
+        TopicDetailResponse topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(idTopic), idUser);
         return ResponseEntity.status(200).body(topic);
     }
 
@@ -81,7 +81,7 @@ public class TopicController {
         }
     }
 
-    @GetMapping("/{idTopic}/{idUser}")
+    @GetMapping("check/{idTopic}/{idUser}")
     public ResponseEntity<Boolean> checkIfUserFollowsTopic(@PathVariable Long idTopic, @PathVariable Long idUser) {
         return ResponseEntity.status(200).body(topicService.checkIfUserFollowTopic(idTopic, idUser));
     }
