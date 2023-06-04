@@ -68,6 +68,15 @@ public class UserController {
         return ResponseEntity.status(200).body("User's data updated.");
     }
 
+    @PutMapping("/mobile/{id}")
+    public ResponseEntity<UserEntity> updateUsersInfoMobile(@PathVariable Long id,
+                                                  @RequestBody @Valid UpdateUsersInfoRequest form) {
+        UserEntity user = userService.updateUsersInfoMobile(id, form);
+        if(user == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong.");
+        return ResponseEntity.status(200).body(user);
+    }
+
 
     @PostMapping("/password-recovery")
     public ResponseEntity<?> passwordRecovery(@RequestBody PasswordRecoveryRequest form) {
