@@ -2,6 +2,7 @@ package codelabz.service;
 
 import codelabz.dto.SimplifiedTopicResponse;
 import codelabz.dto.TopicDetailResponse;
+import codelabz.dto.TopicFollowResponse;
 import codelabz.entity.TopicEntity;
 import codelabz.entity.TopicHasFollowersEntity;
 import codelabz.entity.UserEntity;
@@ -62,27 +63,54 @@ public class TopicService {
         return topicHasFollowers.isPresent();
     }
 
-    public void followTopic(Long idTopic, Long idUser){
+    public void followTopic(Long idTopic, Long idUser) {
         TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
         UserEntity user = userService.getUserById(idUser);
         TopicHasFollowersEntity topicHasFollowers = new TopicHasFollowersEntity();
         topicHasFollowersRepository.save(
                 topicHasFollowers.setFollower(user)
-                    .setTopic(topic)
+                        .setTopic(topic)
         );
     }
 
-    public void unfollowTopico(Long idTopic, Long idUser){
+    public TopicFollowResponse followTopicMobile(Long idTopic, Long idUser) {
+        TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
+        UserEntity user = userService.getUserById(idUser);
+
+        TopicHasFollowersEntity topicHasFollowers = new TopicHasFollowersEntity();
+        topicHasFollowers.setFollower(user);
+        topicHasFollowers.setTopic(topic);
+
+        topicHasFollowersRepository.save(topicHasFollowers);
+
+        TopicFollowResponse topicFollowResponse = new TopicFollowResponse();
+        topicFollowResponse.setFollowedsTotal(getCountFollowersByTopic(idTopic));
+        topicFollowResponse.setUserHasFollowedTopic(checkIfUserFollowTopic(idTopic, idUser));
+
+        return topicFollowResponse;
+    }
+
+    public void unfollowTopico(Long idTopic, Long idUser) {
         TopicHasFollowersEntity topicHasFollowers = topicHasFollowersRepository
                 .findByTopicIdTopicAndUserIdUser(idTopic, idUser);
         topicHasFollowersRepository.delete(topicHasFollowers);
     }
 
-    public Integer getCountFollowersByTopic(Long idTopic){
+    public TopicFollowResponse unfollowTopicoMobile(Long idTopic, Long idUser) {
+        TopicHasFollowersEntity topicHasFollowers = topicHasFollowersRepository
+                .findByTopicIdTopicAndUserIdUser(idTopic, idUser);
+        topicHasFollowersRepository.delete(topicHasFollowers);
+        TopicFollowResponse topicFollowResponse = new TopicFollowResponse();
+        topicFollowResponse.setFollowedsTotal(getCountFollowersByTopic(idTopic));
+        topicFollowResponse.setUserHasFollowedTopic(checkIfUserFollowTopic(idTopic, idUser));
+        return topicFollowResponse;
+    }
+
+    public Integer getCountFollowersByTopic(Long idTopic) {
         return topicHasFollowersRepository.countFollowersATopicHas(idTopic);
     }
 
-    public TopicDetailResponse getTopicDetailedFromTopicEntity(TopicEntity topicEntity){
+    public TopicDetailResponse getTopicDetailedFromTopicEntity(TopicEntity topicEntity) {
         TopicDetailResponse topicDetailResponse = new TopicDetailResponse();
         topicMapper.getDtoFromTopic(topicEntity, topicDetailResponse);
         topicDetailResponse.setSvg(topicEntity.getSvg());
@@ -94,7 +122,7 @@ public class TopicService {
         return topicDetailResponse;
     }
 
-    public SimplifiedTopicResponse getSimplifiedTopic(TopicEntity topic){
+    public SimplifiedTopicResponse getSimplifiedTopic(TopicEntity topic) {
         if (topic == null) return null;
         SimplifiedTopicResponse simplifiedTopic = new SimplifiedTopicResponse();
         simplifiedTopic.setIdTopic(topic.getIdTopic());
@@ -104,15 +132,15 @@ public class TopicService {
         return simplifiedTopic;
     }
 
-    public List<TopicEntity> getAllTopicsByUser(Long idUser){
-        return  topicHasFollowersRepository.findByFollowerIdUser(idUser)
-                        .stream().map(topic-> topic.getTopic()).collect(Collectors.toList());
+    public List<TopicEntity> getAllTopicsByUser(Long idUser) {
+        return topicHasFollowersRepository.findByFollowerIdUser(idUser)
+                .stream().map(topic -> topic.getTopic()).collect(Collectors.toList());
     }
 
     public List<SimplifiedTopicResponse> getTopicsUserFollows(Long idUser) {
-        return  topicHasFollowersRepository.findByFollowerIdUser(idUser)
+        return topicHasFollowersRepository.findByFollowerIdUser(idUser)
                 .stream()
-                .map(topic-> getSimplifiedTopic(topic.getTopic()))
+                .map(topic -> getSimplifiedTopic(topic.getTopic()))
                 .collect(Collectors.toList());
     }
 

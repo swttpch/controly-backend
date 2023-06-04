@@ -155,6 +155,16 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postagem);
     }
 
+    @GetMapping("/pesquisa/mobile/{idTopic}/{idUser}")
+    public ResponseEntity searchFieldTopicoMobile(@PathVariable Long idTopic, @PathVariable Long idUser){
+        List<SimplifiedPostWithContentResponse> postagem = postService.getTopicoForPostMobile(idTopic, idUser);
+
+        if (postagem.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(postagem);
+
+        return ResponseEntity.status(HttpStatus.OK).body(postagem);
+    }
+
     @GetMapping("/pesquisa/{idTopic}/pageable")
     public ResponseEntity searchFieldTopicPageable(@PathVariable Long idTopic){
         return null;
