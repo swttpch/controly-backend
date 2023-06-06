@@ -96,6 +96,16 @@ public class PostController {
         return ResponseEntity.status(200).body(comments);
     }
 
+    @Deprecated
+    @GetMapping("/comment/mobile/{idPost}/{idUser}")
+    public ResponseEntity<List<LikeCommentResponse>> getAllCommentsFromPostInMobile(@PathVariable Long idPost,
+                                                                                          @PathVariable(required = false) Long idUser,
+                                                                                          @RequestParam(required = false, defaultValue = "false") Boolean sort){
+        List<LikeCommentResponse> comments = commentService.getAllCommentsFromPostInMobile(idPost, idUser,sort);
+        if (comments.isEmpty()) return ResponseEntity.status(204).build();
+        return ResponseEntity.status(200).body(comments);
+    }
+
     @GetMapping(value = "/comment/single/{idComment}")
     public ResponseEntity<SimplifiedCommentResponse> getSingleComment(@PathVariable Long idComment){
         SimplifiedCommentResponse comment = commentService.getSingleComment(idComment);
@@ -129,9 +139,23 @@ public class PostController {
         return ResponseEntity.status(200).body(true);
     }
 
+    @PutMapping("/comment/like/mobile/{idComment}/{idUser}")
+    public ResponseEntity<LikeCommentResponse> likeCommentInMobile(@PathVariable Long idComment, @PathVariable Long idUser){
+        LikeCommentResponse response = new LikeCommentResponse();
+        response = commentService.processLikeCommentInMobile(idComment,idUser);
+
+        return ResponseEntity.status(200).body(response);
+    }
+
     @GetMapping("/comment/like/{idComment}/{idUser}")
     public ResponseEntity<Boolean> checkIfCommentHasLikeByUser(@PathVariable Long idComment, @PathVariable Long idUser){
         return ResponseEntity.status(200).body(commentService.checkIfCommentHasLikeByUser(idComment, idUser));
+    }
+
+    @GetMapping("/comment/like/mobile/{idComment}/{idUser}")
+    public ResponseEntity<LikeCommentResponse> checkIfCommentHasLikeByUserInMobile(@PathVariable Long idComment,
+                                                                                   @PathVariable Long idUser){
+        return ResponseEntity.status(200).body(commentService.checkIfCommentHasLikeByUserInMobile(idComment, idUser));
     }
 
     @DeleteMapping("{idPost}")
