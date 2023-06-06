@@ -6,8 +6,6 @@ import java.time.LocalDate;
 
 public class TopicDetailResponse {
 
-
-
     private Long idTopic = new TopicEntity().getIdTopic();
 
     private String name = new TopicEntity().getName();
@@ -19,7 +17,7 @@ public class TopicDetailResponse {
     private String png = new TopicEntity().getPng();
 
     private Integer countFollowers;
-
+    private Boolean userHasFollowed;
 
     public LocalDate getCreatedAt() {
         return createdAt;
@@ -76,5 +74,13 @@ public class TopicDetailResponse {
 
     public void setCountFollowers(Integer countFollowers) {
         this.countFollowers = countFollowers;
+    }
+
+    public Boolean getUserHasFollowed() {
+        return userHasFollowed;
+    }
+
+    public void setUserHasFollowed(Boolean userHasFollowed) {
+        this.userHasFollowed = userHasFollowed;
     }
 }

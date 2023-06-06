@@ -224,6 +224,46 @@ public class PostService {
         return postRepository.findByTopicIdTopic(idTopic);
     }
 
+    public List<SimplifiedPostWithContentResponse> getTopicoForPostMobile(Long idTopic, Long idUser){
+
+        List<PostEntity> postEntityList = postRepository.findByTopicIdTopic(idTopic);
+        List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
+
+        for(int i = 0; i < postEntityList.size(); i++){
+
+            PostPointResponse postPointResponse = new PostPointResponse();
+            SimplifiedPostWithContentResponse response = new SimplifiedPostWithContentResponse();
+            Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(postEntityList.get(i).getIdPost(), idUser);
+            response.setIdPost(postEntityList.get(i).getIdPost());
+            response.setComments(postEntityList.get(i).getComments().size());
+            response.setCreatedIn(postEntityList.get(i).getCreatedIn());
+            response.setContent(postEntityList.get(i).getContent());
+            response.setTitle(postEntityList.get(i).getTitle());
+            response.setOwner(new SimplifiedUserResponse().convert(postEntityList.get(i).getOwner()));
+            response.setDoubt(postEntityList.get(i).isDoubt());
+            response.setTopic(new SimplifiedTopicResponse().convert(postEntityList.get(i).getTopic()));
+            Long total = postPointsRepository.countByPost_IdPost(postEntityList.get(i).getIdPost());
+
+            if(total!=null){
+                response.setPoints(Math.toIntExact(total));
+            } else {
+                response.setPoints(0);
+            }
+            if(points.isPresent()){
+                response.setUserHasVoted(true);
+            } else {
+                response.setUserHasVoted(false);
+            }
+
+
+            newList.add(response);
+
+        }
+
+        return newList;
+    }
+
+
     public Page<PostEntity> getAllPostsPageable(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<PostEntity> postEntityPage = postRepository.findAll(pageable);

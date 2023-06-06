@@ -3,8 +3,8 @@ package codelabz.dto;
 public class DataGithubPostRequest {
 
 
-    public static final String CLIENT_ID = "47ef8a50aecc707614f3";
-    public static final String CLIENT_SECRET = "9347ca50f180d85e751b361e4ea01e8472c594f9";
+    public static final String CLIENT_ID = "9459c70a40c43a0f6736";
+    public static final String CLIENT_SECRET = "fda8ebc347ab48a541164adaa70c36edba001cc7";
     private String code;
 
     public DataGithubPostRequest(String code) {

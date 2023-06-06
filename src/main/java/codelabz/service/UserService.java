@@ -59,6 +59,13 @@ public class UserService {
         return 1;
     }
 
+    public UserEntity updateUsersInfoMobile(Long id, UpdateUsersInfoRequest form) {
+        UserEntity user = this.getUserById(id);
+        userMapper.updateUserFromDto(form, user);
+        userRepository.save(user);
+        return user;
+    }
+
     public int verifyIfEmailExists(String email) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
         return optionalUser.isPresent() ? 1 : 0;
