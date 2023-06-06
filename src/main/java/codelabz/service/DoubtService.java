@@ -1,6 +1,7 @@
 package codelabz.service;
 
 import codelabz.dto.CreatePostRequest;
+import codelabz.dto.LikeCommentResponse;
 import codelabz.dto.SimplifiedPostWithContentResponse;
 import codelabz.entity.CommentEntity;
 import codelabz.entity.PostEntity;

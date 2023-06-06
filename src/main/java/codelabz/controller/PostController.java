@@ -139,6 +139,14 @@ public class PostController {
         return ResponseEntity.status(200).body(true);
     }
 
+    @PutMapping("/comment/like/mobile/{idComment}/{idUser}")
+    public ResponseEntity<LikeCommentResponse> likeCommentInMobile(@PathVariable Long idComment, @PathVariable Long idUser){
+        LikeCommentResponse response = new LikeCommentResponse();
+        response = commentService.processLikeCommentInMobile(idComment,idUser);
+
+        return ResponseEntity.status(200).body(response);
+    }
+
     @GetMapping("/comment/like/{idComment}/{idUser}")
     public ResponseEntity<Boolean> checkIfCommentHasLikeByUser(@PathVariable Long idComment, @PathVariable Long idUser){
         return ResponseEntity.status(200).body(commentService.checkIfCommentHasLikeByUser(idComment, idUser));

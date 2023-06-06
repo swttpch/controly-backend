@@ -149,4 +149,32 @@ public class CommentService {
         }
 
     }
+
+    public LikeCommentResponse processLikeCommentInMobile(Long idComment, Long idUser) {
+        LikeCommentResponse response = new LikeCommentResponse();
+        CommentEntity comment = getCommentById(idComment);
+        if(comment.getIdComment()==idComment){
+            UserEntity user = userService.getUserById(idUser);
+            if(user.getIdUser()==idUser){
+
+                response.setIdUser(idUser);
+                response.setIdComment(idComment);
+
+                if (checkIfCommentHasLikeByUser(idComment, idUser)){
+                    unlikeComment(comment, user);
+                    response.setUserHasVoted(false);
+                }else {
+                    likeComment(comment, user);
+                    response.setUserHasVoted(true);
+                }
+                response.setQuantLikes(comment.getLikes());
+
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Comment not found");
+        }
+        return response;
+    }
 }
