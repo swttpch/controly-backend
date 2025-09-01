@@ -1,8 +1,8 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.CreateNewUserRequest;
-import br.com.controly.dtos.SimplifiedUserResponse;
-import br.com.controly.dtos.UpdateUsersInfoRequest;
+import br.com.controly.dtos.CreateNewUserDTO;
+import br.com.controly.viewmodels.SimplifiedUserViewModel;
+import br.com.controly.dtos.UpdateUsersInfoDTO;
 import br.com.controly.exception.EmailAlreadyExistsException;
 import br.com.controly.exception.UsersIdNotFould;
 import br.com.controly.mappers.UserMapper;
@@ -29,7 +29,7 @@ public class UserService {
     private  final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     @Transactional
-    public UserEntity createNewUser(CreateNewUserRequest newUser) {
+    public UserEntity createNewUser(CreateNewUserDTO newUser) {
         Optional<UserEntity> optionalUser = userRepository.findByEmail(newUser.getEmail());
         if (optionalUser.isPresent()) throw new EmailAlreadyExistsException();
         UserEntity user = newUser.convert();
@@ -54,14 +54,14 @@ public class UserService {
     }
 
 
-    public int updateUsersInfo(Long id, UpdateUsersInfoRequest form) {
+    public int updateUsersInfo(Long id, UpdateUsersInfoDTO form) {
         UserEntity user = this.getUserById(id);
         userMapper.updateUserFromDto(form, user);
         userRepository.save(user);
         return 1;
     }
 
-    public UserEntity updateUsersInfoMobile(Long id, UpdateUsersInfoRequest form) {
+    public UserEntity updateUsersInfoMobile(Long id, UpdateUsersInfoDTO form) {
         UserEntity user = this.getUserById(id);
         userMapper.updateUserFromDto(form, user);
         userRepository.save(user);
@@ -73,8 +73,8 @@ public class UserService {
         return optionalUser.isPresent() ? 1 : 0;
     }
 
-    public SimplifiedUserResponse getSimplifiedUser(UserEntity user){
-        SimplifiedUserResponse simplifiedUser = new SimplifiedUserResponse();
+    public SimplifiedUserViewModel getSimplifiedUser(UserEntity user){
+        SimplifiedUserViewModel simplifiedUser = new SimplifiedUserViewModel();
         simplifiedUser.setIdUser(user.getIdUser());
         simplifiedUser.setNickname(user.getNickname());
         simplifiedUser.setName(user.getName());

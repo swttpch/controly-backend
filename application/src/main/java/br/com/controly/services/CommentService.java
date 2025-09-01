@@ -1,10 +1,10 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.LikeCommentResponse;
-import br.com.controly.dtos.SimplifiedUserResponse;
+import br.com.controly.viewmodels.LikeCommentViewModel;
+import br.com.controly.viewmodels.SimplifiedUserViewModel;
 import br.com.controly.exception.CommentIdNotFould;
-import br.com.controly.dtos.CreateCommentRequest;
-import br.com.controly.dtos.SimplifiedCommentResponse;
+import br.com.controly.dtos.CreateCommentDTO;
+import br.com.controly.viewmodels.SimplifiedCommentViewModel;
 import br.com.controly.jpa.CommentRepository;
 import br.com.controly.jpa.CommentPointsRepository;
 import br.com.controly.domain.entities.CommentEntity;
@@ -45,14 +45,14 @@ public class CommentService {
         return commentRepository.findById(idComment).orElseThrow(CommentIdNotFould::new);
     }
 
-    public SimplifiedCommentResponse getSimplifiedComment(CommentEntity comment) {
+    public SimplifiedCommentViewModel getSimplifiedComment(CommentEntity comment) {
         if (comment == null) return null;
-        SimplifiedUserResponse user = userService.getSimplifiedUser(comment.getOwner());
-        return new SimplifiedCommentResponse(comment, user);
+        SimplifiedUserViewModel user = userService.getSimplifiedUser(comment.getOwner());
+        return new SimplifiedCommentViewModel(comment, user);
     }
 
     @Transactional
-    public SimplifiedCommentResponse createPost(CreateCommentRequest newPost) {
+    public SimplifiedCommentViewModel createPost(CreateCommentDTO newPost) {
         PostEntity post = postService.getPostById(newPost.getIdPost());
         UserEntity user = userService.getUserById(newPost.getIdUser());
         CommentEntity comment = commentRepository.save(newPost.convert(post, user));
@@ -94,10 +94,10 @@ public class CommentService {
         return commentPointsRepository.existByCommentAndUser(comment, user).isPresent();
     }
 
-    public LikeCommentResponse checkIfCommentHasLikeByUserInMobile(Long idComment, Long idUser) {
+    public LikeCommentViewModel checkIfCommentHasLikeByUserInMobile(Long idComment, Long idUser) {
         CommentEntity comment = getCommentById(idComment);
         UserEntity user = userService.getUserById(idUser);
-        LikeCommentResponse response = new LikeCommentResponse();
+        LikeCommentViewModel response = new LikeCommentViewModel();
         response.setIdComment(idComment);
         response.setIdUser(idUser);
         Integer likes = commentPointsRepository.countByCommentAndUser(comment, user);
@@ -115,24 +115,24 @@ public class CommentService {
 
 
 
-    public List<SimplifiedCommentResponse> getAllCommentsFromPost(Long idPost) {
+    public List<SimplifiedCommentViewModel> getAllCommentsFromPost(Long idPost) {
         PostEntity post = postService.getPostById(idPost);
         List<CommentEntity> commentEntities = commentRepository.findByPost(post);
         return commentEntities.stream()
                 .map(this::getSimplifiedComment).collect(Collectors.toList());
     }
 
-    public SimplifiedCommentResponse getSingleComment(Long idComment) {
+    public SimplifiedCommentViewModel getSingleComment(Long idComment) {
         CommentEntity comment = getCommentById(idComment);
         return getSimplifiedComment(comment);
     }
 
 
 
-    public List<LikeCommentResponse> getAllCommentsFromPostInMobile(Long idPost, Long idUser, Boolean sort) {
+    public List<LikeCommentViewModel> getAllCommentsFromPostInMobile(Long idPost, Long idUser, Boolean sort) {
         PostEntity post = postService.getPostById(idPost);
         List<CommentEntity> commentEntities = commentRepository.findByPost(post);
-        List<LikeCommentResponse> newList = new ArrayList<>();
+        List<LikeCommentViewModel> newList = new ArrayList<>();
         for (int i = 0; i < commentEntities.size(); i++) {
 
             newList.add(this.checkIfCommentHasLikeByUserInMobile(commentEntities.get(i).getIdComment(), idUser));
@@ -142,8 +142,8 @@ public class CommentService {
         return this.sortComments(newList,sort);
     }
 
-    private List<LikeCommentResponse> sortComments(List<LikeCommentResponse> lista,
-                                                   Boolean sort){
+    private List<LikeCommentViewModel> sortComments(List<LikeCommentViewModel> lista,
+                                                    Boolean sort){
         if(sort){
             Collections.sort(lista);
             return lista;
@@ -153,8 +153,8 @@ public class CommentService {
 
     }
 
-    public LikeCommentResponse processLikeCommentInMobile(Long idComment, Long idUser) {
-        LikeCommentResponse response = new LikeCommentResponse();
+    public LikeCommentViewModel processLikeCommentInMobile(Long idComment, Long idUser) {
+        LikeCommentViewModel response = new LikeCommentViewModel();
         CommentEntity comment = getCommentById(idComment);
         if(comment.getIdComment()==idComment){
             UserEntity user = userService.getUserById(idUser);

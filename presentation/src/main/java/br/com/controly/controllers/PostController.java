@@ -5,6 +5,7 @@ import br.com.controly.dtos.*;
 import br.com.controly.services.DoubtService;
 import br.com.controly.services.PostService;
 import br.com.controly.services.CommentService;
+import br.com.controly.viewmodels.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -33,27 +34,27 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<SimplifiedPostWithContentResponse> createPost(@RequestBody @Valid CreatePostRequest newPost) {
-        SimplifiedPostWithContentResponse post = postService.createPost(newPost);
+    public ResponseEntity<SimplifiedPostWithContentViewModel> createPost(@RequestBody @Valid CreatePostDTO newPost) {
+        SimplifiedPostWithContentViewModel post = postService.createPost(newPost);
         return ResponseEntity.status(200).body(post);
     }
 
     @PostMapping("/doubt")
-    public ResponseEntity<SimplifiedPostWithContentResponse> createDoubt(@RequestBody @Valid CreatePostRequest newPost) {
-        SimplifiedPostWithContentResponse post = doubtService.createPost(newPost);
+    public ResponseEntity<SimplifiedPostWithContentViewModel> createDoubt(@RequestBody @Valid CreatePostDTO newPost) {
+        SimplifiedPostWithContentViewModel post = doubtService.createPost(newPost);
         return ResponseEntity.status(200).body(post);
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<SimplifiedCommentResponse> createComment(@RequestBody @Valid CreateCommentRequest newComment) {
-        SimplifiedCommentResponse comment = commentService.createPost(newComment);
+    public ResponseEntity<SimplifiedCommentViewModel> createComment(@RequestBody @Valid CreateCommentDTO newComment) {
+        SimplifiedCommentViewModel comment = commentService.createPost(newComment);
         return ResponseEntity.status(200).body(comment);
     }
 
     @GetMapping()
-    public ResponseEntity<List<SimplifiedPostWithContentResponse>> getAllPosts(@RequestParam(required = false) Long idUser,
-                                                                               @RequestParam(required = false, defaultValue = "false") Boolean sort){
-        List<SimplifiedPostWithContentResponse> posts = new ArrayList<>();
+    public ResponseEntity<List<SimplifiedPostWithContentViewModel>> getAllPosts(@RequestParam(required = false) Long idUser,
+                                                                                @RequestParam(required = false, defaultValue = "false") Boolean sort){
+        List<SimplifiedPostWithContentViewModel> posts = new ArrayList<>();
         if(idUser==null){
            posts = postService.getAllPosts(sort);
         } else {
@@ -77,9 +78,9 @@ public class PostController {
 
 
     @GetMapping("/{idPost}")
-    public ResponseEntity<PostDetailedResponse> getPostById(@PathVariable Long idPost){
-        List<SimplifiedCommentResponse> comments = commentService.getAllCommentsFromPost(idPost);
-        PostDetailedResponse post = postService.processGetPostByID(idPost, comments);
+    public ResponseEntity<PostDetailedViewModel> getPostById(@PathVariable Long idPost){
+        List<SimplifiedCommentViewModel> comments = commentService.getAllCommentsFromPost(idPost);
+        PostDetailedViewModel post = postService.processGetPostByID(idPost, comments);
         return ResponseEntity.status(200).body(post);
     }
 
@@ -90,25 +91,25 @@ public class PostController {
     }
 
     @GetMapping("/comment/{idPost}")
-    public ResponseEntity<List<SimplifiedCommentResponse>> getAllCommentsFromPost(@PathVariable Long idPost){
-        List<SimplifiedCommentResponse> comments = commentService.getAllCommentsFromPost(idPost);
+    public ResponseEntity<List<SimplifiedCommentViewModel>> getAllCommentsFromPost(@PathVariable Long idPost){
+        List<SimplifiedCommentViewModel> comments = commentService.getAllCommentsFromPost(idPost);
         if (comments.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(comments);
     }
 
     @Deprecated
     @GetMapping("/comment/mobile/{idPost}/{idUser}")
-    public ResponseEntity<List<LikeCommentResponse>> getAllCommentsFromPostInMobile(@PathVariable Long idPost,
-                                                                                          @PathVariable(required = false) Long idUser,
-                                                                                          @RequestParam(required = false, defaultValue = "false") Boolean sort){
-        List<LikeCommentResponse> comments = commentService.getAllCommentsFromPostInMobile(idPost, idUser,sort);
+    public ResponseEntity<List<LikeCommentViewModel>> getAllCommentsFromPostInMobile(@PathVariable Long idPost,
+                                                                                     @PathVariable(required = false) Long idUser,
+                                                                                     @RequestParam(required = false, defaultValue = "false") Boolean sort){
+        List<LikeCommentViewModel> comments = commentService.getAllCommentsFromPostInMobile(idPost, idUser,sort);
         if (comments.isEmpty()) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(comments);
     }
 
     @GetMapping(value = "/comment/single/{idComment}")
-    public ResponseEntity<SimplifiedCommentResponse> getSingleComment(@PathVariable Long idComment){
-        SimplifiedCommentResponse comment = commentService.getSingleComment(idComment);
+    public ResponseEntity<SimplifiedCommentViewModel> getSingleComment(@PathVariable Long idComment){
+        SimplifiedCommentViewModel comment = commentService.getSingleComment(idComment);
         return ResponseEntity.status(200).body(comment);
     }
 
@@ -120,8 +121,8 @@ public class PostController {
     }
 
     @PutMapping("/rise/{idPost}/{idUser}")
-    public ResponseEntity<PostPointResponse> risePost(@PathVariable Long idPost, @PathVariable Long idUser){
-        PostPointResponse response = postService.processSetPointForPostBool(idPost, idUser);
+    public ResponseEntity<PostPointViewModel> risePost(@PathVariable Long idPost, @PathVariable Long idUser){
+        PostPointViewModel response = postService.processSetPointForPostBool(idPost, idUser);
         return ResponseEntity.status(200).body(response);
     }
 
@@ -140,8 +141,8 @@ public class PostController {
     }
 
     @PutMapping("/comment/like/mobile/{idComment}/{idUser}")
-    public ResponseEntity<LikeCommentResponse> likeCommentInMobile(@PathVariable Long idComment, @PathVariable Long idUser){
-        LikeCommentResponse response = new LikeCommentResponse();
+    public ResponseEntity<LikeCommentViewModel> likeCommentInMobile(@PathVariable Long idComment, @PathVariable Long idUser){
+        LikeCommentViewModel response = new LikeCommentViewModel();
         response = commentService.processLikeCommentInMobile(idComment,idUser);
 
         return ResponseEntity.status(200).body(response);
@@ -153,8 +154,8 @@ public class PostController {
     }
 
     @GetMapping("/comment/like/mobile/{idComment}/{idUser}")
-    public ResponseEntity<LikeCommentResponse> checkIfCommentHasLikeByUserInMobile(@PathVariable Long idComment,
-                                                                                   @PathVariable Long idUser){
+    public ResponseEntity<LikeCommentViewModel> checkIfCommentHasLikeByUserInMobile(@PathVariable Long idComment,
+                                                                                    @PathVariable Long idUser){
         return ResponseEntity.status(200).body(commentService.checkIfCommentHasLikeByUserInMobile(idComment, idUser));
     }
 
@@ -181,7 +182,7 @@ public class PostController {
 
     @GetMapping("/pesquisa/mobile/{idTopic}/{idUser}")
     public ResponseEntity searchFieldTopicoMobile(@PathVariable Long idTopic, @PathVariable Long idUser){
-        List<SimplifiedPostWithContentResponse> postagem = postService.getTopicoForPostMobile(idTopic, idUser);
+        List<SimplifiedPostWithContentViewModel> postagem = postService.getTopicoForPostMobile(idTopic, idUser);
 
         if (postagem.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(postagem);

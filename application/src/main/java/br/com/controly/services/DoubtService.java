@@ -1,7 +1,7 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.CreatePostRequest;
-import br.com.controly.dtos.SimplifiedPostWithContentResponse;
+import br.com.controly.dtos.CreatePostDTO;
+import br.com.controly.viewmodels.SimplifiedPostWithContentViewModel;
 import br.com.controly.jpa.PostRepository;
 import br.com.controly.domain.entities.CommentEntity;
 import br.com.controly.domain.entities.PostEntity;
@@ -28,7 +28,7 @@ public class DoubtService {
         post.setAnswer(comment);
     }
 
-    public SimplifiedPostWithContentResponse createPost(CreatePostRequest newPost) {
+    public SimplifiedPostWithContentViewModel createPost(CreatePostDTO newPost) {
         PostEntity post = postService.convertDtoToPost(newPost);
         post.initDoubt();
         postRepository.save(post);

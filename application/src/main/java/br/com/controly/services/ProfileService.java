@@ -1,6 +1,6 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.UserProfileResponse;
+import br.com.controly.viewmodels.UserProfileViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,8 @@ public class ProfileService {
     @Autowired
     private UserService userService;
 
-    public UserProfileResponse getUserProfile(Long id){
-        UserProfileResponse userProfile = new UserProfileResponse();
+    public UserProfileViewModel getUserProfile(Long id){
+        UserProfileViewModel userProfile = new UserProfileViewModel();
         userProfile.setUser(
                 userService.getSimplifiedUser(userService.getUserById(id))
         );

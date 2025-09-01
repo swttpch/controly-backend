@@ -1,8 +1,8 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.SimplifiedTopicResponse;
-import br.com.controly.dtos.TopicDetailResponse;
-import br.com.controly.dtos.TopicFollowResponse;
+import br.com.controly.viewmodels.SimplifiedTopicViewModel;
+import br.com.controly.viewmodels.TopicDetailViewModel;
+import br.com.controly.viewmodels.TopicFollowViewModel;
 import br.com.controly.exception.TopicIdNotFould;
 import br.com.controly.mappers.TopicMapper;
 import br.com.controly.jpa.TopicHasFollowersRepository;
@@ -73,7 +73,7 @@ public class TopicService {
         );
     }
 
-    public TopicFollowResponse followTopicMobile(Long idTopic, Long idUser) {
+    public TopicFollowViewModel followTopicMobile(Long idTopic, Long idUser) {
         TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
         UserEntity user = userService.getUserById(idUser);
 
@@ -83,7 +83,7 @@ public class TopicService {
 
         topicHasFollowersRepository.save(topicHasFollowers);
 
-        TopicFollowResponse topicFollowResponse = new TopicFollowResponse();
+        TopicFollowViewModel topicFollowResponse = new TopicFollowViewModel();
         topicFollowResponse.setFollowedsTotal(getCountFollowersByTopic(idTopic));
         topicFollowResponse.setUserHasFollowedTopic(checkIfUserFollowTopic(idTopic, idUser));
 
@@ -96,11 +96,11 @@ public class TopicService {
         topicHasFollowersRepository.delete(topicHasFollowers);
     }
 
-    public TopicFollowResponse unfollowTopicoMobile(Long idTopic, Long idUser) {
+    public TopicFollowViewModel unfollowTopicoMobile(Long idTopic, Long idUser) {
         TopicHasFollowersEntity topicHasFollowers = topicHasFollowersRepository
                 .findByTopicIdTopicAndUserIdUser(idTopic, idUser);
         topicHasFollowersRepository.delete(topicHasFollowers);
-        TopicFollowResponse topicFollowResponse = new TopicFollowResponse();
+        TopicFollowViewModel topicFollowResponse = new TopicFollowViewModel();
         topicFollowResponse.setFollowedsTotal(getCountFollowersByTopic(idTopic));
         topicFollowResponse.setUserHasFollowedTopic(checkIfUserFollowTopic(idTopic, idUser));
         return topicFollowResponse;
@@ -110,8 +110,8 @@ public class TopicService {
         return topicHasFollowersRepository.countFollowersATopicHas(idTopic);
     }
 
-    public TopicDetailResponse getTopicDetailedFromTopicEntity(TopicEntity topicEntity, Long idUser) {
-        TopicDetailResponse topicDetailResponse = new TopicDetailResponse();
+    public TopicDetailViewModel getTopicDetailedFromTopicEntity(TopicEntity topicEntity, Long idUser) {
+        TopicDetailViewModel topicDetailResponse = new TopicDetailViewModel();
         topicMapper.getDtoFromTopic(topicEntity, topicDetailResponse);
         topicDetailResponse.setSvg(topicEntity.getSvg());
         topicDetailResponse.setPng(topicEntity.getPng());
@@ -126,9 +126,9 @@ public class TopicService {
         return topicDetailResponse;
     }
 
-    public SimplifiedTopicResponse getSimplifiedTopic(TopicEntity topic) {
+    public SimplifiedTopicViewModel getSimplifiedTopic(TopicEntity topic) {
         if (topic == null) return null;
-        SimplifiedTopicResponse simplifiedTopic = new SimplifiedTopicResponse();
+        SimplifiedTopicViewModel simplifiedTopic = new SimplifiedTopicViewModel();
         simplifiedTopic.setIdTopic(topic.getIdTopic());
         simplifiedTopic.setName(topic.getName());
         simplifiedTopic.setSvg(topic.getSvg());
@@ -141,7 +141,7 @@ public class TopicService {
                 .stream().map(topic -> topic.getTopic()).collect(Collectors.toList());
     }
 
-    public List<SimplifiedTopicResponse> getTopicsUserFollows(Long idUser) {
+    public List<SimplifiedTopicViewModel> getTopicsUserFollows(Long idUser) {
         return topicHasFollowersRepository.findByFollowerIdUser(idUser)
                 .stream()
                 .map(topic -> getSimplifiedTopic(topic.getTopic()))

@@ -1,6 +1,6 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.DataGithubPostRequest;
+import br.com.controly.dtos.DataGithubPostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -13,7 +13,7 @@ public class GithubService {
         this.restTemplate = restTemplate;
     }
 
-    public String consumeApi(String url, DataGithubPostRequest data){
+    public String consumeApi(String url, DataGithubPostDTO data){
         return restTemplate.postForObject(url, data, String.class);
     }
 }

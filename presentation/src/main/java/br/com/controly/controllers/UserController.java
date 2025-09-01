@@ -1,13 +1,13 @@
 package br.com.controly.controllers;
 
 
-import br.com.controly.dtos.UpdateUsersInfoRequest;
-import br.com.controly.dtos.UserProfileResponse;
+import br.com.controly.dtos.UpdateUsersInfoDTO;
+import br.com.controly.viewmodels.UserProfileViewModel;
 import br.com.controly.domain.entities.UserEntity;
-import br.com.controly.dtos.CreateNewUserRequest;
+import br.com.controly.dtos.CreateNewUserDTO;
 import br.com.controly.services.ProfileService;
 import br.com.controly.services.UserService;
-import br.com.controly.dtos.PasswordRecoveryRequest;
+import br.com.controly.dtos.PasswordRecoveryDTO;
 import br.com.controly.services.PasswordRecoveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createNewUser(@RequestBody @Valid CreateNewUserRequest user) {
+    public ResponseEntity<UserEntity> createNewUser(@RequestBody @Valid CreateNewUserDTO user) {
         UserEntity newUser = userService.createNewUser(user);
         return ResponseEntity.status(201).body(newUser);
     }
@@ -62,7 +62,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUsersInfo(@PathVariable Long id,
-                                                  @RequestBody @Valid UpdateUsersInfoRequest form) {
+                                                  @RequestBody @Valid UpdateUsersInfoDTO form) {
         if(userService.updateUsersInfo(id, form)!= 1)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong.");
         return ResponseEntity.status(200).body("User's data updated.");
@@ -70,7 +70,7 @@ public class UserController {
 
     @PutMapping("/mobile/{id}")
     public ResponseEntity<UserEntity> updateUsersInfoMobile(@PathVariable Long id,
-                                                  @RequestBody @Valid UpdateUsersInfoRequest form) {
+                                                  @RequestBody @Valid UpdateUsersInfoDTO form) {
         UserEntity user = userService.updateUsersInfoMobile(id, form);
         if(user == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong.");
@@ -79,7 +79,7 @@ public class UserController {
 
 
     @PostMapping("/password-recovery")
-    public ResponseEntity<?> passwordRecovery(@RequestBody PasswordRecoveryRequest form) {
+    public ResponseEntity<?> passwordRecovery(@RequestBody PasswordRecoveryDTO form) {
         passwordRecoveryService.passwordRecovery(form);
         return ResponseEntity.status(200).body("New password sent to users e-mail.");
     }
@@ -91,8 +91,8 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
-    public ResponseEntity<UserProfileResponse> getProfileByUserId(@PathVariable long id) {
-        UserProfileResponse user = profileService.getUserProfile(id);
+    public ResponseEntity<UserProfileViewModel> getProfileByUserId(@PathVariable long id) {
+        UserProfileViewModel user = profileService.getUserProfile(id);
         return ResponseEntity.status(200).body(user);
     }
 }
