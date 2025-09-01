@@ -7,12 +7,20 @@
 		<version>2.7.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>codelabz</groupId>
-	<artifactId>codelabz</artifactId>
+	<groupId>br.com.controly</groupId>
+	<artifactId>controly</artifactId>
 	<version>1.0.34</version>
-	<name>backend-codelabz</name>
-	<description>Backend for codelabz app</description>
-	<properties>
+    <packaging>pom</packaging>
+    <name>backend-controly</name>
+	<description>Backend for controly app</description>
+    <modules>
+        <module>api</module>
+        <module>application</module>
+        <module>infrastructure</module>
+        <module>presentation</module>
+        <module>domain</module>
+    </modules>
+    <properties>
 		<java.version>11</java.version>
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 	</properties>
@@ -77,11 +85,6 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
