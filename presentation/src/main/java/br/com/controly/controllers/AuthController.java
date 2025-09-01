@@ -3,9 +3,9 @@ package br.com.controly.controllers;
 
 import br.com.controly.config.Constant;
 import br.com.controly.config.LoggerConfig;
-import br.com.controly.dtos.DataGithubPostRequest;
-import br.com.controly.dtos.GithubUserRequest;
-import br.com.controly.dtos.LoginRequest;
+import br.com.controly.dtos.DataGithubPostDTO;
+import br.com.controly.dtos.GithubUserDTO;
+import br.com.controly.dtos.LoginDTO;
 import br.com.controly.domain.entities.UserEntity;
 import br.com.controly.services.AuthService;
 import br.com.controly.services.GithubService;
@@ -30,7 +30,7 @@ public class AuthController {
     private GithubService githubService;
 
     @PostMapping()
-    public ResponseEntity<String> login(@RequestBody LoginRequest login){
+    public ResponseEntity<String> login(@RequestBody LoginDTO login){
         LoggerConfig.getLogger().info("Teste de Log!!!");
         UserEntity user = authService.login(login.getEmail(), login.getPassword());
         if (user==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserEntity> login2(@RequestBody LoginRequest login){
+    public ResponseEntity<UserEntity> login2(@RequestBody LoginDTO login){
         UserEntity user = authService.login(login.getEmail(), login.getPassword());
         if (user==null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
         return ResponseEntity.status(200).body(user);
@@ -53,13 +53,13 @@ public class AuthController {
 
     @GetMapping("/github")
     public ResponseEntity<String> getGithubUser(@RequestParam String code) {
-        DataGithubPostRequest data = new DataGithubPostRequest(code);
+        DataGithubPostDTO data = new DataGithubPostDTO(code);
         String response = githubService.consumeApi(Constant.GITHUB_AUTH_ACCESSTOKEN_URL, data);
         return ResponseEntity.status(200).body(response);
     }
 
     @PostMapping("/github")
-    public ResponseEntity<UserEntity> postGitHubUser(@RequestBody GithubUserRequest githubUser){
+    public ResponseEntity<UserEntity> postGitHubUser(@RequestBody GithubUserDTO githubUser){
         UserEntity user =  authService.githubAuth(githubUser);
         if (user == null) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes Wrong");
         return ResponseEntity.status(200).body(user);

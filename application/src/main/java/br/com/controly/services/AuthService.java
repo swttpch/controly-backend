@@ -1,5 +1,5 @@
 package br.com.controly.services;
-import br.com.controly.dtos.GithubUserRequest;
+import br.com.controly.dtos.GithubUserDTO;
 import br.com.controly.exception.UsersEmailNotFould;
 import br.com.controly.jpa.UserRepository;
 import br.com.controly.domain.entities.UserEntity;
@@ -22,7 +22,7 @@ public class AuthService {
         return user;
     }
 
-    public UserEntity githubAuth(GithubUserRequest githubUser) {
+    public UserEntity githubAuth(GithubUserDTO githubUser) {
         Optional<UserEntity> userEntityOptional = userRepository.findByIdGithub(githubUser.getIdGithub());
         if (userEntityOptional.isPresent()){
             return userEntityOptional.get();

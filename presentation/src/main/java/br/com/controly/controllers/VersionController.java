@@ -1,6 +1,6 @@
 package br.com.controly.controllers;
 
-import br.com.controly.dtos.VersionResponse;
+import br.com.controly.viewmodels.VersionViewModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +24,9 @@ public class VersionController {
 
 
     @GetMapping(path = "/version")
-    public ResponseEntity<VersionResponse> getVersion() {
+    public ResponseEntity<VersionViewModel> getVersion() {
 
-        VersionResponse response = new VersionResponse();
+        VersionViewModel response = new VersionViewModel();
         response.setArtefact(artifactId);
         response.setName(name);
         response.setVersion(version);

@@ -1,6 +1,6 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.PasswordRecoveryRequest;
+import br.com.controly.dtos.PasswordRecoveryDTO;
 import br.com.controly.exception.UsersEmailNotFould;
 import br.com.controly.utils.PasswordGenerator;
 import br.com.controly.domain.entities.UserEntity;
@@ -29,7 +29,7 @@ public class PasswordRecoveryService {
     }
 
     @Transactional
-    public void passwordRecovery(PasswordRecoveryRequest userToRecover){
+    public void passwordRecovery(PasswordRecoveryDTO userToRecover){
         UserEntity user = userRepository.findByEmail(userToRecover.getEmail())
                 .orElseThrow(UsersEmailNotFould::new);
         user.setPassword(passwordGenerator.generate());

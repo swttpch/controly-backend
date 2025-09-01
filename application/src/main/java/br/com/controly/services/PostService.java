@@ -9,6 +9,7 @@ import br.com.controly.jpa.PostPointsRepository;
 import br.com.controly.jpa.PostRepository;
 import br.com.controly.domain.entities.PostEntity;
 import br.com.controly.domain.entities.PostPointsEntity;
+import br.com.controly.viewmodels.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,23 +40,23 @@ public class PostService {
         return postRepository.findById(idPost).orElseThrow(PostIdNotFould::new);
     }
 
-    public List<SimplifiedPostWithContentResponse> getAllPosts(Boolean sort) {
+    public List<SimplifiedPostWithContentViewModel> getAllPosts(Boolean sort) {
         LoggerConfig.getLogger().info("Inside getAllPosts");
         List<PostEntity> postEntityList = postRepository.findAll();
-        List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
+        List<SimplifiedPostWithContentViewModel> newList = new ArrayList<>();
 
         for(int i = 0; i < postEntityList.size(); i++) {
 
-            PostPointResponse postPointResponse = new PostPointResponse();
-            SimplifiedPostWithContentResponse response = new SimplifiedPostWithContentResponse();
+            PostPointViewModel postPointResponse = new PostPointViewModel();
+            SimplifiedPostWithContentViewModel response = new SimplifiedPostWithContentViewModel();
             response.setIdPost(postEntityList.get(i).getIdPost());
             response.setComments(postEntityList.get(i).getComments().size());
             response.setCreatedIn(postEntityList.get(i).getCreatedIn());
             response.setContent(postEntityList.get(i).getContent());
             response.setTitle(postEntityList.get(i).getTitle());
-            response.setOwner(new SimplifiedUserResponse().convert(postEntityList.get(i).getOwner()));
+            response.setOwner(new SimplifiedUserViewModel().convert(postEntityList.get(i).getOwner()));
             response.setDoubt(postEntityList.get(i).isDoubt());
-            response.setTopic(new SimplifiedTopicResponse().convert(postEntityList.get(i).getTopic()));
+            response.setTopic(new SimplifiedTopicViewModel().convert(postEntityList.get(i).getTopic()));
             Long total = postPointsRepository.countByPost_IdPost(postEntityList.get(i).getIdPost());
 
             if (total != null) {
@@ -71,24 +72,24 @@ public class PostService {
         return this.sortPosts(newList,sort);
     }
 
-    public List<SimplifiedPostWithContentResponse> getAllPosts(Long idUser, Boolean sort) {
+    public List<SimplifiedPostWithContentViewModel> getAllPosts(Long idUser, Boolean sort) {
         LoggerConfig.getLogger().info("Inside getAllPosts whith idUser: "+idUser);
         List<PostEntity> postEntityList = postRepository.findAll();
-        List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
+        List<SimplifiedPostWithContentViewModel> newList = new ArrayList<>();
 
         for(int i = 0; i < postEntityList.size(); i++){
 
-            PostPointResponse postPointResponse = new PostPointResponse();
-            SimplifiedPostWithContentResponse response = new SimplifiedPostWithContentResponse();
+            PostPointViewModel postPointResponse = new PostPointViewModel();
+            SimplifiedPostWithContentViewModel response = new SimplifiedPostWithContentViewModel();
             Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(postEntityList.get(i).getIdPost(), idUser);
             response.setIdPost(postEntityList.get(i).getIdPost());
             response.setComments(postEntityList.get(i).getComments().size());
             response.setCreatedIn(postEntityList.get(i).getCreatedIn());
             response.setContent(postEntityList.get(i).getContent());
             response.setTitle(postEntityList.get(i).getTitle());
-            response.setOwner(new SimplifiedUserResponse().convert(postEntityList.get(i).getOwner()));
+            response.setOwner(new SimplifiedUserViewModel().convert(postEntityList.get(i).getOwner()));
             response.setDoubt(postEntityList.get(i).isDoubt());
-            response.setTopic(new SimplifiedTopicResponse().convert(postEntityList.get(i).getTopic()));
+            response.setTopic(new SimplifiedTopicViewModel().convert(postEntityList.get(i).getTopic()));
             Long total = postPointsRepository.countByPost_IdPost(postEntityList.get(i).getIdPost());
 
             if(total!=null){
@@ -111,21 +112,21 @@ public class PostService {
         return this.sortPosts(newList,sort);
     }
 
-    public PostDetailedResponse getPostDetailedDtoCommon(PostEntity post, List<SimplifiedCommentResponse> comments){
-        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
-        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
-        return new PostDetailedResponse(post, topic, user, comments);
+    public PostDetailedViewModel getPostDetailedDtoCommon(PostEntity post, List<SimplifiedCommentViewModel> comments){
+        SimplifiedUserViewModel user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicViewModel topic = topicService.getSimplifiedTopic(post.getTopic());
+        return new PostDetailedViewModel(post, topic, user, comments);
     }
 
-    public PostDetailedResponse getPostDetailedDtoDoubt(PostEntity post, List<SimplifiedCommentResponse> comments){
-        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
-        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
-        DoubtsAnswerResponse answer = new DoubtsAnswerResponse(post.getDoubtsAnswerEntity());
-        return new PostDetailedResponse(post, topic, user, comments, answer);
+    public PostDetailedViewModel getPostDetailedDtoDoubt(PostEntity post, List<SimplifiedCommentViewModel> comments){
+        SimplifiedUserViewModel user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicViewModel topic = topicService.getSimplifiedTopic(post.getTopic());
+        DoubtsAnswerViewModel answer = new DoubtsAnswerViewModel(post.getDoubtsAnswerEntity());
+        return new PostDetailedViewModel(post, topic, user, comments, answer);
     }
 
     @Transactional
-    public PostDetailedResponse processGetPostByID(Long id, List<SimplifiedCommentResponse> comments){
+    public PostDetailedViewModel processGetPostByID(Long id, List<SimplifiedCommentViewModel> comments){
         PostEntity post = getPostById(id);
         if (post.isDoubt())
             return getPostDetailedDtoDoubt(post, comments);
@@ -143,9 +144,9 @@ public class PostService {
         postPointsRepository.save(points);
     }
 
-    public PostPointResponse processSetPointForPostBool(Long idPost, Long idUser){
+    public PostPointViewModel processSetPointForPostBool(Long idPost, Long idUser){
 
-        PostPointResponse postPointResponse = new PostPointResponse();
+        PostPointViewModel postPointResponse = new PostPointViewModel();
         UserEntity user = userService.getUserById(idUser);
         PostEntity post = getPostById(idPost);
 
@@ -180,18 +181,18 @@ public class PostService {
         return postRepository.findByOwnerIdUser(idUser);
     }
 
-    public SimplifiedPostResponse getSimplifiedPost(PostEntity post){
+    public SimplifiedPostViewModel getSimplifiedPost(PostEntity post){
         if (post == null) return null;
-        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
-        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
-        return new SimplifiedPostResponse(post, topic, user);
+        SimplifiedUserViewModel user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicViewModel topic = topicService.getSimplifiedTopic(post.getTopic());
+        return new SimplifiedPostViewModel(post, topic, user);
     }
 
-    public SimplifiedPostWithContentResponse getSimplifiedWithContentPost(PostEntity post){
+    public SimplifiedPostWithContentViewModel getSimplifiedWithContentPost(PostEntity post){
         if (post == null) return null;
-        SimplifiedUserResponse user = userService.getSimplifiedUser(post.getOwner());
-        SimplifiedTopicResponse topic = topicService.getSimplifiedTopic(post.getTopic());
-        return new SimplifiedPostWithContentResponse(post, topic, user);
+        SimplifiedUserViewModel user = userService.getSimplifiedUser(post.getOwner());
+        SimplifiedTopicViewModel topic = topicService.getSimplifiedTopic(post.getTopic());
+        return new SimplifiedPostWithContentViewModel(post, topic, user);
     }
 
     public PostEntity getPostMostRatedByUserId(Long idUser){
@@ -201,13 +202,13 @@ public class PostService {
                 .max(Comparator.comparingInt(PostEntity::getPoints)).get();
     }
     @Transactional
-    public SimplifiedPostWithContentResponse createPost(CreatePostRequest newPost) {
+    public SimplifiedPostWithContentViewModel createPost(CreatePostDTO newPost) {
         PostEntity post = convertDtoToPost(newPost);
         postRepository.save(post);
         return this.getSimplifiedWithContentPost(post);
     }
 
-    public PostEntity convertDtoToPost(CreatePostRequest newPost){
+    public PostEntity convertDtoToPost(CreatePostDTO newPost){
         UserEntity user = userService.getUserById(newPost.getIdUser());
         TopicEntity topic = topicService.getTopicById(newPost.getIdTopic());
         return newPost.convert(topic, user);
@@ -224,24 +225,24 @@ public class PostService {
         return postRepository.findByTopicIdTopic(idTopic);
     }
 
-    public List<SimplifiedPostWithContentResponse> getTopicoForPostMobile(Long idTopic, Long idUser){
+    public List<SimplifiedPostWithContentViewModel> getTopicoForPostMobile(Long idTopic, Long idUser){
 
         List<PostEntity> postEntityList = postRepository.findByTopicIdTopic(idTopic);
-        List<SimplifiedPostWithContentResponse> newList = new ArrayList<>();
+        List<SimplifiedPostWithContentViewModel> newList = new ArrayList<>();
 
         for(int i = 0; i < postEntityList.size(); i++){
 
-            PostPointResponse postPointResponse = new PostPointResponse();
-            SimplifiedPostWithContentResponse response = new SimplifiedPostWithContentResponse();
+            PostPointViewModel postPointResponse = new PostPointViewModel();
+            SimplifiedPostWithContentViewModel response = new SimplifiedPostWithContentViewModel();
             Optional<PostPointsEntity> points = postPointsRepository.existByPostAndUser(postEntityList.get(i).getIdPost(), idUser);
             response.setIdPost(postEntityList.get(i).getIdPost());
             response.setComments(postEntityList.get(i).getComments().size());
             response.setCreatedIn(postEntityList.get(i).getCreatedIn());
             response.setContent(postEntityList.get(i).getContent());
             response.setTitle(postEntityList.get(i).getTitle());
-            response.setOwner(new SimplifiedUserResponse().convert(postEntityList.get(i).getOwner()));
+            response.setOwner(new SimplifiedUserViewModel().convert(postEntityList.get(i).getOwner()));
             response.setDoubt(postEntityList.get(i).isDoubt());
-            response.setTopic(new SimplifiedTopicResponse().convert(postEntityList.get(i).getTopic()));
+            response.setTopic(new SimplifiedTopicViewModel().convert(postEntityList.get(i).getTopic()));
             Long total = postPointsRepository.countByPost_IdPost(postEntityList.get(i).getIdPost());
 
             if(total!=null){
@@ -271,8 +272,8 @@ public class PostService {
         return postEntityPage;
     }
 
-    private List<SimplifiedPostWithContentResponse> sortPosts(List<SimplifiedPostWithContentResponse> lista,
-                                                             Boolean sort){
+    private List<SimplifiedPostWithContentViewModel> sortPosts(List<SimplifiedPostWithContentViewModel> lista,
+                                                               Boolean sort){
         if(sort){
             Collections.sort(lista);
             return lista;

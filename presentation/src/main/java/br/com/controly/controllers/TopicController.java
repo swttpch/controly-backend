@@ -1,8 +1,8 @@
 package br.com.controly.controllers;
 
-import br.com.controly.dtos.SimplifiedTopicResponse;
-import br.com.controly.dtos.TopicDetailResponse;
-import br.com.controly.dtos.TopicFollowResponse;
+import br.com.controly.viewmodels.SimplifiedTopicViewModel;
+import br.com.controly.viewmodels.TopicDetailViewModel;
+import br.com.controly.viewmodels.TopicFollowViewModel;
 import br.com.controly.domain.entities.TopicEntity;
 import br.com.controly.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,9 @@ public class TopicController {
     @Autowired
     private TopicService topicService;
 
-    public TopicController() {
-    }
-
-    //@PostMapping
-    //public ResponseEntity<>
-
     @GetMapping("/{idTopic}/{idUser}")
-    public ResponseEntity<TopicDetailResponse> getTopicById(@PathVariable long idTopic, @PathVariable Long idUser) {
-        TopicDetailResponse topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(idTopic), idUser);
+    public ResponseEntity<TopicDetailViewModel> getTopicById(@PathVariable long idTopic, @PathVariable Long idUser) {
+        TopicDetailViewModel topic = topicService.getTopicDetailedFromTopicEntity(topicService.getTopicById(idTopic), idUser);
         return ResponseEntity.status(200).body(topic);
     }
 
@@ -52,13 +46,6 @@ public class TopicController {
             @RequestParam(defaultValue = "name") String sortBy) {
 
         Page<TopicEntity> topics = topicService.getAllTopicsPageable(pageNo, pageSize, sortBy);
-        //if (topics.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Didn't found any topics");
-
-        //List<TopicDetailResponse> topicDetailResponseList =
-        //        topics.stream()
-        //                .map(topic-> topicService.getTopicDetailedFromTopicEntity(topic))
-        //                .collect(Collectors.toList());
-        //return ResponseEntity.status(200).body(topicDetailResponseList);
         return ResponseEntity.status(200).body(topics);
     }
 
@@ -73,7 +60,7 @@ public class TopicController {
     }
 
     @PutMapping("mobile/{idTopic}/{idUser}")
-    public ResponseEntity<TopicFollowResponse> followAndUnfollowTopicMobile(@PathVariable Long idTopic, @PathVariable Long idUser) {
+    public ResponseEntity<TopicFollowViewModel> followAndUnfollowTopicMobile(@PathVariable Long idTopic, @PathVariable Long idUser) {
         if (topicService.checkIfUserFollowTopic(idTopic, idUser)) {
             return ResponseEntity.status(200).body(topicService.unfollowTopicoMobile(idTopic, idUser));
         } else {
@@ -87,8 +74,8 @@ public class TopicController {
     }
 
     @GetMapping("/user/{idUser}")
-    public ResponseEntity<List<SimplifiedTopicResponse>> getTopicsByUser(@PathVariable Long idUser) {
-        List<SimplifiedTopicResponse> topics = topicService.getTopicsUserFollows(idUser);
+    public ResponseEntity<List<SimplifiedTopicViewModel>> getTopicsByUser(@PathVariable Long idUser) {
+        List<SimplifiedTopicViewModel> topics = topicService.getTopicsUserFollows(idUser);
         return ResponseEntity.status(200).body(topics);
     }
 }
