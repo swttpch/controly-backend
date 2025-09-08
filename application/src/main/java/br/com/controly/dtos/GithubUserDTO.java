@@ -1,15 +1,13 @@
 package br.com.controly.dtos;
 
 
-import br.com.controly.domain.entities.UserEntity;
-import lombok.Getter;
+import br.com.controly.domain.entities.Users;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class GithubUserDTO {
     @NotNull
@@ -25,13 +23,11 @@ public class GithubUserDTO {
 
     private String email;
 
-    public UserEntity convert() {
-        UserEntity user = new UserEntity();
+    public Users convert() {
+        Users user = new Users();
         user.setName(name);
-        user.setAvatar(avatar);
-        user.setAvatarPng(avatar);
+
         user.setNickname(nickname);
-        user.setIdGithub(idGithub);
         user.setEmail(email);
         return user;
     }

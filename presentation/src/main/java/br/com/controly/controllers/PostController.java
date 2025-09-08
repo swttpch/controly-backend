@@ -1,6 +1,6 @@
 package br.com.controly.controllers;
 
-import br.com.controly.domain.entities.PostEntity;
+import br.com.controly.domain.entities.Posts;
 import br.com.controly.dtos.*;
 import br.com.controly.services.DoubtService;
 import br.com.controly.services.PostService;
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,12 +66,12 @@ public class PostController {
     }
 
     @GetMapping("/pageable")
-    public ResponseEntity<Page<PostEntity>> getAllPostsPageable(
+    public ResponseEntity<Page<Posts>> getAllPostsPageable(
             @RequestParam(defaultValue = "1") Integer pageNo,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "content") String sortBy
     ){
-        Page<PostEntity> posts = postService.getAllPostsPageable(pageNo, pageSize, sortBy);
+        Page<Posts> posts = postService.getAllPostsPageable(pageNo, pageSize, sortBy);
         //if (posts == null) return ResponseEntity.status(204).build();
         return ResponseEntity.status(200).body(posts);
     }
@@ -172,7 +172,7 @@ public class PostController {
 
     @GetMapping("/pesquisa/{idTopic}")
     public ResponseEntity searchFieldTopico(@PathVariable Long idTopic){
-        List<PostEntity> postagem = postService.getTopicoForPost(idTopic);
+        List<Posts> postagem = postService.getTopicoForPost(idTopic);
 
         if (postagem.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Topico não disponivel");

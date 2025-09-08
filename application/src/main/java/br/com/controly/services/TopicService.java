@@ -7,9 +7,9 @@ import br.com.controly.exception.TopicIdNotFould;
 import br.com.controly.mappers.TopicMapper;
 import br.com.controly.jpa.TopicHasFollowersRepository;
 import br.com.controly.jpa.TopicRepository;
-import br.com.controly.domain.entities.TopicEntity;
-import br.com.controly.domain.entities.TopicHasFollowersEntity;
-import br.com.controly.domain.entities.UserEntity;
+import br.com.controly.domain.entities.Topics;
+import br.com.controly.domain.entities.TopicFollowers;
+import br.com.controly.domain.entities.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,42 +42,39 @@ public class TopicService {
     public TopicService() {
     }
 
-    public Page<TopicEntity> getAllTopicsPageable(Integer pageNo, Integer pageSize, String sortBy) {
+    public Page<Topics> getAllTopicsPageable(Integer pageNo, Integer pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-        Page<TopicEntity> topics = topicRepository.findAll(pageable);
+        Page<Topics> topics = topicRepository.findAll(pageable);
         if (!topics.hasContent()) throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Didn't fould any topics");
         return topics;
     }
 
     @Transactional
-    public TopicEntity getTopicById(Long id) {
-        TopicEntity topic = topicRepository.findById(id).orElseThrow(TopicIdNotFould::new);
+    public Topics getTopicById(Long id) {
+        Topics topic = topicRepository.findById(id).orElseThrow(TopicIdNotFould::new);
         return topic;
     }
 
     @Transactional
     public boolean checkIfUserFollowTopic(Long idTopic, Long idUser) {
-        TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
-        UserEntity user = userService.getUserById(idUser);
-        Optional<TopicHasFollowersEntity> topicHasFollowers = topicHasFollowersRepository.userFollowsTopic(topic, user);
+        Topics topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
+        Users user = userService.getUserById(idUser);
+        Optional<TopicFollowers> topicHasFollowers = topicHasFollowersRepository.userFollowsTopic(topic, user);
         return topicHasFollowers.isPresent();
     }
 
     public void followTopic(Long idTopic, Long idUser) {
-        TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
-        UserEntity user = userService.getUserById(idUser);
-        TopicHasFollowersEntity topicHasFollowers = new TopicHasFollowersEntity();
-        topicHasFollowersRepository.save(
-                topicHasFollowers.setFollower(user)
-                        .setTopic(topic)
-        );
+        Topics topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
+        Users user = userService.getUserById(idUser);
+        TopicFollowers topicHasFollowers = new TopicFollowers();
+
     }
 
     public TopicFollowViewModel followTopicMobile(Long idTopic, Long idUser) {
-        TopicEntity topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
-        UserEntity user = userService.getUserById(idUser);
+        Topics topic = topicRepository.findById(idTopic).orElseThrow(TopicIdNotFould::new);
+        Users user = userService.getUserById(idUser);
 
-        TopicHasFollowersEntity topicHasFollowers = new TopicHasFollowersEntity();
+        TopicFollowers topicHasFollowers = new TopicFollowers();
         topicHasFollowers.setFollower(user);
         topicHasFollowers.setTopic(topic);
 
@@ -91,13 +88,13 @@ public class TopicService {
     }
 
     public void unfollowTopico(Long idTopic, Long idUser) {
-        TopicHasFollowersEntity topicHasFollowers = topicHasFollowersRepository
+        TopicFollowers topicHasFollowers = topicHasFollowersRepository
                 .findByTopicIdTopicAndUserIdUser(idTopic, idUser);
         topicHasFollowersRepository.delete(topicHasFollowers);
     }
 
     public TopicFollowViewModel unfollowTopicoMobile(Long idTopic, Long idUser) {
-        TopicHasFollowersEntity topicHasFollowers = topicHasFollowersRepository
+        TopicFollowers topicHasFollowers = topicHasFollowersRepository
                 .findByTopicIdTopicAndUserIdUser(idTopic, idUser);
         topicHasFollowersRepository.delete(topicHasFollowers);
         TopicFollowViewModel topicFollowResponse = new TopicFollowViewModel();
@@ -110,11 +107,10 @@ public class TopicService {
         return topicHasFollowersRepository.countFollowersATopicHas(idTopic);
     }
 
-    public TopicDetailViewModel getTopicDetailedFromTopicEntity(TopicEntity topicEntity, Long idUser) {
+    public TopicDetailViewModel getTopicDetailedFromTopicEntity(Topics topicEntity, Long idUser) {
         TopicDetailViewModel topicDetailResponse = new TopicDetailViewModel();
         topicMapper.getDtoFromTopic(topicEntity, topicDetailResponse);
-        topicDetailResponse.setSvg(topicEntity.getSvg());
-        topicDetailResponse.setPng(topicEntity.getPng());
+
         topicDetailResponse.setCreatedAt(topicEntity.getCreatedAt());
         topicDetailResponse.setCountFollowers(
                 getCountFollowersByTopic(topicDetailResponse.getIdTopic())
@@ -126,17 +122,16 @@ public class TopicService {
         return topicDetailResponse;
     }
 
-    public SimplifiedTopicViewModel getSimplifiedTopic(TopicEntity topic) {
+    public SimplifiedTopicViewModel getSimplifiedTopic(Topics topic) {
         if (topic == null) return null;
         SimplifiedTopicViewModel simplifiedTopic = new SimplifiedTopicViewModel();
-        simplifiedTopic.setIdTopic(topic.getIdTopic());
+        simplifiedTopic.setIdTopic(topic.getId());
         simplifiedTopic.setName(topic.getName());
-        simplifiedTopic.setSvg(topic.getSvg());
-        simplifiedTopic.setPng(topic.getPng());
+
         return simplifiedTopic;
     }
 
-    public List<TopicEntity> getAllTopicsByUser(Long idUser) {
+    public List<Topics> getAllTopicsByUser(Long idUser) {
         return topicHasFollowersRepository.findByFollowerIdUser(idUser)
                 .stream().map(topic -> topic.getTopic()).collect(Collectors.toList());
     }
@@ -148,9 +143,9 @@ public class TopicService {
                 .collect(Collectors.toList());
     }
 
-    public List<TopicEntity> getAllTopics() {
+    public List<Topics> getAllTopics() {
 
-        List<TopicEntity> list = topicRepository.findAll();
+        List<Topics> list = topicRepository.findAll();
         return list;
 
     }

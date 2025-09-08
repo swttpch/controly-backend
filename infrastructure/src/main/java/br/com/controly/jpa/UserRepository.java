@@ -1,14 +1,14 @@
 package br.com.controly.jpa;
 
-import br.com.controly.domain.entities.UserEntity;
+import br.com.controly.domain.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity,Long> {
+public interface UserRepository extends JpaRepository<Users,Long> {
 
-    Optional<UserEntity> findByEmail(String email);
-    Optional<UserEntity> findByIdGithub(Long id);
+    Optional<Users> findByEmail(String email);
+    Optional<Users> findByIdGithub(Long id);
 
-    Optional<UserEntity> findByToken(String token);
+    Optional<Users> findByToken(String token);
 }

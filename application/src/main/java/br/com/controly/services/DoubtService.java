@@ -3,12 +3,12 @@ package br.com.controly.services;
 import br.com.controly.dtos.CreatePostDTO;
 import br.com.controly.viewmodels.SimplifiedPostWithContentViewModel;
 import br.com.controly.jpa.PostRepository;
-import br.com.controly.domain.entities.CommentEntity;
-import br.com.controly.domain.entities.PostEntity;
+import br.com.controly.domain.entities.Comments;
+import br.com.controly.domain.entities.Posts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Service
 public class DoubtService {
@@ -23,13 +23,12 @@ public class DoubtService {
     }
     @Transactional
     public void setDoubtsAnswer(Long idPost, Long idComment){
-        PostEntity post = postService.getPostById(idPost);
-        CommentEntity comment = commentService.getCommentById(idComment);
-        post.setAnswer(comment);
+        Posts post = postService.getPostById(idPost);
+        Comments comment = commentService.getCommentById(idComment);
     }
 
     public SimplifiedPostWithContentViewModel createPost(CreatePostDTO newPost) {
-        PostEntity post = postService.convertDtoToPost(newPost);
+        Posts post = postService.convertDtoToPost(newPost);
         post.initDoubt();
         postRepository.save(post);
         return postService.getSimplifiedWithContentPost(post);

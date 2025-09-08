@@ -1,15 +1,12 @@
 package br.com.controly.dtos;
 
-import br.com.controly.domain.entities.PostEntity;
-import br.com.controly.domain.entities.TopicEntity;
-import br.com.controly.domain.entities.UserEntity;
-import lombok.Getter;
+import br.com.controly.domain.entities.Posts;
+import br.com.controly.domain.entities.Topics;
+import br.com.controly.domain.entities.Users;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
-@Getter
-@Setter
+import jakarta.validation.constraints.NotNull;
+@Data
 @NoArgsConstructor
 public class CreatePostDTO {
     @NotNull
@@ -21,8 +18,8 @@ public class CreatePostDTO {
     @NotNull
     private Long idTopic;
 
-    public PostEntity convert(TopicEntity topic, UserEntity user){
-        PostEntity post = new PostEntity();
+    public Posts convert(Topics topic, Users user){
+        Posts post = new Posts();
         post.setTitle(title);
         post.setContent(content);
         post.setOwner(user);

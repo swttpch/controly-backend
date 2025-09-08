@@ -1,25 +1,21 @@
 package br.com.controly.viewmodels;
 
-import br.com.controly.domain.entities.TopicEntity;
-import lombok.Getter;
+import br.com.controly.domain.entities.Topics;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.time.LocalDate;
-@Getter
-@Setter
+import java.time.LocalDateTime;
+
+@Data
 @NoArgsConstructor
 public class TopicDetailViewModel {
 
-    private Long idTopic = new TopicEntity().getIdTopic();
+    private Long idTopic = new Topics().getId();
 
-    private String name = new TopicEntity().getName();
+    private String name = new Topics().getName();
 
-    private String about = new TopicEntity().getAbout();
-    private LocalDate createdAt = new TopicEntity().getCreatedAt();
-    private String svg = new TopicEntity().getSvg();
-
-    private String png = new TopicEntity().getPng();
+    private String about = new Topics().getAbout();
+    private LocalDateTime createdAt = new Topics().getCreatedAt();
 
     private Integer countFollowers;
     private Boolean userHasFollowed;

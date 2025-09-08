@@ -1,11 +1,11 @@
 package br.com.controly.jpa;
 
-import br.com.controly.domain.entities.PostEntity;
+import br.com.controly.domain.entities.Posts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface PostRepository extends JpaRepository<PostEntity, Long> {
-    List<PostEntity> findByOwnerIdUser(Long idUser);
+public interface PostRepository extends JpaRepository<Posts, Long> {
+    List<Posts> findByOwnerIdUser(Long idUser);
 
-    List<PostEntity> findByTopicIdTopic(Long idTopic);
+    List<Posts> findByTopicIdTopic(Long idTopic);
 }
