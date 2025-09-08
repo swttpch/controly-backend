@@ -3,7 +3,7 @@ FROM maven:3.8-openjdk as build
 
 WORKDIR /build
 
-COPY . .
+COPY ../../../.. .
 
 RUN mvn clean package --quiet
 

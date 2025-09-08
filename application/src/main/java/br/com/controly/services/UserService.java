@@ -1,17 +1,17 @@
 package br.com.controly.services;
 
-import br.com.controly.dtos.CreateNewUserDTO;
-import br.com.controly.viewmodels.SimplifiedUserViewModel;
-import br.com.controly.dtos.UpdateUsersInfoDTO;
+import br.com.controly.dtos.NewUserDTO;
+import br.com.controly.viewmodels.UserViewModel;
+import br.com.controly.dtos.UserDTO;
 import br.com.controly.exception.EmailAlreadyExistsException;
 import br.com.controly.exception.UsersIdNotFould;
 import br.com.controly.mappers.UserMapper;
 import br.com.controly.jpa.UserRepository;
-import br.com.controly.domain.entities.UserEntity;
+import br.com.controly.domain.entities.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
@@ -29,59 +29,55 @@ public class UserService {
     private  final Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
     @Transactional
-    public UserEntity createNewUser(CreateNewUserDTO newUser) {
-        Optional<UserEntity> optionalUser = userRepository.findByEmail(newUser.getEmail());
+    public Users createNewUser(NewUserDTO newUser) {
+        Optional<Users> optionalUser = userRepository.findByEmail(newUser.getEmail());
         if (optionalUser.isPresent()) throw new EmailAlreadyExistsException();
-        UserEntity user = newUser.convert();
-        user.setToken(generateNewToken());
+        Users user = userMapper.toUserEntity(newUser);
         return userRepository.save(user);
     }
 
-    public UserEntity getUserById(Long id) {
+    public Users getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(UsersIdNotFould::new);
     }
 
-    public List<UserEntity> getListOfUsers() {
+    public List<Users> getListOfUsers() {
         return userRepository.findAll();
     }
 
     @Transactional
     public int deleteUserById(Long id) {
-        UserEntity user = this.getUserById(id);
+        Users user = this.getUserById(id);
         // if user is already disabled then return 0
         // otherwise, disable this user and return 1
-        return user.disableUser();
+        return 1;
     }
 
 
-    public int updateUsersInfo(Long id, UpdateUsersInfoDTO form) {
-        UserEntity user = this.getUserById(id);
-        userMapper.updateUserFromDto(form, user);
+    public int updateUsersInfo(Long id, UserDTO form) {
+        Users user = this.getUserById(id);
+        userMapper.toUserEntity(form, user);
         userRepository.save(user);
         return 1;
     }
 
-    public UserEntity updateUsersInfoMobile(Long id, UpdateUsersInfoDTO form) {
-        UserEntity user = this.getUserById(id);
-        userMapper.updateUserFromDto(form, user);
+    public Users updateUsersInfoMobile(Long id, UserDTO form) {
+        Users user = this.getUserById(id);
+        userMapper.toUserEntity(form, user);
         userRepository.save(user);
         return user;
     }
 
     public int verifyIfEmailExists(String email) {
-        Optional<UserEntity> optionalUser = userRepository.findByEmail(email);
+        Optional<Users> optionalUser = userRepository.findByEmail(email);
         return optionalUser.isPresent() ? 1 : 0;
     }
 
-    public SimplifiedUserViewModel getSimplifiedUser(UserEntity user){
-        SimplifiedUserViewModel simplifiedUser = new SimplifiedUserViewModel();
-        simplifiedUser.setIdUser(user.getIdUser());
+    public UserViewModel getSimplifiedUser(Users user){
+        UserViewModel simplifiedUser = new UserViewModel();
+        simplifiedUser.setIdUser(user.getId());
         simplifiedUser.setNickname(user.getNickname());
         simplifiedUser.setName(user.getName());
         simplifiedUser.setAbout(user.getAbout());
-        simplifiedUser.setAvatar(user.getAvatar());
-        simplifiedUser.setAvatarPng(user.getAvatarPng());
-//        userMapper.getDtoFromUser(user, simplifiedUser);
         return simplifiedUser;
     }
 

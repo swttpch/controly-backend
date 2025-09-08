@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UpdateUsersInfoDTO {
-
-
-
+public class UserDTO {
     private String name;
 
     private String nickname;
@@ -23,5 +20,4 @@ public class UpdateUsersInfoDTO {
     private String avatarPng;
 
     private String email;
-
 }

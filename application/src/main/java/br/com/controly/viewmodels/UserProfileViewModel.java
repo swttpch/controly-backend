@@ -1,15 +1,13 @@
 package br.com.controly.viewmodels;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class UserProfileViewModel {
-    private SimplifiedUserViewModel user;
+    private UserViewModel user;
     private List<SimplifiedPostViewModel> posts;
     private List<SimplifiedTopicViewModel> followedTopics;
     private SimplifiedPostViewModel mostRatedPost;

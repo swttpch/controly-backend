@@ -1,14 +1,11 @@
 package br.com.controly.dtos;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PasswordRecoveryDTO {
     @NotNull

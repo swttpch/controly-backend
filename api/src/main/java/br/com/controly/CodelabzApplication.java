@@ -12,5 +12,4 @@ public class CodelabzApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CodelabzApplication.class, args);
 	}
-
 }

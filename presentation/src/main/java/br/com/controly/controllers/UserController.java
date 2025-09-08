@@ -1,10 +1,10 @@
 package br.com.controly.controllers;
 
 
-import br.com.controly.dtos.UpdateUsersInfoDTO;
+import br.com.controly.dtos.UserDTO;
 import br.com.controly.viewmodels.UserProfileViewModel;
-import br.com.controly.domain.entities.UserEntity;
-import br.com.controly.dtos.CreateNewUserDTO;
+import br.com.controly.domain.entities.Users;
+import br.com.controly.dtos.NewUserDTO;
 import br.com.controly.services.ProfileService;
 import br.com.controly.services.UserService;
 import br.com.controly.dtos.PasswordRecoveryDTO;
@@ -15,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import java.util.List;
 
 
@@ -33,20 +33,20 @@ public class UserController {
     private ProfileService profileService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
+    public ResponseEntity<Users> getUserById(@PathVariable Long id) {
         return ResponseEntity.status(200).body(userService.getUserById(id));
     }
     @GetMapping
-    public ResponseEntity<List<UserEntity>> getListOfUsers() {
-        List<UserEntity> users =  userService.getListOfUsers();
+    public ResponseEntity<List<Users>> getListOfUsers() {
+        List<Users> users =  userService.getListOfUsers();
         return users.isEmpty()
                 ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(users);
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createNewUser(@RequestBody @Valid CreateNewUserDTO user) {
-        UserEntity newUser = userService.createNewUser(user);
+    public ResponseEntity<Users> createNewUser(@RequestBody @Valid NewUserDTO user) {
+        Users newUser = userService.createNewUser(user);
         return ResponseEntity.status(201).body(newUser);
     }
 
@@ -62,16 +62,16 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUsersInfo(@PathVariable Long id,
-                                                  @RequestBody @Valid UpdateUsersInfoDTO form) {
+                                                  @RequestBody @Valid UserDTO form) {
         if(userService.updateUsersInfo(id, form)!= 1)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong.");
         return ResponseEntity.status(200).body("User's data updated.");
     }
 
     @PutMapping("/mobile/{id}")
-    public ResponseEntity<UserEntity> updateUsersInfoMobile(@PathVariable Long id,
-                                                  @RequestBody @Valid UpdateUsersInfoDTO form) {
-        UserEntity user = userService.updateUsersInfoMobile(id, form);
+    public ResponseEntity<Users> updateUsersInfoMobile(@PathVariable Long id,
+                                                       @RequestBody @Valid UserDTO form) {
+        Users user = userService.updateUsersInfoMobile(id, form);
         if(user == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something goes wrong.");
         return ResponseEntity.status(200).body(user);

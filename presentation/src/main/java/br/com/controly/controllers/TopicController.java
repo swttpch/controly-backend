@@ -3,7 +3,7 @@ package br.com.controly.controllers;
 import br.com.controly.viewmodels.SimplifiedTopicViewModel;
 import br.com.controly.viewmodels.TopicDetailViewModel;
 import br.com.controly.viewmodels.TopicFollowViewModel;
-import br.com.controly.domain.entities.TopicEntity;
+import br.com.controly.domain.entities.Topics;
 import br.com.controly.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,8 +30,8 @@ public class TopicController {
 
     @Cacheable(cacheNames = "topics")
     @GetMapping
-    public ResponseEntity<List<TopicEntity>> getAllTopics() {
-        List<TopicEntity> list = topicService.getAllTopics();
+    public ResponseEntity<List<Topics>> getAllTopics() {
+        List<Topics> list = topicService.getAllTopics();
         if (list.isEmpty()) {
             return ResponseEntity.status(204).body(list);
         }
@@ -40,12 +40,12 @@ public class TopicController {
 
     @Cacheable(cacheNames = "topicsPageable")
     @GetMapping("/pageable")
-    public ResponseEntity<Page<TopicEntity>> getAllTopicsPageable(
+    public ResponseEntity<Page<Topics>> getAllTopicsPageable(
             @RequestParam(defaultValue = "1") Integer pageNo,
             @RequestParam(defaultValue = "1") Integer pageSize,
             @RequestParam(defaultValue = "name") String sortBy) {
 
-        Page<TopicEntity> topics = topicService.getAllTopicsPageable(pageNo, pageSize, sortBy);
+        Page<Topics> topics = topicService.getAllTopicsPageable(pageNo, pageSize, sortBy);
         return ResponseEntity.status(200).body(topics);
     }
 
